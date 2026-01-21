@@ -1,10 +1,5 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-
 #include "src/Engine/Core/DnDEngine.h"
 
-// Quick Test to Check if it's working or not
 int main() {
     DnDEngine Engine;
 
@@ -39,7 +34,7 @@ int main() {
     // }
     //
     // glfwTerminate();
-    //
+
 
     return 0;
 }

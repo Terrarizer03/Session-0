@@ -21,6 +21,8 @@ add_executable(DnDCreator
         src/Engine/UI/UIManager.h
         src/Engine/Window/GLFWWindow/GLFWWindow.cpp
         src/Engine/Window/GLFWWindow/GLFWWindow.h
+        src/Engine/Renderer/OpenGLRenderer/GLRenderer.cpp
+        src/Engine/Renderer/OpenGLRenderer/GLRenderer.h
 )
 
 target_include_directories(DnDCreator PRIVATE

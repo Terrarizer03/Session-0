@@ -11,6 +11,11 @@ bool GLFWWindow::initialize() {
     return true;
 }
 
+bool GLFWWindow::setVSync(bool isOn) {
+    glfwSwapInterval(isOn ? 1 : 0);
+    return isOn;
+}
+
 bool GLFWWindow::createWindow(int width, int height, const char* window_name) {
     glfwWindow = glfwCreateWindow(width, height, window_name, nullptr, nullptr);
     if (!glfwWindow) {

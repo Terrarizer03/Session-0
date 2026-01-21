@@ -15,11 +15,13 @@ public:
      */
     virtual bool initialize() = 0;
 
+    virtual bool setVSync(bool isOn) = 0;
+
     /**
      * Creates a new window and sets it as the context
      * @return Returns true if successful and false if not
      */
-    virtual bool createWindow(int width, int height, const char* window_name = "Default") = 0;
+    virtual bool createWindow(int width, int height, const char* window_name) = 0;
 
     /**
      * Checks if the window is closed or not
