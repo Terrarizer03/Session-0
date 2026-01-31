@@ -21,14 +21,9 @@ bool GLRenderer::setViewport(int _x, int _y, int _width, int _height) {
     return true;
 }
 
-bool GLRenderer::clear() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    return true;
-}
-
 bool GLRenderer::clearColor(float _r, float _g, float _b, float _a) {
     glClearColor(_r, _g, _b, _a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     return true;
 }

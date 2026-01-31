@@ -13,8 +13,8 @@ find_package(OpenGL REQUIRED)
 
 add_executable(DnDCreator
         main.cpp
-        src/Engine/Core/DnDEngine.cpp
-        src/Engine/Core/DnDEngine.h
+        src/Engine/DnDEngine.cpp
+        src/Engine/DnDEngine.h
         src/Engine/Renderer/IRenderer.h
         src/Engine/Window/IWindow.h
         src/Engine/UI/UIManager.cpp
@@ -23,6 +23,9 @@ add_executable(DnDCreator
         src/Engine/Window/GLFWWindow/GLFWWindow.h
         src/Engine/Renderer/OpenGLRenderer/GLRenderer.cpp
         src/Engine/Renderer/OpenGLRenderer/GLRenderer.h
+        src/Engine/Core/Math/Vector3.h
+        src/Engine/Core/Math/Vector2.h
+        src/Engine/Core/Math/Matrix4.h
 )
 
 target_include_directories(DnDCreator PRIVATE

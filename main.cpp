@@ -1,11 +1,10 @@
-#include "src/Engine/Core/DnDEngine.h"
+#include "src/Engine/DnDEngine.h"
 
 int main() {
     DnDEngine Engine;
 
     if (!Engine.Initialize()) return -1;
-    if (!Engine.Run()) return -1;
-    if (!Engine.Exit()) return -1;
+    Engine.Run();
 
     // if (!glfwInit()) return -1;
     //
@@ -34,7 +33,6 @@ int main() {
     // }
     //
     // glfwTerminate();
-
 
     return 0;
 }

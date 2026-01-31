@@ -11,7 +11,6 @@ public:
 
     virtual bool initialize() = 0;
     virtual bool setViewport(int _x, int _y, int _width, int _height) = 0;
-    virtual bool clear() = 0;
     virtual bool clearColor(float _r, float _g, float _b, float _a) = 0;
 };
 

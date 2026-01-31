@@ -6,8 +6,8 @@
 #define DNDCREATOR_DNDENGINE_H
 #include <memory>
 
-#include "../Renderer/IRenderer.h"
-#include "../Window/IWindow.h"
+#include "Renderer/IRenderer.h"
+#include "Window/IWindow.h"
 
 class DnDEngine {
     std::unique_ptr<IWindow> window;
@@ -17,12 +17,13 @@ public:
     DnDEngine() = default;
 
     // Destructor
-    ~DnDEngine() = default;
+    ~DnDEngine() {
+        if (window) window->shutdown();
+    }
 
     // Main Methods
     bool Initialize();
-    bool Run();
-    bool Exit();
+    void Run();
 };
 
 
