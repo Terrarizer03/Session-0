@@ -24,6 +24,24 @@ namespace dndMath {
         Vector2 operator*(const float scalar) const {
             return Vector2(scalar * x, scalar * y);
         }
+        
+        Vector2& operator+=(const Vector2& other) {
+            x += other.x;
+            y += other.y;
+            return *this;
+        }
+
+        Vector2& operator-=(const Vector2& other) {
+            x -= other.x;
+            y -= other.y;
+            return *this;
+        }
+
+        Vector2& operator*=(float scalar) {
+            x *= scalar;
+            y *= scalar;
+            return *this;
+        }
     };
 
     inline Vector2 operator*(const float scalar, const Vector2 &vector) {

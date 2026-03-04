@@ -1,0 +1,8 @@
+//
+// Created by Terrarizer on 01/02/2026.
+//
+
+#ifndef DNDCREATOR_INPUTCONTROLLER_H
+#define DNDCREATOR_INPUTCONTROLLER_H
+
+#endif //DNDCREATOR_INPUTCONTROLLER_H

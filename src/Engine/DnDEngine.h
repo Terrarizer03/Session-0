@@ -22,8 +22,8 @@ public:
     }
 
     // Main Methods
-    bool Initialize();
-    void Run();
+    bool initialize();
+    void run();
 };
 
 

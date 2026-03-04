@@ -36,13 +36,20 @@ namespace dndMath {
             return *this;
         }
 
-        Vector3& operator*=(float scalar) {
+        Vector3& operator*=(const float scalar) {
             x *= scalar; y *= scalar; z *= scalar;
             return *this;
         }
+
+        // --------------------- Vector3 Methods ---------------------
+        /**
+         * Used to return the magnitude of the given vector.
+         */
+        [[nodiscard]] Vector3 normalized() const;
+        [[nodiscard]] Vector3 cross(const Vector3 &other) const;
     };
 
-    inline Vector3 operator*(float scalar, const Vector3& vector) {
+    inline Vector3 operator*(const float scalar, const Vector3& vector) {
         return vector * scalar;
     }
 }

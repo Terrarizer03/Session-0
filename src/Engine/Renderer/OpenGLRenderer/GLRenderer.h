@@ -13,6 +13,8 @@ public:
 
     bool setViewport(int _x, int _y, int _width, int _height) override;
     bool clearColor(float _r, float _g, float _b, float _a) override;
+
+    // void draw();
 };
 
 

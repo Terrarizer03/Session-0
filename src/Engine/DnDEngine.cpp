@@ -4,16 +4,13 @@
 
 #include <iostream>
 #include "DnDEngine.h"
-
-#include <cmath>
-
 #include "glad/glad.h"
 #include "Renderer/OpenGLRenderer/GLRenderer.h"
 #include "Window/GLFWWindow/GLFWWindow.h"
 
-bool DnDEngine::Initialize() {
+bool DnDEngine::initialize() {
     int window_width = 800;
-    int window_height = 600;
+    int window_height = 800;
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -33,47 +30,104 @@ bool DnDEngine::Initialize() {
         return false;
     }
 
-    renderer->setViewport(0, 0, 800, 800);
+    glEnable(GL_DEPTH_TEST);
+
+    renderer->setViewport(0, 0, window_width, window_height);
 
     return true;
 }
 
-// test ---------------
-
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);\n"
-"}\n\0";
-
-// test ---------------
-
-void DnDEngine::Run() {
+void DnDEngine::run() {
 
     // Test ----------------------------
-    float h = std::sqrt(3.0f) / 2.0f; // height of equilateral triangle
+    const char* vertexShaderSource = "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos;\n"
+    "void main()\n"
+    "{\n"
+    "   gl_Position = vec4(aPos, 1.0);\n"
+    "}\0";
+    const char* fragmentShaderSource = "#version 330 core\n"
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);\n"
+    "}\n\0";
 
     float vertices[] = {
-        -0.5f, -h / 3.0f, 0.0f,   // left vertex
-         0.5f, -h / 3.0f, 0.0f,   // right vertex
-         0.0f,  2.0f * h / 3.0f, 0.0f, // top vertex
+        // Front face
+        -0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+
+        // Back face
+        -0.5f, -0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+
+         0.5f,  0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+
+        // Left face
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+
+        // Right face
+         0.5f,  0.5f,  0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+
+        // Top face
+        -0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
+
+        // Bottom face
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+
+         0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f
     };
 
+    auto checkShaderCompile = [](const GLuint shader) {
+        int success;
+        char infoLog[512];
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        if (!success) {
+            glGetShaderInfoLog(shader, 512, nullptr, infoLog);
+            std::cout << "Shader compilation error:\n" << infoLog << std::endl;
+        }
+    };
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
     glCompileShader(vertexShader);
+    checkShaderCompile(vertexShader);
 
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
     glCompileShader(fragmentShader);
+    checkShaderCompile(fragmentShader);
 
     GLuint program = glCreateProgram();
 
@@ -84,52 +138,34 @@ void DnDEngine::Run() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    GLuint VAO, VBO;
-
+    GLuint VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(
-        GL_ARRAY_BUFFER,
-        sizeof(vertices),
-        vertices,
-        GL_STATIC_DRAW
-    );
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(
-    0,              // location in shader
-    3,              // vec3
-    GL_FLOAT,
-    GL_FALSE,
-    3 * sizeof(float),
-    (void*)0
+        0,              // layout location
+        3,              // x y z
+        GL_FLOAT,
+        GL_FALSE,
+        3 * sizeof(float),
+        static_cast<void*>(nullptr)
     );
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    auto checkShaderCompile = [](GLuint shader) {
-        int success;
-        char infoLog[512];
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-        if (!success) {
-            glGetShaderInfoLog(shader, 512, NULL, infoLog);
-            std::cout << "Shader compilation error:\n" << infoLog << std::endl;
-        }
-    };
-
-    checkShaderCompile(vertexShader);
-    checkShaderCompile(fragmentShader);
 
     int linkSuccess;
     char linkInfo[512];
     glGetProgramiv(program, GL_LINK_STATUS, &linkSuccess);
     if (!linkSuccess) {
-        glGetProgramInfoLog(program, 512, NULL, linkInfo);
+        glGetProgramInfoLog(program, 512, nullptr, linkInfo);
         std::cout << "Shader linking error:\n" << linkInfo << std::endl;
     }
 
@@ -140,7 +176,7 @@ void DnDEngine::Run() {
 
         glUseProgram(program);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         window->pollEvents();
         window->swapBuffers();
