@@ -23,26 +23,30 @@ add_executable(DnDCreator
         src/Engine/Window/GLFWWindow/GLFWWindow.h
         src/Engine/Renderer/OpenGLRenderer/GLRenderer.cpp
         src/Engine/Renderer/OpenGLRenderer/GLRenderer.h
-        src/Engine/Core/Math/Vector/Vector3.h
+        src/Engine/Core/Math/Vector/Vector3/Vector3.h
         src/Engine/Core/Math/Vector/Vector2.h
         src/Engine/Core/Math/Matrix/Matrix4.h
         "src/Engine/Core/Rendering Math/Vertex.h"
-        "src/Engine/Core/Rendering Math/Mesh.h"
+        "src/Engine/Core/Rendering Math/Mesh/Mesh.h"
         "src/Engine/Core/Rendering Math/Face.h"
         src/Engine/Core/Nodes/Camera.h
-        src/Engine/Core/Input/InputController.h
+        src/Engine/Core/Input/IInput.h
         src/Engine/Core/Math/Vector/Vector4.h
         src/Engine/Renderer/IShader.h
         src/Engine/Renderer/OpenGLRenderer/GLShader.h
         src/Engine/Renderer/OpenGLRenderer/GLShader.cpp
-        src/Engine/Core/Math/Vector/Vector3.cpp
+        src/Engine/Core/Math/Vector/Vector3/Vector3.cpp
         src/Engine/Core/Math/Matrix/Matrix4.cpp
-        "src/Engine/Core/Rendering Math/Mesh.cpp"
+        "src/Engine/Core/Rendering Math/Mesh/Mesh.cpp"
+        src/Engine/Core/Loaders/Loader.cpp
+        src/Engine/Core/Loaders/Loader.h
+        src/Engine/Core/Input/GLFWInput/GLFWInput.h
 )
 
 target_include_directories(DnDCreator PRIVATE
         external/glad/include
         external/glfw/include
+        external/tinyobjloader/include
 )
 
 target_link_libraries(DnDCreator
@@ -50,3 +54,5 @@ target_link_libraries(DnDCreator
         glad
         OpenGL::GL
 )
+
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})

@@ -9,15 +9,16 @@
 
 class GLShader : public IShader {
 public:
-    GLShader(const char* vertexSrc, const char* fragmentSrc);
+    GLShader(const char* vertexPath, const char* fragmentPath);
     void Bind() const override;
     void Unbind() const override;
-    void SetUniform(const std::string&, const dndMath::Matrix4&) override;
+    void SetUniformMatrix4fv(const std::string& name, const dndMath::Matrix4& matrix) const override;
+    void SetUniformVec3(const std::string &name, const dndMath::Vector3 &vector) const override;
 
     ~GLShader() override;
 private:
     GLuint m_RendererID = 0;
-    static void CompileShader(const char& vertexSrc, const char& fragmentSrc);
+    static GLuint CompileShader(const char* vertexSrc, const char* fragmentSrc);
 };
 
 #endif //DNDCREATOR_GLSHADER_H

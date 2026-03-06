@@ -11,18 +11,18 @@ namespace dndMath {
 
         constexpr Vector2() : x(0.0f), y(0.0f) {}
 
-        explicit constexpr Vector2(const float _x, const float _y) : x(_x), y(_y) {}
+        constexpr Vector2(const float _x, const float _y) : x(_x), y(_y) {}
 
         Vector2 operator+(const Vector2 &other) const {
-            return Vector2(other.x + x, other.y + y);
+            return { other.x + x, other.y + y };
         }
 
         Vector2 operator-(const Vector2 &other) const {
-            return Vector2(other.x - x, other.y - y);
+            return { other.x - x, other.y - y };
         }
 
         Vector2 operator*(const float scalar) const {
-            return Vector2(scalar * x, scalar * y);
+            return { scalar * x, scalar * y };
         }
         
         Vector2& operator+=(const Vector2& other) {

@@ -6,15 +6,20 @@
 #define DNDCREATOR_DNDENGINE_H
 #include <memory>
 
+#include "Core/Input/IInput.h"
 #include "Renderer/IRenderer.h"
 #include "Window/IWindow.h"
 
 class DnDEngine {
     std::unique_ptr<IWindow> window;
     std::unique_ptr<IRenderer> renderer;
+    std::unique_ptr<IInput> input;
 public:
+    int window_width = 800;
+    int window_height = 800;
+
     // Constructor
-    DnDEngine() = default;
+    DnDEngine(int w_width, int w_height) : window_width(w_width), window_height(w_height) {};
 
     // Destructor
     ~DnDEngine() {
@@ -23,7 +28,7 @@ public:
 
     // Main Methods
     bool initialize();
-    void run();
+    void run() const;
 };
 
 

@@ -4,7 +4,7 @@
 
 #ifndef DNDCREATOR_VERTEX_H
 #define DNDCREATOR_VERTEX_H
-#include "../Math/Vector/Vector3.h"
+#include "../Math/Vector/Vector3/Vector3.h"
 #include "../Math/Vector/Vector2.h"
 #include "../Math/Vector/Vector4.h"
 

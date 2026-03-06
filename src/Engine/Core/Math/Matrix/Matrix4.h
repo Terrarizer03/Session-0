@@ -4,7 +4,7 @@
 
 #ifndef DNDCREATOR_MATRIX4_H
 #define DNDCREATOR_MATRIX4_H
-#include "../Vector/Vector3.h"
+#include "../Vector/Vector3/Vector3.h"
 
 namespace dndMath {
     struct Matrix4 {

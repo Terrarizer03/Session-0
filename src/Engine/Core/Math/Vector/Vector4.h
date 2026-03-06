@@ -11,19 +11,19 @@ namespace dndMath {
 
         constexpr Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
 
-        explicit constexpr Vector4(const float _x, const float _y, const float _z, const float _w) : x(_x), y(_y), z(_z), w(_w) {}
+        constexpr Vector4(const float _x, const float _y, const float _z, const float _w) : x(_x), y(_y), z(_z), w(_w) {}
 
         Vector4 operator+(const Vector4 &other) const {
-            return Vector4(x + other.x, y + other.y, z + other.z, w + other.w);
+            return { x + other.x, y + other.y, z + other.z, w + other.w };
         }
         Vector4 operator-(const Vector4 &other) const {
-            return Vector4(other.x - x, other.y - y, other.z - z, other.w - w);
+            return { other.x - x, other.y - y, other.z - z, other.w - w };
         }
         Vector4 operator*(const float scalar) const {
-            return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
+            return { x * scalar, y * scalar, z * scalar, w * scalar };
         }
         Vector4 operator*(const Vector4 &other) const {
-            return Vector4(other.x * x, other.y * y, other.z * z, other.w * w);
+            return { other.x * x, other.y * y, other.z * z, other.w * w };
         }
     };
 

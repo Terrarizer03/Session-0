@@ -12,7 +12,8 @@ struct IShader {
 
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
-    virtual void SetUniform(const std::string&, const dndMath::Matrix4&) = 0;
+    virtual void SetUniformMatrix4fv(const std::string& name, const dndMath::Matrix4& matrix) const = 0;
+    virtual void SetUniformVec3(const std::string& name, const dndMath::Vector3& vector) const = 0;
 };
 
 #endif //DNDCREATOR_ISHADER_H

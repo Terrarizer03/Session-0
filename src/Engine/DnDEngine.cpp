@@ -3,18 +3,17 @@
 //
 
 #include <iostream>
-#include "DnDEngine.h"
 #include "glad/glad.h"
+#include "DnDEngine.h"
+#include "Core/Input/GLFWInput/GLFWInput.h"
+#include "Core/Loaders/Loader.h"
+#include "Core/Nodes/Camera.h"
+#include "Core/Rendering Math/Mesh/Mesh.h"
 #include "Renderer/OpenGLRenderer/GLRenderer.h"
 #include "Window/GLFWWindow/GLFWWindow.h"
+#include "Renderer/OpenGLRenderer/GLShader.h"
 
 bool DnDEngine::initialize() {
-    int window_width = 800;
-    int window_height = 800;
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = std::make_unique<GLFWWindow>();
     if (!window || !window->initialize() || !window->createWindow(window_width, window_height, "D&D Creator")) {
@@ -30,6 +29,11 @@ bool DnDEngine::initialize() {
         return false;
     }
 
+    GLFWwindow* handle = static_cast<GLFWWindow*>(window.get())->getHandle();
+    input = std::make_unique<GLFWInput>(handle);
+
+    glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     glEnable(GL_DEPTH_TEST);
 
     renderer->setViewport(0, 0, window_width, window_height);
@@ -37,152 +41,59 @@ bool DnDEngine::initialize() {
     return true;
 }
 
-void DnDEngine::run() {
+void DnDEngine::run() const {
 
-    // Test ----------------------------
-    const char* vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos, 1.0);\n"
-    "}\0";
-    const char* fragmentShaderSource = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);\n"
-    "}\n\0";
+    Camera camera(dndMath::Vector3(2.0f, 2.0f, 3.0f)); // 3 units back from origin
 
-    float vertices[] = {
-        // Front face
-        -0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
+    float aspect = static_cast<float>(window_width) / static_cast<float>(window_height);
 
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
+    dndMath::Matrix4 model = dndMath::Matrix4::identity();
+    dndMath::Matrix4 view = camera.getViewMatrix();
+    dndMath::Matrix4 projection = dndMath::Matrix4::perspective(45.0f, aspect, 0.1f, 100.0f);
 
-        // Back face
-        -0.5f, -0.5f, -0.5f,
-        -0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
+    dndMath::Matrix4 mvp = projection * view * model;
 
-         0.5f,  0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
+    const GLShader shader("assets/Shaders/cube_default.vert", "assets/Shaders/cube_default.frag");
+    const Mesh mesh = dndAssetLoader::loadOBJ("assets/Models/cube_default.obj");
 
-        // Left face
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-
-        // Right face
-         0.5f,  0.5f,  0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-
-         0.5f, -0.5f, -0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-
-        // Top face
-        -0.5f,  0.5f, -0.5f,
-        -0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f, -0.5f,
-        -0.5f,  0.5f, -0.5f,
-
-        // Bottom face
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
-
-         0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f
-    };
-
-    auto checkShaderCompile = [](const GLuint shader) {
-        int success;
-        char infoLog[512];
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-        if (!success) {
-            glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-            std::cout << "Shader compilation error:\n" << infoLog << std::endl;
-        }
-    };
-
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-    glCompileShader(vertexShader);
-    checkShaderCompile(vertexShader);
-
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-    glCompileShader(fragmentShader);
-    checkShaderCompile(fragmentShader);
-
-    GLuint program = glCreateProgram();
-
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-    glLinkProgram(program);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    GLuint VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(
-        0,              // layout location
-        3,              // x y z
-        GL_FLOAT,
-        GL_FALSE,
-        3 * sizeof(float),
-        static_cast<void*>(nullptr)
-    );
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-
-    int linkSuccess;
-    char linkInfo[512];
-    glGetProgramiv(program, GL_LINK_STATUS, &linkSuccess);
-    if (!linkSuccess) {
-        glGetProgramInfoLog(program, 512, nullptr, linkInfo);
-        std::cout << "Shader linking error:\n" << linkInfo << std::endl;
-    }
-
-    // Test ----------------------------
+    const float cameraSpeed = 0.1f;
 
     while (!window->shouldClose()) {
         renderer->clearColor(0.07f, 0.13f, 0.17f, 1.0f);
+        glClear(GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(program);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        input->update();
+
+        float sensitivity = 0.1f;
+        camera.yaw += input->getDeltaX() * sensitivity;
+        camera.pitch += input->getDeltaY() * sensitivity;
+
+        // Clamp pitch so camera doesn't flip upside down
+        if (camera.pitch > 89.0f) camera.pitch = 89.0f;
+        if (camera.pitch < -89.0f) camera.pitch = -89.0f;
+
+        camera.updateFront();
+        dndMath::Vector3 right = camera.front.cross(camera.up).normalized();
+
+        if (input->getKey(GLFW_KEY_W))
+            camera.position += camera.front * cameraSpeed;
+        if (input->getKey(GLFW_KEY_S))
+            camera.position -= camera.front * cameraSpeed;
+        if (input->getKey(GLFW_KEY_A))
+            camera.position -= right * cameraSpeed;
+        if (input->getKey(GLFW_KEY_D))
+            camera.position += right * cameraSpeed;
+
+        view = camera.getViewMatrix();
+        mvp = projection * view * model;
+
+        shader.Bind();
+        shader.SetUniformMatrix4fv("uModel", model);
+        shader.SetUniformVec3("uLightDir", dndMath::Vector3(0.5f, 1.0f, 0.3f));
+        shader.SetUniformMatrix4fv("uMVP", mvp);
+        mesh.draw();
 
         window->pollEvents();
         window->swapBuffers();
     }
-
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteProgram(program);
 }

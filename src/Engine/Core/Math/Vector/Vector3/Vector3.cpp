@@ -14,9 +14,13 @@ using dndMath::Vector3;
 }
 
 [[nodiscard]] Vector3 Vector3::cross(const Vector3& other) const {
-    return Vector3(
+    return {
         y * other.z - z * other.y,
         z * other.x - x * other.z,
         x * other.y - y * other.x
-    );
+    };
+}
+
+[[nodiscard]] float Vector3::dot(const Vector3& other) const {
+    return (x * other.x) + (y * other.y) + (z * other.z);
 }

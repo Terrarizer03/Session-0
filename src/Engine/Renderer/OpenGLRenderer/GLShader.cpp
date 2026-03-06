@@ -5,8 +5,56 @@
 #include "GLShader.h"
 #include <iostream>
 
-GLShader::GLShader(const char* vertexSrc, const char* fragmentSrc) {
-    auto checkShaderCompile = [](GLuint shader) {
+#include "../../Core/Loaders/Loader.h"
+
+/**
+ * Takes in a vertexPath and a fragmentPath, calls the
+ * CompileShader function to compile the shader
+ * to the GPU.
+ * @param vertexPath The file path of the vertex shader
+ * @param fragmentPath The file path of the fragment shader
+ */
+GLShader::GLShader(const char* vertexPath, const char* fragmentPath) {
+    const std::string vertexCode = dndAssetLoader::readFile(vertexPath);
+    const std::string fragmentCode = dndAssetLoader::readFile(fragmentPath);
+
+    if (vertexCode.empty() || fragmentCode.empty()) {
+        std::cout << "Failed to load shader files\n";
+        m_RendererID = 0;
+        return;
+    }
+
+    m_RendererID = CompileShader(vertexCode.c_str(), fragmentCode.c_str());
+}
+
+void GLShader::Bind() const {
+    glUseProgram(m_RendererID);
+}
+
+void GLShader::Unbind() const {
+    glUseProgram(0);
+}
+
+void GLShader::SetUniformMatrix4fv(const std::string& name, const dndMath::Matrix4& matrix) const {
+    GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+    if (location == -1) {
+        std::cout << "Warning: uniform '" << name << "' not found in shader\n";
+        return;
+    }
+    glUniformMatrix4fv(location, 1, GL_TRUE, matrix.data());
+}
+
+void GLShader::SetUniformVec3(const std::string& name, const dndMath::Vector3& vector) const {
+    GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+    if (location == -1) {
+        std::cout << "Warning: uniform '" << name << "' not found\n";
+        return;
+    }
+    glUniform3f(location, vector.x, vector.y, vector.z);
+}
+
+GLuint GLShader::CompileShader(const char *vertexSrc, const char *fragmentSrc) {
+    auto checkShaderCompile = [](const GLuint shader) {
         int success;
         char infoLog[512];
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
@@ -16,7 +64,7 @@ GLShader::GLShader(const char* vertexSrc, const char* fragmentSrc) {
         }
     };
 
-    auto checkProgramLink = [](GLuint program) {
+    auto checkProgramLink = [](const GLuint program) {
         int linkSuccess;
         char linkInfo[512];
         glGetProgramiv(program, GL_LINK_STATUS, &linkSuccess);
@@ -45,23 +93,7 @@ GLShader::GLShader(const char* vertexSrc, const char* fragmentSrc) {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    m_RendererID = program;
-}
-
-void GLShader::Bind() const {
-    glUseProgram(m_RendererID);
-}
-
-void GLShader::Unbind() const {
-    glUseProgram(0);
-}
-
-void GLShader::SetUniform(const std::string&, const dndMath::Matrix4& matrix) {
-
-}
-
-void GLShader::CompileShader(const char &vertexSrc, const char &fragmentSrc) {
-
+    return program;
 }
 
 GLShader::~GLShader() {

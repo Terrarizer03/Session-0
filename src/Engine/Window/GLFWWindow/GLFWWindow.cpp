@@ -8,6 +8,10 @@
 bool GLFWWindow::initialize() {
     if (!glfwInit()) return false;
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     return true;
 }
 
@@ -23,13 +27,13 @@ bool GLFWWindow::createWindow(int width, int height, const char* window_name) {
         return false;
     }
 
-    glfwMakeContextCurrent(glfwWindow.value());
+    glfwMakeContextCurrent(glfwWindow);
 
     return true;
 }
 
 bool GLFWWindow::shouldClose() const {
-    return glfwWindowShouldClose(glfwWindow.value()) != 0;
+    return glfwWindowShouldClose(glfwWindow) != 0;
 }
 
 void GLFWWindow::pollEvents() {
@@ -37,7 +41,7 @@ void GLFWWindow::pollEvents() {
 }
 
 void GLFWWindow::swapBuffers() {
-    glfwSwapBuffers(glfwWindow.value());
+    glfwSwapBuffers(glfwWindow);
 }
 
 bool GLFWWindow::shutdown() {

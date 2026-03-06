@@ -5,8 +5,8 @@
 #ifndef DNDCREATOR_MESH_H
 #define DNDCREATOR_MESH_H
 #include <vector>
-#include "Face.h"
-#include "Vertex.h"
+#include "../Face.h"
+#include "../Vertex.h"
 #include "glad/glad.h"
 
 class Mesh {
@@ -18,10 +18,11 @@ public:
     std::vector<Vertex> vertices;
     std::vector<Face> faces;
 
-    Mesh(const std::vector<Vertex> &vertices, const std::vector<Face> &faces);
+    Mesh(const std::vector<Vertex> &_vertices, const std::vector<Face> &_faces);
     ~Mesh();
-    void _upload();
     void draw() const;
+private:
+    void upload();
 };
 
 #endif //DNDCREATOR_MESH_H

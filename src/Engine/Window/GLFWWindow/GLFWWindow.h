@@ -10,7 +10,7 @@
 #include "GLFW/glfw3.h"
 
 class GLFWWindow : public IWindow {
-    std::optional<GLFWwindow*> glfwWindow;
+    GLFWwindow* glfwWindow = nullptr;
 public:
     bool initialize() override;
     bool setVSync(bool isOn) override;
@@ -19,6 +19,8 @@ public:
     void pollEvents() override;
     void swapBuffers() override;
     bool shutdown() override;
+
+    [[nodiscard]] GLFWwindow* getHandle() const { return glfwWindow; }
 };
 
 

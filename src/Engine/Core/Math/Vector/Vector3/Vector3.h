@@ -11,19 +11,19 @@ namespace dndMath {
 
         constexpr Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 
-        explicit constexpr Vector3(const float _x, const float _y, const float _z) : x(_x), y(_y), z(_z) {}
+        constexpr Vector3(const float _x, const float _y, const float _z) : x(_x), y(_y), z(_z) {}
 
         // Operator Overloading
         Vector3 operator+(const Vector3 &other) const {
-            return Vector3(x + other.x, y + other.y, z + other.z);
+            return { x + other.x, y + other.y, z + other.z};
         }
 
         Vector3 operator-(const Vector3 &other) const {
-            return Vector3(x - other.x, y - other.y, z - other.z);
+            return { x - other.x, y - other.y, z - other.z };
         }
 
-        Vector3 operator*(float scalar) const {
-            return Vector3(x * scalar, y * scalar, z * scalar);
+        Vector3 operator*(const float scalar) const {
+            return {x * scalar, y * scalar, z * scalar };
         }
 
         Vector3& operator+=(const Vector3& other) {
@@ -47,6 +47,7 @@ namespace dndMath {
          */
         [[nodiscard]] Vector3 normalized() const;
         [[nodiscard]] Vector3 cross(const Vector3 &other) const;
+        [[nodiscard]] float dot(const Vector3 &other) const;
     };
 
     inline Vector3 operator*(const float scalar, const Vector3& vector) {
