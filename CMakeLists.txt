@@ -41,6 +41,15 @@ add_executable(DnDCreator
         src/Engine/Core/Loaders/Loader.cpp
         src/Engine/Core/Loaders/Loader.h
         src/Engine/Core/Input/GLFWInput/GLFWInput.h
+        src/Engine/States/IState.h
+        src/Engine/States/StateManager.cpp
+        src/Engine/States/StateManager.h
+        src/Engine/States/EngineStates/MapEditorState.cpp
+        src/Engine/States/EngineStates/MapEditorState.h
+        "src/Engine/Core/Rendering Math/Transform.h"
+        "src/Engine/Core/Rendering Math/SceneObject.h"
+        "src/Engine/Core/Rendering Math/Material.h"
+        "src/Engine/Core/Rendering Math/RenderContext.h"
 )
 
 target_include_directories(DnDCreator PRIVATE

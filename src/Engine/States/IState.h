@@ -4,5 +4,22 @@
 
 #ifndef DNDCREATOR_ISTATE_H
 #define DNDCREATOR_ISTATE_H
+#include "../Core/Input/IInput.h"
+
+class StateManager; // Ensure compiler that StateManager exists
+
+class IState {
+protected:
+    StateManager* stateManager = nullptr;
+public:
+    virtual ~IState() = default;
+    virtual bool initialize() = 0;
+    virtual void handleInput(const IInput& input) = 0;
+    virtual void update(float deltaTime) const = 0;
+    virtual void render() const = 0;
+    virtual void cleanup() const = 0;
+
+    void setStateManager(StateManager* _stateManager) { this->stateManager = _stateManager; };
+};
 
 #endif //DNDCREATOR_ISTATE_H

@@ -14,7 +14,7 @@ public:
     bool setViewport(int _x, int _y, int _width, int _height) override;
     bool clearColor(float _r, float _g, float _b, float _a) override;
 
-    // void draw();
+    void draw(const Mesh& mesh, const Transform& transform, const Material& material, const RenderContext& context) override;
 };
 
 

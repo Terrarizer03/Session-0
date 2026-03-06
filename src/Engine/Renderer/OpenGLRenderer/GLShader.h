@@ -6,14 +6,17 @@
 #define DNDCREATOR_GLSHADER_H
 #include "../IShader.h"
 #include "glad/glad.h"
+#include "../../Core/Math/Vector/Vector4.h"
+
 
 class GLShader : public IShader {
 public:
     GLShader(const char* vertexPath, const char* fragmentPath);
-    void Bind() const override;
-    void Unbind() const override;
-    void SetUniformMatrix4fv(const std::string& name, const dndMath::Matrix4& matrix) const override;
-    void SetUniformVec3(const std::string &name, const dndMath::Vector3 &vector) const override;
+    void bind() const override;
+    void unbind() const override;
+    void setUniformMatrix4fv(const std::string& name, const dndMath::Matrix4& matrix) const override;
+    void setUniformVec3(const std::string& name, const dndMath::Vector3& vector) const override;
+    void setUniformVec4(const std::string& name, const dndMath::Vector4& vector) const override;
 
     ~GLShader() override;
 private:

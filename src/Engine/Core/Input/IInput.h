@@ -13,8 +13,8 @@ public:
     virtual void getMousePosition(double &x, double &y) const = 0;
 
     virtual void update() = 0;
-    virtual float getDeltaX() const = 0;
-    virtual float getDeltaY() const = 0;
+    [[nodiscard]] virtual float getDeltaX() const = 0;
+    [[nodiscard]] virtual float getDeltaY() const = 0;
 };
 
 #endif //DNDCREATOR_IINPUT_H

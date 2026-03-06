@@ -5,6 +5,9 @@
 #include <glad/glad.h>
 #include "GLRenderer.h"
 
+#include <iostream>
+#include <ostream>
+
 #include "GLFW/glfw3.h"
 
 bool GLRenderer::initialize() {
@@ -26,4 +29,19 @@ bool GLRenderer::clearColor(float _r, float _g, float _b, float _a) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     return true;
+}
+
+void GLRenderer::draw(const Mesh& mesh, const Transform& transform, const Material& material, const RenderContext& context) {
+    material.shader->bind();
+
+    material.shader->setUniformVec4("uColor", material.color);
+    material.shader->setUniformVec3("uLightDir", context.lightDir );
+
+    dndMath::Matrix4 model = transform.getModelMatrix();
+    dndMath::Matrix4 mvp = context.camera->getProjectionMatrix() * context.camera->getViewMatrix() * model;
+
+    material.shader->setUniformMatrix4fv("uMVP", mvp);
+    material.shader->setUniformMatrix4fv("uModel", model);
+
+    mesh.draw();
 }

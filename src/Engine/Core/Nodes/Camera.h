@@ -12,6 +12,7 @@
 
 struct Camera {
     dndMath::Vector3 position, front, up;
+    float fov = 0.0f, aspect = 0.0f, near = 0.0f, far = 0.0f;
     float yaw = -90.0f;
     float pitch = 0.0f;
 
@@ -30,8 +31,15 @@ struct Camera {
         return dndMath::Matrix4::lookAt(position, position + front, up);
     }
 
-    [[nodiscard]] dndMath::Matrix4 getProjectionMatrix(float fov, float aspect, float near, float far) {
+    [[nodiscard]] dndMath::Matrix4 getProjectionMatrix() const {
         return dndMath::Matrix4::perspective(fov, aspect, near, far);
+    }
+
+    void setPerspective(const float _fov, const float _aspect, const float _near, const float _far) {
+        this->fov = _fov;
+        this->aspect = _aspect;
+        this->near = _near;
+        this->far = _far;
     }
 };
 

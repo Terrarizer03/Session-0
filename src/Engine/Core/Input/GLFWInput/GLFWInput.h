@@ -10,11 +10,10 @@
 
 class GLFWInput : public IInput {
     GLFWwindow* m_handle;
-public:
     double m_LastX = 400, m_LastY = 400;
     bool m_FirstMouse = true;
     float m_DeltaX = 0, m_DeltaY = 0;
-
+public:
     explicit GLFWInput(GLFWwindow* handle) : m_handle(handle) {}
 
     [[nodiscard]] bool getKey(int key) const override {

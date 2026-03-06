@@ -9,8 +9,13 @@
 #include "../Rendering Math/Mesh/Mesh.h"
 
 namespace dndAssetLoader {
-    extern std::string readFile(const std::string& path);
-    extern Mesh loadOBJ(const std::string& path);
+    std::string readFile(const std::string& path);
+    Mesh loadOBJ(const std::string& path);
+}
+
+namespace dndProjectLoader {
+    std::string loadFile(const std::string& path);
+    std::string saveFile(/*const ProjectContext */ const std::string& path);
 }
 
 #endif //DNDCREATOR_OBJLOADER_H

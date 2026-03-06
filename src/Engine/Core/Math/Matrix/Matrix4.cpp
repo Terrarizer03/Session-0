@@ -35,24 +35,24 @@ namespace dndMath {
     Matrix4 Matrix4::rotate(float angle, const Vector3& vec) {
         Matrix4 result = identity();
 
-        float r = angle * (M_PI / 180.0f); // convert degrees to radians
-        float c = cos(r);
-        float s = sin(r);
-        float t = 1.0f - c;
+        const auto R = static_cast<float>(angle * (M_PI / 180.0f)); // convert degrees to radians
+        const float C = std::cos(R);
+        const float S = std::sin(R);
+        const float T = 1.0f - C;
 
-        Vector3 a = vec.normalized();
+        const Vector3 A = vec.normalized();
 
-        result.m[0][0] = t * a.x * a.x + c;
-        result.m[0][1] = t * a.x * a.y - s * a.z;
-        result.m[0][2] = t * a.x * a.z + s * a.y;
+        result.m[0][0] = T * A.x * A.x + C;
+        result.m[0][1] = T * A.x * A.y - S * A.z;
+        result.m[0][2] = T * A.x * A.z + S * A.y;
 
-        result.m[1][0] = t * a.x * a.y + s * a.z;
-        result.m[1][1] = t * a.y * a.y + c;
-        result.m[1][2] = t * a.y * a.z - s * a.x;
+        result.m[1][0] = T * A.x * A.y + S * A.z;
+        result.m[1][1] = T * A.y * A.y + C;
+        result.m[1][2] = T * A.y * A.z - S * A.x;
 
-        result.m[2][0] = t * a.x * a.z - s * a.y;
-        result.m[2][1] = t * a.y * a.z + s * a.x;
-        result.m[2][2] = t * a.z * a.z + c;
+        result.m[2][0] = T * A.x * A.z - S * A.y;
+        result.m[2][1] = T * A.y * A.z + S * A.x;
+        result.m[2][2] = T * A.z * A.z + C;
 
         return result;
     }

@@ -1,0 +1,17 @@
+# Build directories
+cmake-build-debug/
+cmake-build-release/
+cmake-build-*/
+
+# IDE
+.idea/
+
+# Compiled binaries
+*.exe
+*.dll
+*.a
+*.o
+
+# OS
+.DS_Store
+Thumbs.db
