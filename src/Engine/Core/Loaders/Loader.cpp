@@ -98,3 +98,9 @@ namespace dndAssetLoader {
 
 }
 
+namespace dndProjectLoader {
+    ProjectContext loadProject(const std::string& path) {
+        return {};
+    }
+}
+

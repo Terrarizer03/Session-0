@@ -4,11 +4,12 @@
 
 #ifndef DNDCREATOR_MATERIAL_H
 #define DNDCREATOR_MATERIAL_H
+#include <memory>
 #include "../../Renderer/IShader.h"
 #include "../Math/Vector/Vector4.h"
 
 struct Material {
-    IShader* shader {};
+    std::shared_ptr<IShader> shader;
     dndMath::Vector4 color;
 };
 

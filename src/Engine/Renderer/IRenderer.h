@@ -7,11 +7,13 @@
 #include "../Core/Rendering Math/Transform.h"
 #include "../Core/Rendering Math/Mesh/Mesh.h"
 #include "../Core/Rendering Math/Material.h"
-#include "../Core/Nodes/Camera.h"
 #include "../Core/Rendering Math/RenderContext.h"
 
 class IRenderer {
 public:
+    int window_width = 0;
+    int window_height = 0;
+
     virtual ~IRenderer() = default;
 
     virtual bool initialize() = 0;

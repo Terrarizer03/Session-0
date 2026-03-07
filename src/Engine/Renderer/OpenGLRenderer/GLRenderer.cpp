@@ -19,6 +19,9 @@ bool GLRenderer::initialize() {
 }
 
 bool GLRenderer::setViewport(int _x, int _y, int _width, int _height) {
+    window_width = _width;
+    window_height = _height;
+
     glViewport(_x, _y, _width, _height);
 
     return true;

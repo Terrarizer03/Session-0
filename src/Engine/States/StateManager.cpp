@@ -25,13 +25,16 @@ IState* StateManager::getCurrentState() {
 }
 
 void StateManager::handleInput(const IInput& input) {
-    m_states.top()->handleInput(input);
+    if (!m_states.empty())
+        m_states.top()->handleInput(input);
 }
 
 void StateManager::update(float deltaTime) {
-    m_states.top()->update(deltaTime);
+    if (!m_states.empty())
+        m_states.top()->update(deltaTime);
 }
 
-void StateManager::render() {
-    m_states.top()->render();
+void StateManager::render(IRenderer* renderer) {
+    if (!m_states.empty())
+        m_states.top()->render(renderer);
 }

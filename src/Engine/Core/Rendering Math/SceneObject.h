@@ -11,7 +11,7 @@
 #include "Mesh/Mesh.h"
 
 struct SceneObject {
-    Mesh mesh;
+    std::shared_ptr<Mesh> mesh;
     Transform transform;
     Material material;
     std::string name;

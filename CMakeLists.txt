@@ -50,6 +50,9 @@ add_executable(DnDCreator
         "src/Engine/Core/Rendering Math/SceneObject.h"
         "src/Engine/Core/Rendering Math/Material.h"
         "src/Engine/Core/Rendering Math/RenderContext.h"
+        "src/Engine/Core/Rendering Math/ProjectContext.h"
+        src/Engine/States/EngineStates/ProjectManagerState.cpp
+        src/Engine/States/EngineStates/ProjectManagerState.h
 )
 
 target_include_directories(DnDCreator PRIVATE

@@ -8,12 +8,14 @@
 
 #include "Core/Input/IInput.h"
 #include "Renderer/IRenderer.h"
+#include "States/StateManager.h"
 #include "Window/IWindow.h"
 
 class DnDEngine {
     std::unique_ptr<IWindow> window;
     std::unique_ptr<IRenderer> renderer;
     std::unique_ptr<IInput> input;
+    StateManager stateManager;
 public:
     int window_width = 800;
     int window_height = 800;
@@ -28,7 +30,7 @@ public:
 
     // Main Methods
     bool initialize();
-    void run() const;
+    void run();
 };
 
 

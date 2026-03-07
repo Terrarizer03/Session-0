@@ -14,15 +14,24 @@ class Mesh {
     GLuint m_VBO = 0;
     GLuint m_EBO = 0;
     int m_IndexCount = 0;
+
+    void upload();
 public:
     std::vector<Vertex> vertices;
     std::vector<Face> faces;
 
-    Mesh(const std::vector<Vertex> &_vertices, const std::vector<Face> &_faces);
+    Mesh(const std::vector<Vertex>& vertices, const std::vector<Face>& faces);
+
+    // Non-copyable
+    Mesh(const Mesh&) = delete;
+    Mesh& operator=(const Mesh&) = delete;
+
+    // Movable
+    Mesh(Mesh&& other) noexcept;
+    Mesh& operator=(Mesh&& other) noexcept;
+
     ~Mesh();
     void draw() const;
-private:
-    void upload();
 };
 
 #endif //DNDCREATOR_MESH_H

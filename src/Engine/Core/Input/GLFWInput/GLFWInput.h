@@ -26,7 +26,7 @@ public:
         glfwGetCursorPos(m_handle, &x, &y);
     }
 
-    void update() {
+    void update() override {
         double x, y;
         glfwGetCursorPos(m_handle, &x, &y);
 
@@ -42,8 +42,8 @@ public:
         m_LastY = y;
     }
 
-    float getDeltaX() const override { return m_DeltaX; }
-    float getDeltaY() const override { return m_DeltaY; }
+    [[nodiscard]] float getDeltaX() const override { return m_DeltaX; }
+    [[nodiscard]] float getDeltaY() const override { return m_DeltaY; }
 };
 
 

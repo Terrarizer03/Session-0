@@ -6,6 +6,7 @@
 #define DNDCREATOR_OBJLOADER_H
 
 #include <string>
+#include "../Rendering Math/ProjectContext.h"
 #include "../Rendering Math/Mesh/Mesh.h"
 
 namespace dndAssetLoader {
@@ -14,8 +15,8 @@ namespace dndAssetLoader {
 }
 
 namespace dndProjectLoader {
-    std::string loadFile(const std::string& path);
-    std::string saveFile(/*const ProjectContext */ const std::string& path);
+    ProjectContext loadProject(const std::string& path);
+    std::string saveProject(/*const ProjectContext */ const std::string& path);
 }
 
 #endif //DNDCREATOR_OBJLOADER_H

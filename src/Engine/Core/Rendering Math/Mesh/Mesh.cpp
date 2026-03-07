@@ -16,6 +16,38 @@ Mesh::~Mesh() {
     if (m_EBO != 0) glDeleteBuffers(1, &m_EBO);
 }
 
+Mesh::Mesh(Mesh&& other) noexcept
+    : m_VAO(other.m_VAO), m_VBO(other.m_VBO),
+      m_EBO(other.m_EBO), m_IndexCount(other.m_IndexCount),
+      vertices(std::move(other.vertices)),
+      faces(std::move(other.faces)) {
+    other.m_VAO = 0;
+    other.m_VBO = 0;
+    other.m_EBO = 0;
+    other.m_IndexCount = 0;
+}
+
+Mesh& Mesh::operator=(Mesh&& other) noexcept {
+    if (this != &other) {
+        glDeleteVertexArrays(1, &m_VAO);
+        glDeleteBuffers(1, &m_VBO);
+        glDeleteBuffers(1, &m_EBO);
+
+        m_VAO = other.m_VAO;
+        m_VBO = other.m_VBO;
+        m_EBO = other.m_EBO;
+        m_IndexCount = other.m_IndexCount;
+        vertices = std::move(other.vertices);
+        faces = std::move(other.faces);
+
+        other.m_VAO = 0;
+        other.m_VBO = 0;
+        other.m_EBO = 0;
+        other.m_IndexCount = 0;
+    }
+    return *this;
+}
+
 void Mesh::upload() {
     m_IndexCount = static_cast<int>(faces.size() * 3);
 

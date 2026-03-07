@@ -22,7 +22,7 @@ public:
 
     void handleInput(const IInput& input);
     void update(float deltaTime);
-    void render();
+    void render(IRenderer* renderer);
 };
 
 
