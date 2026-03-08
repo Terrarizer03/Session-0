@@ -1,7 +1,8 @@
 #include "src/Engine/DnDEngine.h"
+#include "src/Engine/Core/Loaders/EngineSettings.h"
 
 int main() {
-    DnDEngine Engine(1200, 900);
+    DnDEngine Engine(EngineSettings::getInstance().windowWidth, EngineSettings::getInstance().windowHeight);
 
     if (!Engine.initialize()) return -1;
     Engine.run();

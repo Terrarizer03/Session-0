@@ -6,7 +6,7 @@
 #include "glad/glad.h"
 #include "DnDEngine.h"
 #include "Core/Input/GLFWInput/GLFWInput.h"
-#include "Core/Loaders/Loader.h"
+#include "Core/Loaders/AssetLoader.h"
 #include "Core/Nodes/Camera.h"
 #include "Core/Rendering Math/Mesh/Mesh.h"
 #include "Renderer/OpenGLRenderer/GLRenderer.h"

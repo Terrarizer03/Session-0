@@ -2,20 +2,19 @@
 // Created by Terrarizer on 06/03/2026.
 //
 
-#include "MapEditorState.h"
-
 #include <iostream>
-
+#include "MapEditorState.h"
 #include "../../Renderer/OpenGLRenderer/GLShader.h"
-#include "../../Core/Loaders/Loader.h"
+#include "../../Core/Loaders/AssetLoader.h"
+#include "../../Core/Loaders/EngineSettings.h"
 #include "GLFW/glfw3.h"
 
 bool MapEditorState::initialize() {
     std::cout << "MapEditorState initialized" << std::endl;
     // TEST
     m_camera = { {2.0f, 2.0f, 3.0f} };
-    float aspect = static_cast<float>(1200) / static_cast<float>(900);
-    m_camera.setPerspective(45.0f, aspect, 0.1f, 100.0f);
+    float aspect = static_cast<float>(EngineSettings::getInstance().windowWidth) / static_cast<float>(EngineSettings::getInstance().windowHeight);
+    m_camera.setPerspective(EngineSettings::getInstance().fov, aspect, EngineSettings::getInstance().nearPlane, EngineSettings::getInstance().farPlane);
 
     Transform transform;
     const auto shader = std::make_shared<GLShader>("assets/Shaders/cube_default.vert", "assets/Shaders/cube_default.frag");

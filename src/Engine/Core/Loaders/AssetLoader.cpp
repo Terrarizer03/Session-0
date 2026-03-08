@@ -5,12 +5,14 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include "Loader.h"
+#include <filesystem>
+#include "AssetLoader.h"
 #include "../Rendering Math/Vertex.h"
 #include "../Rendering Math/Face.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tinyobjloader/tiny_obj_loader.h"
+
 
 namespace dndAssetLoader {
 
@@ -97,10 +99,3 @@ namespace dndAssetLoader {
     }
 
 }
-
-namespace dndProjectLoader {
-    ProjectContext loadProject(const std::string& path) {
-        return {};
-    }
-}
-

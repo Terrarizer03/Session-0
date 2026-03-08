@@ -17,8 +17,9 @@ class DnDEngine {
     std::unique_ptr<IInput> input;
     StateManager stateManager;
 public:
-    int window_width = 800;
-    int window_height = 800;
+    // Default width and height
+    int window_width;
+    int window_height;
 
     // Constructor
     DnDEngine(int w_width, int w_height) : window_width(w_width), window_height(w_height) {};
@@ -31,6 +32,12 @@ public:
     // Main Methods
     bool initialize();
     void run();
+
+    // Non-copyable, non-movable
+    DnDEngine(const DnDEngine&) = delete;
+    DnDEngine& operator=(const DnDEngine&) = delete;
+    DnDEngine(DnDEngine&&) = delete;
+    DnDEngine& operator=(DnDEngine&&) = delete;
 };
 
 

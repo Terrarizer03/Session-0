@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 4.1)
 project(DnDCreator)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # GLFW
 add_subdirectory(external/glfw)
 
@@ -38,8 +41,8 @@ add_executable(DnDCreator
         src/Engine/Core/Math/Vector/Vector3/Vector3.cpp
         src/Engine/Core/Math/Matrix/Matrix4.cpp
         "src/Engine/Core/Rendering Math/Mesh/Mesh.cpp"
-        src/Engine/Core/Loaders/Loader.cpp
-        src/Engine/Core/Loaders/Loader.h
+        src/Engine/Core/Loaders/AssetLoader.cpp
+        src/Engine/Core/Loaders/AssetLoader.h
         src/Engine/Core/Input/GLFWInput/GLFWInput.h
         src/Engine/States/IState.h
         src/Engine/States/StateManager.cpp
@@ -53,12 +56,17 @@ add_executable(DnDCreator
         "src/Engine/Core/Rendering Math/ProjectContext.h"
         src/Engine/States/EngineStates/ProjectManagerState.cpp
         src/Engine/States/EngineStates/ProjectManagerState.h
+        src/Engine/Core/Loaders/ProjectLoader.cpp
+        src/Engine/Core/Loaders/ProjectLoader.h
+        src/Engine/Core/Loaders/EngineSettings.cpp
+        src/Engine/Core/Loaders/EngineSettings.h
 )
 
 target_include_directories(DnDCreator PRIVATE
         external/glad/include
         external/glfw/include
         external/tinyobjloader/include
+        external/nlohmann/include
 )
 
 target_link_libraries(DnDCreator

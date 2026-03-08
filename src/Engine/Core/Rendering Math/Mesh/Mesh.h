@@ -21,6 +21,9 @@ public:
     std::vector<Face> faces;
 
     Mesh(const std::vector<Vertex>& vertices, const std::vector<Face>& faces);
+    ~Mesh();
+
+    void draw() const;
 
     // Non-copyable
     Mesh(const Mesh&) = delete;
@@ -29,9 +32,6 @@ public:
     // Movable
     Mesh(Mesh&& other) noexcept;
     Mesh& operator=(Mesh&& other) noexcept;
-
-    ~Mesh();
-    void draw() const;
 };
 
 #endif //DNDCREATOR_MESH_H

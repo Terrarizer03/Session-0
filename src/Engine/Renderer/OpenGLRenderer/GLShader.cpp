@@ -5,7 +5,7 @@
 #include "GLShader.h"
 #include <iostream>
 
-#include "../../Core/Loaders/Loader.h"
+#include "../../Core/Loaders/AssetLoader.h"
 
 /**
  * Takes in a vertexPath and a fragmentPath, calls the
