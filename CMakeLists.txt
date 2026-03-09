@@ -15,7 +15,7 @@ target_include_directories(glad PUBLIC external/glad/include)
 find_package(OpenGL REQUIRED)
 
 add_executable(DnDCreator
-        main.cpp
+        src/main.cpp
         src/Engine/DnDEngine.cpp
         src/Engine/DnDEngine.h
         src/Engine/Renderer/IRenderer.h
@@ -53,13 +53,15 @@ add_executable(DnDCreator
         "src/Engine/Core/Rendering Math/SceneObject.h"
         "src/Engine/Core/Rendering Math/Material.h"
         "src/Engine/Core/Rendering Math/RenderContext.h"
-        "src/Engine/Core/Rendering Math/ProjectContext.h"
         src/Engine/States/EngineStates/ProjectManagerState.cpp
         src/Engine/States/EngineStates/ProjectManagerState.h
         src/Engine/Core/Loaders/ProjectLoader.cpp
         src/Engine/Core/Loaders/ProjectLoader.h
         src/Engine/Core/Loaders/EngineSettings.cpp
         src/Engine/Core/Loaders/EngineSettings.h
+        src/Engine/Core/Project/ProjectInfo.h
+        src/Engine/Core/Project/MapData.h
+        src/Engine/Core/Utilities/toLower.h
 )
 
 target_include_directories(DnDCreator PRIVATE

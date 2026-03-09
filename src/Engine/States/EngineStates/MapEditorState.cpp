@@ -28,8 +28,8 @@ bool MapEditorState::initialize() {
 
     m_renderContext.camera = &m_camera;
     m_renderContext.lightDir = { 0.5f, 1.0f, 0.3f };
-    m_projectContext.name = "Cube_test";
-    m_projectContext.objects.push_back(object);
+    m_mapData.name = "Cube_test";
+    m_mapData.objects.push_back(object);
 
     return true;
 }
@@ -43,7 +43,7 @@ void MapEditorState::handleInput(const IInput& input) {
     if (m_camera.pitch < -89.0f) m_camera.pitch = -89.0f;
 
     m_camera.updateFront();
-    dndMath::Vector3 side = m_camera.front.cross(m_camera.up).normalized();
+    const dndMath::Vector3 side = m_camera.front.cross(m_camera.up).normalized();
 
     if (input.getKey(GLFW_KEY_W))
         m_camera.position += m_camera.front * CAMERA_SPEED;
@@ -64,7 +64,7 @@ void MapEditorState::update(float deltaTime) const {
 }
 
 void MapEditorState::render(IRenderer* renderer) const {
-    for (const SceneObject& object : m_projectContext.objects) {
+    for (const SceneObject& object : m_mapData.objects) {
         renderer->draw(*object.mesh, object.transform, object.material, m_renderContext);
     }
 }

@@ -4,11 +4,21 @@
 
 #ifndef DNDCREATOR_PROJECTLOADER_H
 #define DNDCREATOR_PROJECTLOADER_H
-#include "../Rendering Math/ProjectContext.h"
+#include "../Project/ProjectInfo.h"
+#include "../Project/MapData.h"
 
 namespace dndProjectLoader {
-    ProjectContext loadProject(const std::string& path);
-    std::string saveProject(/* const ProjectContext */ const std::string& path);
+    // Project - reads project.json and returns metadata
+    ProjectInfo loadProject(const std::string& dndPath);
+    void saveProject(const ProjectInfo& info, const std::string& dndPath);
+
+    // Map - reads specific map.json and returns scene data
+    MapData loadMapData(const std::string& mapPath, const std::string& mapName);
+    void saveMapData(const MapData& mapData, const std::string& mapPath);
+
+    // Project Creation
+    bool createProject(const std::string& dndPath, const std::string& name);
+    bool isValidProject(const std::string& dndPath);
 }
 
 

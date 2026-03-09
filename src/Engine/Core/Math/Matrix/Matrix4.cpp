@@ -73,7 +73,7 @@ namespace dndMath {
     }
 
     Matrix4 Matrix4::orthographic(float left, float right, float bottom, float top, float near, float far) {
-        return {};
+        return {}; // TODO: finish this function maybe lmao
     }
 
     Matrix4 Matrix4::lookAt(const Vector3& eye, const Vector3& target, const Vector3& up) {
@@ -117,5 +117,17 @@ namespace dndMath {
         }
 
         return result;
+    }
+
+    Vector3 Matrix4::operator*(const Vector3& vec) const {
+        return {}; // TODO: Bro really needs to get on to this
+    }
+
+    [[nodiscard]] Matrix4 Matrix4::transpose() const {
+        return {}; // TODO: This one too
+    }
+
+    [[nodiscard]] Matrix4 Matrix4::inverse() const {
+        return {}; // TODO: Bro is lazy af
     }
 }

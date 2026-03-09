@@ -7,20 +7,21 @@
 #include <string>
 #include <utility>
 #include "../IState.h"
-#include "../../Core/Rendering Math/ProjectContext.h"
+#include "../../Core/Project/MapData.h"
 
 class MapEditorState : public IState {
     // Path
     std::string m_projectPath;
 
     // Scene
-    ProjectContext m_projectContext = {};
+    MapData m_mapData = {};
     RenderContext m_renderContext = {};
 
     // Camera
     Camera m_camera = { {0.0f, 0.0f, 3.0f} };
 
     // Constants
+    // TODO: GET RID OF THESE MFS FOR REAL. PUT THEM IN ENGINE SETTINGS OR MAKE A `constants.h` FILE. Fucking freeloaders
     static constexpr float CAMERA_SPEED = 0.1f;
     static constexpr float SENSITIVITY = 0.1f;
 public:

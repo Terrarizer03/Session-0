@@ -1,5 +1,5 @@
-#include "src/Engine/DnDEngine.h"
-#include "src/Engine/Core/Loaders/EngineSettings.h"
+#include "Engine/DnDEngine.h"
+#include "Engine/Core/Loaders/EngineSettings.h"
 
 int main() {
     DnDEngine Engine(EngineSettings::getInstance().windowWidth, EngineSettings::getInstance().windowHeight);
