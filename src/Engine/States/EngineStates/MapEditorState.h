@@ -8,17 +8,24 @@
 #include <utility>
 #include "../IState.h"
 #include "../../Core/Project/MapData.h"
+#include "../../Core/Project/ProjectInfo.h"
+
+struct MapEditorTab {
+    std::string name;
+    MapData mapData;
+    Camera camera = { {0.0f, 0.0f, 3.0f} };
+};
 
 class MapEditorState : public IState {
-    // Path
+    // Project
     std::string m_projectPath;
+    ProjectInfo m_projectInfo;
 
     // Scene
-    MapData m_mapData = {};
-    RenderContext m_renderContext = {};
+    std::vector<MapEditorTab> m_tabs;
+    int activeTab = 0;
 
-    // Camera
-    Camera m_camera = { {0.0f, 0.0f, 3.0f} };
+    RenderContext m_renderContext = {};
 
     // Constants
     // TODO: GET RID OF THESE MFS FOR REAL. PUT THEM IN ENGINE SETTINGS OR MAKE A `constants.h` FILE. Fucking freeloaders

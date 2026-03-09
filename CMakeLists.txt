@@ -62,6 +62,8 @@ add_executable(DnDCreator
         src/Engine/Core/Project/ProjectInfo.h
         src/Engine/Core/Project/MapData.h
         src/Engine/Core/Utilities/toLower.h
+        src/Engine/Core/Utilities/parseMaterial.h
+        src/Engine/Core/Utilities/parseTransform.h
 )
 
 target_include_directories(DnDCreator PRIVATE

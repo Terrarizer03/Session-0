@@ -4,17 +4,17 @@
 
 #ifndef DNDCREATOR_PROJECTINFO_H
 #define DNDCREATOR_PROJECTINFO_H
-#include <map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 struct ProjectInfo {
     std::string name;
     std::string version;
     std::string author;
-    std::vector<std::string> mapPaths;
-    std::vector<std::string> characterPaths;
-    std::map<std::string, std::string> rules;
+    std::unordered_map<std::string, std::string> mapPaths;
+    std::unordered_map<std::string, std::string> characterPaths;
+    std::unordered_map<std::string, std::string> rules;
 };
 
 #endif //DNDCREATOR_PROJECTINFO_H

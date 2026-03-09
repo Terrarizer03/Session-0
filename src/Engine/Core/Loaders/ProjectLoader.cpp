@@ -5,10 +5,11 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include "../Utilities/parseMaterial.h"
+#include "../Utilities/parseTransform.h"
 #include "ProjectLoader.h"
 #include "AssetLoader.h"
 #include "nlohmann/json.hpp"
-#include "../Utilities/toLower.h"
 
 namespace dndProjectLoader {
     ProjectInfo loadProject(const std::string& dndPath) {
@@ -23,9 +24,8 @@ namespace dndProjectLoader {
 
         std::ifstream file(dndPath + "/project.json");
 
-        if (file.peek() == std::ifstream::traits_type::eof()) {
+        if (file.peek() == std::ifstream::traits_type::eof())
             return {}; // TODO: Change this to an error that says "This file is empty."
-        }
 
         nlohmann::json data;
 
@@ -39,9 +39,16 @@ namespace dndProjectLoader {
         projectInfo.name = data.value("name", "Unnamed");
         projectInfo.version = data.value("version", "X.X");
         projectInfo.author = data.value("author", "Unnamed");
-        projectInfo.mapPaths = data.value("mapPaths", std::vector<std::string>{});
-        projectInfo.characterPaths = data.value("characterPaths", std::vector<std::string>{});
-        projectInfo.rules = data.value("rules", std::map<std::string, std::string>{});
+
+        projectInfo.mapPaths = data.value("mapPaths", std::unordered_map<std::string, std::string>{});
+        for (auto& [name, path] : projectInfo.mapPaths)
+            path = dndPath + "/" + path;
+
+        projectInfo.characterPaths = data.value("characterPaths", std::unordered_map<std::string, std::string>{});
+        for (auto& [name, path] : projectInfo.characterPaths)
+            path = dndPath + "/" + path;
+
+        projectInfo.rules = data.value("rules", std::unordered_map<std::string, std::string>{});
 
         return projectInfo;
     }
@@ -50,60 +57,80 @@ namespace dndProjectLoader {
 
     }
 
-    MapData loadMapData(const std::string& dndPath, const std::string& mapName) {
-        std::string mapDir = dndPath + "/maps/";
+    MapData loadMapData(const ProjectInfo& projectInfo, const std::string& mapName) {
+        // O(1) average due to unordered_map
+        auto it = projectInfo.mapPaths.find(mapName);
+        if (it == projectInfo.mapPaths.end()) {
+            std::cout << "Map not found: " << mapName << "\n";
+            std::cout << "Available maps:\n";
+            for (auto& pair : projectInfo.mapPaths)
+                std::cout << "  '" << pair.first << "'\n";
+            return {};
+        }
 
-        for (auto& entry : std::filesystem::directory_iterator(mapDir)) {
-            if (!entry.is_directory()) continue;
+        std::string mapFolder = it->second;
+        std::string mapPath = mapFolder + "/map.json";
+        // Example: "my_campaign.dnd/maps/Tavern/map.json"
 
-            std::string folderName = entry.path().filename().string();
-            // Example: "Tavern" or "Dungeon"
+        std::cout << "Map folder: " << mapFolder << "\n";
+        std::cout << "Map path: " << mapPath << "\n";
 
-            if (toLower(folderName) == toLower(mapName)) {
-                std::string mapPath = entry.path().string() + "/map.json";
-                // Example: "my_campaign.dnd/maps/tavern/map.json"
+        MapData mapData;
 
-                MapData mapData;
+        std::ifstream file(mapPath);
 
-                std::ifstream file(mapPath);
+        if (file.peek() == std::ifstream::traits_type::eof())
+            return {};
 
-                if (file.peek() == std::ifstream::traits_type::eof()) {
-                    return {};
+        nlohmann::json data;
+
+        try {
+            data = nlohmann::json::parse(file);
+        } catch (const nlohmann::json::exception& e) {
+            std::cout << "Failed to parse" << mapPath << ": " << e.what() << "\n";
+            return {}; // TODO: Change this to an error that says "Could not parse file."
+        }
+
+        mapData.name = data.value("name", "Unnamed");
+
+        std::cout << "Map name: " << mapData.name << "\n";
+        std::cout << "Contains objects: " << data.contains("objects") << "\n";
+        if (data.contains("objects"))
+            std::cout << "Object count: " << data["objects"].size() << "\n";
+
+        if (data.contains("objects")) {
+            for (auto& obj : data["objects"]) {
+                SceneObject sceneObj;
+                sceneObj.name = obj.value("name", "Unnamed");
+
+                // mesh field is a path string
+                if (!obj.contains("mesh")) continue;
+                std::string meshPath = obj["mesh"].get<std::string>();
+
+                std::string fullMeshPath = mapFolder + "/" + meshPath;
+                // Example: "my_campaign.dnd/maps/Tavern/models/table.obj"
+
+                sceneObj.mesh = std::make_shared<Mesh>(std::move(dndAssetLoader::loadOBJ(fullMeshPath)));
+
+                if (obj.contains("material")) {
+                    /*
+                     * Not sure if mapFolder being passed is a hack, but the helper does need
+                     * the base path... So I guess not, it's 10pm I have to sleep tho
+                     */
+                    sceneObj.material = dndHelper::parseMaterial(obj["material"], mapFolder);
                 }
 
-                nlohmann::json data;
-
-                try {
-                    data = nlohmann::json::parse(file);
-                } catch (const nlohmann::json::exception& e) {
-                    std::cout << "Failed to parse" << mapPath << ": " << e.what() << "\n";
-                    return {}; // TODO: Change this to an error that says "Could not parse file."
+                if (obj.contains("transform")) {
+                    sceneObj.transform = dndHelper::parseTransform(obj["transform"]);
                 }
 
-                mapData.name = data.value("name", "Unnamed");
-
-                if (data.contains("objects")) {
-                    for (auto& obj : data["objects"]) {
-                        SceneObject sceneObj;
-                        sceneObj.name = obj["name"].get<std::string>();
-
-                        // mesh field is a path string
-                        std::string meshPath = obj["mesh"].get<std::string>();
-
-                        std::string fullMeshPath = entry.path().string() + "/" + meshPath;
-                        // Example: "my_campaign.dnd/maps/tavern/models/table.obj"
-
-                        sceneObj.mesh = std::make_shared<Mesh>(std::move(dndAssetLoader::loadOBJ(fullMeshPath)));
-                        mapData.objects.push_back(sceneObj);
-                    }
-                }
-
-                return mapData;
+                mapData.objects.push_back(sceneObj);
             }
         }
 
-        return {};
+        return mapData;
     }
+
 
     void saveMapData(const MapData& mapData, const std::string& dndPath) {
 
@@ -113,7 +140,7 @@ namespace dndProjectLoader {
         return true;
     }
 
-    bool isValidProject(const std::string& dndPath) { // TODO: Implement this to every loader
+    bool isValidProject(const std::string& dndPath) {
         // Check folder exists
         if (!std::filesystem::exists(dndPath))
             return false;

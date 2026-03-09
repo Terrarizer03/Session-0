@@ -32,7 +32,7 @@ namespace dndAssetLoader {
 
         if (!warn.empty()) std::cout << "OBJ Warning: " << warn << "\n";
         if (!err.empty())  std::cout << "OBJ Error: "   << err  << "\n";
-        if (!err.empty())  return { {}, {} }; // bail on error
+        if (!err.empty())  return { {}, {} }; // bail on error TODO: Make a UI warning
 
         std::vector<Vertex> vertices;
         std::vector<Face> faces;

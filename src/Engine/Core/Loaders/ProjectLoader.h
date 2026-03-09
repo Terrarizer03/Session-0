@@ -13,8 +13,10 @@ namespace dndProjectLoader {
     void saveProject(const ProjectInfo& info, const std::string& dndPath);
 
     // Map - reads specific map.json and returns scene data
-    MapData loadMapData(const std::string& mapPath, const std::string& mapName);
-    void saveMapData(const MapData& mapData, const std::string& mapPath);
+    MapData loadMapData(const ProjectInfo& projectInfo, const std::string& mapName);
+    void saveMapData(const std::string& mapPath);
+
+    // TODO: Make loaders for the rules and the characters (but that's in the future for the model and campaign editors)
 
     // Project Creation
     bool createProject(const std::string& dndPath, const std::string& name);
