@@ -4,10 +4,10 @@
 
 #ifndef DNDCREATOR_IRENDERER_H
 #define DNDCREATOR_IRENDERER_H
-#include "../Core/Rendering Math/Transform.h"
-#include "../Core/Rendering Math/Mesh/Mesh.h"
-#include "../Core/Rendering Math/Material.h"
-#include "../Core/Rendering Math/RenderContext.h"
+#include "../Core/RenderingMath/Transform.h"
+#include "../Core/RenderingMath/Mesh/Mesh.h"
+#include "../Core/RenderingMath/Material.h"
+#include "../Core/RenderingMath/RenderContext.h"
 
 class IRenderer {
 public:

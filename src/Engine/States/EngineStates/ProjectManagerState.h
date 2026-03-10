@@ -11,9 +11,9 @@ class ProjectManagerState : public IState {
     std::vector<std::string> m_project_paths;
 public:
     bool initialize() override;
-    void handleInput(const IInput& input) override;
-    void update(float deltaTime) const override;
-    void render(IRenderer* renderer) const override;
+    void handleInput(IInput& input) override;
+    void update(float deltaTime) override;
+    void render(IRenderer* renderer) override;
     void cleanup() const override;
 
     ~ProjectManagerState() override;

@@ -26,6 +26,10 @@ public:
         glfwGetCursorPos(m_handle, &x, &y);
     }
 
+    void setCursorMode(bool enabled) override {
+        glfwSetInputMode(m_handle, GLFW_CURSOR, enabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+    }
+
     void update() override {
         double x, y;
         glfwGetCursorPos(m_handle, &x, &y);

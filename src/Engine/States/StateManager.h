@@ -20,7 +20,7 @@ public:
 
     IState* getCurrentState();
 
-    void handleInput(const IInput& input);
+    void handleInput(IInput& input);
     void update(float deltaTime);
     void render(IRenderer* renderer);
 };

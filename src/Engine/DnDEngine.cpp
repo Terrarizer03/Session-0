@@ -7,11 +7,8 @@
 #include "DnDEngine.h"
 #include "Core/Input/GLFWInput/GLFWInput.h"
 #include "Core/Loaders/AssetLoader.h"
-#include "Core/Nodes/Camera.h"
-#include "Core/Rendering Math/Mesh/Mesh.h"
 #include "Renderer/OpenGLRenderer/GLRenderer.h"
 #include "Window/GLFWWindow/GLFWWindow.h"
-#include "Renderer/OpenGLRenderer/GLShader.h"
 #include "States/EngineStates/MapEditorState.h"
 
 bool DnDEngine::initialize() {
@@ -33,13 +30,22 @@ bool DnDEngine::initialize() {
     GLFWwindow* handle = static_cast<GLFWWindow*>(window.get())->getHandle();
     input = std::make_unique<GLFWInput>(handle);
 
-    glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // ============= IMGUI RELATED =============
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+
+    ImGui_ImplGlfw_InitForOpenGL(handle, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+    // ============= IMGUI RELATED =============
+
+    // glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glEnable(GL_DEPTH_TEST);
 
     renderer->setViewport(0, 0, window_width, window_height);
 
-    stateManager.pushState(std::make_unique<MapEditorState>("test_project_file_path"));
+    stateManager.pushState(std::make_unique<MapEditorState>("default_campaign.dnd"));
 
     return true;
 }
@@ -52,9 +58,16 @@ void DnDEngine::run() {
 
         input->update();
 
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
         state->handleInput(*input);
         state->update(16.66f);
         state->render(renderer.get());
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         window->pollEvents();
         window->swapBuffers();

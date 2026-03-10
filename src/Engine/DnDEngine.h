@@ -11,6 +11,10 @@
 #include "States/StateManager.h"
 #include "Window/IWindow.h"
 
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui.h"
+
 class DnDEngine {
     std::unique_ptr<IWindow> window;
     std::unique_ptr<IRenderer> renderer;
@@ -26,6 +30,10 @@ public:
 
     // Destructor
     ~DnDEngine() {
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
+
         if (window) window->shutdown();
     }
 

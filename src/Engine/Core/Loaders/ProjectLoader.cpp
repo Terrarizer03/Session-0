@@ -72,9 +72,6 @@ namespace dndProjectLoader {
         std::string mapPath = mapFolder + "/map.json";
         // Example: "my_campaign.dnd/maps/Tavern/map.json"
 
-        std::cout << "Map folder: " << mapFolder << "\n";
-        std::cout << "Map path: " << mapPath << "\n";
-
         MapData mapData;
 
         std::ifstream file(mapPath);

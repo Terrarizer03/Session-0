@@ -12,7 +12,7 @@ struct ProjectInfo {
     std::string name;
     std::string version;
     std::string author;
-    std::unordered_map<std::string, std::string> mapPaths;
+    std::unordered_map<std::string, std::string> mapPaths; // MapName : "path_to/map_file"
     std::unordered_map<std::string, std::string> characterPaths;
     std::unordered_map<std::string, std::string> rules;
 };

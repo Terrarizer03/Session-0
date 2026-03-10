@@ -7,8 +7,8 @@
 #include <sstream>
 #include <filesystem>
 #include "AssetLoader.h"
-#include "../Rendering Math/Vertex.h"
-#include "../Rendering Math/Face.h"
+#include "../RenderingMath/Vertex.h"
+#include "../RenderingMath/Face.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tinyobjloader/tiny_obj_loader.h"
@@ -22,13 +22,7 @@ namespace dndAssetLoader {
         std::vector<tinyobj::material_t> materials;
         std::string warn, err;
 
-        std::cout << "Attempting to load: " << path << "\n";
-
         tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str());
-
-        std::cout << "Vertices: "  << attrib.vertices.size() / 3 << "\n";
-        std::cout << "Normals: "   << attrib.normals.size()  / 3 << "\n";
-        std::cout << "Shapes: "    << shapes.size()              << "\n";
 
         if (!warn.empty()) std::cout << "OBJ Warning: " << warn << "\n";
         if (!err.empty())  std::cout << "OBJ Error: "   << err  << "\n";

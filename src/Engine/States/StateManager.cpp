@@ -24,7 +24,7 @@ IState* StateManager::getCurrentState() {
     return m_states.top().get();
 }
 
-void StateManager::handleInput(const IInput& input) {
+void StateManager::handleInput(IInput& input) {
     if (!m_states.empty())
         m_states.top()->handleInput(input);
 }

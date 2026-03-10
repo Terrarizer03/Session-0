@@ -5,7 +5,7 @@
 #ifndef DNDCREATOR_PARSEMATERIAL_H
 #define DNDCREATOR_PARSEMATERIAL_H
 #include "nlohmann/json.hpp"
-#include "../Rendering Math/Material.h"
+#include "../RenderingMath/Material.h"
 #include "../../Renderer/OpenGLRenderer/GLShader.h"
 
 namespace dndHelper {
@@ -20,6 +20,8 @@ namespace dndHelper {
         if (mat.contains("shader")) {
             std::string vert = basePath + "/" + mat["shader"]["vertex"].get<std::string>();
             std::string frag = basePath + "/" + mat["shader"]["fragment"].get<std::string>();
+
+            // TODO: Add a "default" check that uses default shaders provided by the engine
             material.shader = std::make_shared<GLShader>(vert.c_str(), frag.c_str());
         }
 

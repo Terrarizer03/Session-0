@@ -6,7 +6,7 @@
 #define DNDCREATOR_MAPDATA_H
 #include <string>
 #include <vector>
-#include "../Rendering Math/SceneObject.h"
+#include "../RenderingMath/SceneObject.h"
 
 struct MapData {
     std::string name;

@@ -25,19 +25,16 @@ class MapEditorState : public IState {
     std::vector<MapEditorTab> m_tabs;
     int activeTab = 0;
 
-    RenderContext m_renderContext = {};
+    dndMath::Vector2 mousePos;
 
-    // Constants
-    // TODO: GET RID OF THESE MFS FOR REAL. PUT THEM IN ENGINE SETTINGS OR MAKE A `constants.h` FILE. Fucking freeloaders
-    static constexpr float CAMERA_SPEED = 0.1f;
-    static constexpr float SENSITIVITY = 0.1f;
+    RenderContext m_renderContext;
 public:
     MapEditorState(std::string project_file) : m_projectPath(std::move(project_file)) {}
 
     bool initialize() override;
-    void handleInput(const IInput& input) override;
-    void update(float deltaTime) const override;
-    void render(IRenderer* renderer) const override;
+    void handleInput(IInput& input) override;
+    void update(float deltaTime) override;
+    void render(IRenderer* renderer) override;
     void cleanup() const override;
 
     ~MapEditorState() override;

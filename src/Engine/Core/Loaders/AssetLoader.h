@@ -6,7 +6,7 @@
 #define DNDCREATOR_OBJLOADER_H
 
 #include <string>
-#include "../Rendering Math/Mesh/Mesh.h"
+#include "../RenderingMath/Mesh/Mesh.h"
 
 namespace dndAssetLoader {
     std::string readFile(const std::string& path);

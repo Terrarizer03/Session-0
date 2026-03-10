@@ -5,7 +5,7 @@
 #ifndef DNDCREATOR_PARSETRANSFORM_H
 #define DNDCREATOR_PARSETRANSFORM_H
 #include "nlohmann/json.hpp"
-#include "../Rendering Math/Transform.h"
+#include "../RenderingMath/Transform.h"
 
 namespace dndHelper {
     inline Transform parseTransform(const nlohmann::json& trans) {
