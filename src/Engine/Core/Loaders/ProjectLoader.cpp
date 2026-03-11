@@ -37,8 +37,10 @@ namespace dndProjectLoader {
         }
 
         projectInfo.name = data.value("name", "Unnamed");
-        projectInfo.version = data.value("version", "X.X");
-        projectInfo.author = data.value("author", "Unnamed");
+        projectInfo.version = data["metadata"].value("version", "X.X");
+        projectInfo.author = data["metadata"].value("author", "Unnamed");
+        projectInfo.timeCreated = data["metadata"].value("timeCreated", "Unknown");
+        projectInfo.timeModified = data["metadata"].value("timeModified", "Unknown");
 
         projectInfo.mapPaths = data.value("mapPaths", std::unordered_map<std::string, std::string>{});
         for (auto& [name, path] : projectInfo.mapPaths)
@@ -48,7 +50,7 @@ namespace dndProjectLoader {
         for (auto& [name, path] : projectInfo.characterPaths)
             path = dndPath + "/" + path;
 
-        projectInfo.rules = data.value("rules", std::unordered_map<std::string, std::string>{});
+        projectInfo.rules = data.value("rules", std::unordered_map<std::string, std::string>{}); // Maybe add the dndPath to these too.
 
         return projectInfo;
     }
@@ -139,17 +141,24 @@ namespace dndProjectLoader {
 
     bool isValidProject(const std::string& dndPath) {
         // Check folder exists
-        if (!std::filesystem::exists(dndPath))
+        if (!std::filesystem::exists(dndPath)) {
+            std::cout << "Failed: path doesn't exist\n";
             return false;
+        }
 
         // Check .dnd extension
-        if (std::filesystem::path(dndPath).extension() != ".dnd")
+        if (std::filesystem::path(dndPath).extension() != ".dnd") {
+            std::cout << "Failed: wrong extension - got " << std::filesystem::path(dndPath).extension() << "\n";
             return false;
+        }
+
 
         // Check project.json exists
         std::string projectJsonPath = dndPath + "/project.json";
-        if (!std::filesystem::exists(projectJsonPath))
+        if (!std::filesystem::exists(projectJsonPath)) {
+            std::cout << "Failed: no project.json\n";
             return false;
+        }
 
         // Check project.json has necessary fields
         std::ifstream file(projectJsonPath);
@@ -163,8 +172,8 @@ namespace dndProjectLoader {
 
         // Necessary fields
         if (!data.contains("name"))    return false;
-        if (!data.contains("version")) return false;
-        if (!data.contains("author"))  return false;
+        if (!data["metadata"].contains("version")) return false;
+        if (!data["metadata"].contains("author"))  return false;
 
         return true;
     }

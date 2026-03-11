@@ -38,3 +38,14 @@ void StateManager::render(IRenderer* renderer) {
     if (!m_states.empty())
         m_states.top()->render(renderer);
 }
+
+void StateManager::requestStateChange(std::unique_ptr<IState> state) {
+    m_pendingState = std::move(state);
+}
+
+void StateManager::applyPendingState() {
+    if (m_pendingState) {
+        changeState(std::move(m_pendingState));
+        m_pendingState = nullptr;
+    }
+}

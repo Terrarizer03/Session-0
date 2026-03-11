@@ -5,10 +5,16 @@
 #ifndef DNDCREATOR_PROJECTMANAGERSTATE_H
 #define DNDCREATOR_PROJECTMANAGERSTATE_H
 #include "../IState.h"
+#include "../../Core/Loaders/EngineSettings.h"
+#include "../../Core/Loaders/ProjectLoader.h"
 
+struct ProjectData {
+    std::string path;
+    ProjectInfo projectInfo;
+};
 
 class ProjectManagerState : public IState {
-    std::vector<std::string> m_project_paths;
+    std::vector<ProjectData> m_project_paths;
 public:
     bool initialize() override;
     void handleInput(IInput& input) override;

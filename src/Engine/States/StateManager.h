@@ -11,6 +11,7 @@
 
 class StateManager {
     std::stack<std::unique_ptr<IState>> m_states;
+    std::unique_ptr<IState> m_pendingState;
 public:
     StateManager() = default;
 
@@ -23,6 +24,9 @@ public:
     void handleInput(IInput& input);
     void update(float deltaTime);
     void render(IRenderer* renderer);
+
+    void requestStateChange(std::unique_ptr<IState> state);
+    void applyPendingState();
 };
 
 

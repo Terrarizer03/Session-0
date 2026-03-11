@@ -16,6 +16,7 @@ add_library(imgui
         external/imgui/imgui.cpp
         external/imgui/imgui_draw.cpp
         external/imgui/imgui_tables.cpp
+        external/imgui/imgui_demo.cpp
         external/imgui/imgui_widgets.cpp
         external/imgui/backends/imgui_impl_glfw.cpp
         external/imgui/backends/imgui_impl_opengl3.cpp
@@ -82,6 +83,8 @@ add_executable(DnDCreator
         src/Engine/UI/IUI.h
         src/Engine/UI/EngineUI/MapEditorUI.cpp
         src/Engine/UI/EngineUI/MapEditorUI.h
+        src/Engine/UI/EngineUI/ProjectManagerUI.cpp
+        src/Engine/UI/EngineUI/ProjectManagerUI.h
 )
 
 target_include_directories(DnDCreator PRIVATE

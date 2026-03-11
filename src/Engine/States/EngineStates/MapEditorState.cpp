@@ -11,12 +11,10 @@
 #include "GLFW/glfw3.h"
 #include "imgui.h"
 
-class GLFWInput;
-
 bool MapEditorState::initialize() {
     std::cout << "MapEditorState initialized in project " << m_projectPath << std::endl;
 
-    m_projectInfo = dndProjectLoader::loadProject(EngineSettings::getInstance().projectPath + "/" + m_projectPath);
+    m_projectInfo = dndProjectLoader::loadProject(m_projectPath);
 
     // SET UP THE TABS
     int tabIndex = 0;
@@ -42,9 +40,9 @@ bool MapEditorState::initialize() {
 void MapEditorState::handleInput(IInput& input) {
     // TODO: There's some wonky shit here, not sure what produces jumps, but it happens. FIX PLEASE.
     if (input.getMouseButton(GLFW_MOUSE_BUTTON_RIGHT)) {
-        input.setCursorMode(true);
         m_tabs[activeTab].camera.yaw += input.getDeltaX() * dndConstants::SENSITIVITY;
         m_tabs[activeTab].camera.pitch += input.getDeltaY() * dndConstants::SENSITIVITY;
+        input.setCursorMode(true); // It might be because we're setting this to true every frame...
     } else {
         input.setCursorMode(false);
     }
@@ -80,15 +78,21 @@ void MapEditorState::render(IRenderer* renderer) {
         renderer->draw(*object.mesh, object.transform, object.material, m_renderContext);
     }
 
+    ImGui::Begin("Map Editor");
+
     if (ImGui::BeginTabBar("MapTabs")) {
         for (size_t i = 0; i < m_tabs.size(); i++) {
             if (ImGui::BeginTabItem(m_tabs[i].name.c_str())) {
-                activeTab = i;
+                activeTab = static_cast<int>(i);
                 ImGui::EndTabItem();
             }
         }
         ImGui::EndTabBar();
     }
+
+    ImGui::End();
+
+    ImGui::ShowDemoWindow();
 }
 
 void MapEditorState::cleanup() const {

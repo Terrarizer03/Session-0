@@ -10,6 +10,7 @@
 #include "Renderer/OpenGLRenderer/GLRenderer.h"
 #include "Window/GLFWWindow/GLFWWindow.h"
 #include "States/EngineStates/MapEditorState.h"
+#include "States/EngineStates/ProjectManagerState.h"
 
 bool DnDEngine::initialize() {
 
@@ -19,7 +20,7 @@ bool DnDEngine::initialize() {
         return false;
     }
 
-    window->setVSync(true); // For now, stick with this as true
+    window->setVSync(EngineSettings::getInstance().vsyncEnabled);
 
     renderer = std::make_unique<GLRenderer>();
     if (!renderer || !renderer->initialize()) {
@@ -30,6 +31,7 @@ bool DnDEngine::initialize() {
     GLFWwindow* handle = static_cast<GLFWWindow*>(window.get())->getHandle();
     input = std::make_unique<GLFWInput>(handle);
 
+    // TODO: Find some way to get rid of this, this is so fucking ugly.
     // ============= IMGUI RELATED =============
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -39,13 +41,11 @@ bool DnDEngine::initialize() {
     ImGui_ImplOpenGL3_Init("#version 330");
     // ============= IMGUI RELATED =============
 
-    // glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
     glEnable(GL_DEPTH_TEST);
 
     renderer->setViewport(0, 0, window_width, window_height);
 
-    stateManager.pushState(std::make_unique<MapEditorState>("default_campaign.dnd"));
+    stateManager.pushState(std::make_unique<ProjectManagerState>());
 
     return true;
 }
@@ -58,16 +58,22 @@ void DnDEngine::run() {
 
         input->update();
 
+        // ============= IMGUI RELATED =============
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        // ============= IMGUI RELATED =============
 
         state->handleInput(*input);
         state->update(16.66f);
         state->render(renderer.get());
 
+        stateManager.applyPendingState();
+
+        // ============= IMGUI RELATED =============
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        // ============= IMGUI RELATED =============
 
         window->pollEvents();
         window->swapBuffers();
