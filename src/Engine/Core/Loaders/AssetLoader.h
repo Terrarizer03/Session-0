@@ -11,6 +11,8 @@
 namespace dndAssetLoader {
     std::string readFile(const std::string& path);
     Mesh loadOBJ(const std::string& path);
+
+    // TODO: Make actual loaders that add objects to the scene
 }
 
 #endif //DNDCREATOR_OBJLOADER_H

@@ -38,17 +38,43 @@ void ProjectManagerState::update(float deltaTime) {
 }
 
 void ProjectManagerState::render(IRenderer* renderer) {
+    // ================== TEMPORARY IMGUI CODE ==================
     ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->Pos);
     ImGui::SetNextWindowSize(viewport->Size);
 
     ImGui::Begin("Project Manager", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
     ImGui::Text("Projects found: %d", static_cast<int>(m_project_paths.size()));
+    ImGui::SameLine();
+    if (ImGui::Button("New Project")) {
+        ImGui::OpenPopup("MyPopupModalID"); // 1. Call OpenPopup when the condition is met
+    }
+
+    // 2. Define the popup's existence, always on the same ID stack level
+    if (ImGui::BeginPopupModal("MyPopupModalID")) {
+        static char projectName[128] = "";
+        static char author[128] = "";
+
+        ImGui::InputText("Enter Project Name: ", projectName, IM_ARRAYSIZE(projectName));
+        ImGui::InputText("Enter Author Name: ", author, IM_ARRAYSIZE(author));
+
+        if (ImGui::Button("Create New Project")) {
+            dndProjectLoader::createProject(projectName, author);
+            projectName[0] = '\0';
+            author[0] = '\0';
+        }
+
+        if (ImGui::Button("Close")) {
+            ImGui::CloseCurrentPopup(); // 3. Use CloseCurrentPopup to close it
+        }
+
+        ImGui::EndPopup(); // 4. End the popup block
+    }
 
     for (const ProjectData& project : m_project_paths) {
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
         ImGui::SetNextWindowSize({250.0f, 150.0f});
-        ImGui::BeginChild(project.projectInfo.name.c_str(), ImVec2(200, 100), true);
+        ImGui::BeginChild(project.projectInfo.name.c_str(), ImVec2(0, 0), false);
 
         ImGui::Text("Project Name: %s", project.projectInfo.name.c_str());
         ImGui::Text("Author: %s", project.projectInfo.author.c_str());
@@ -57,15 +83,15 @@ void ProjectManagerState::render(IRenderer* renderer) {
         ImGui::Separator();
 
         if (ImGui::Button("Open")) {
+            // TODO: before the change, set the timeModified to current time.
             stateManager->requestStateChange(std::make_unique<MapEditorState>(project.path));
         }
 
         ImGui::EndChild();
         ImGui::PopStyleColor();
-
-        ImGui::SameLine(); // puts next card beside it instead of below
     }
     ImGui::End();
+    // ================== TEMPORARY IMGUI CODE ==================
 }
 
 void ProjectManagerState::cleanup() const {

@@ -12,22 +12,23 @@
 
 struct MapEditorTab {
     std::string name;
-    MapData mapData;
+    MapData mapData = {};
     Camera camera = { {0.0f, 0.0f, 3.0f} };
 };
 
 class MapEditorState : public IState {
     // Project
     std::string m_projectPath;
-    ProjectInfo m_projectInfo;
+    ProjectInfo m_projectInfo = {};
 
     // Scene
-    std::vector<MapEditorTab> m_tabs;
+    bool cursorLocked = false;
+    std::vector<MapEditorTab> m_tabs = {};
     int activeTab = 0;
 
-    dndMath::Vector2 mousePos;
+    dndMath::Vector2 mousePos = {};
 
-    RenderContext m_renderContext;
+    RenderContext m_renderContext = {};
 public:
     MapEditorState(std::string project_file) : m_projectPath(std::move(project_file)) {}
 

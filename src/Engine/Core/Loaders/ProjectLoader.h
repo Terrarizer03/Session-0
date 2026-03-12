@@ -19,7 +19,7 @@ namespace dndProjectLoader {
     // TODO: Make loaders for the rules and the characters (but that's in the future for the model and campaign editors)
 
     // Project Creation
-    bool createProject(const std::string& dndPath, const std::string& name);
+    bool createProject(const std::string& name, const std::string& author);
     bool isValidProject(const std::string& dndPath);
 }
 

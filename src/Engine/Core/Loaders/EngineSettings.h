@@ -30,6 +30,7 @@ public:
     float nearPlane = 0.1f;
     float farPlane = 100.0f;
     std::string projectPath = "C:/Users/NICO/Documents/D&D Creator/Projects"; // TODO: Don't hardcode this
+    std::string version = "1.0";
 
     void load(const std::string& path);
     void save(const std::string& path);

@@ -38,13 +38,19 @@ bool MapEditorState::initialize() {
 }
 
 void MapEditorState::handleInput(IInput& input) {
-    // TODO: There's some wonky shit here, not sure what produces jumps, but it happens. FIX PLEASE.
+    // TODO: Not sure if the fix worked or anything but it's still pretty jumpy
     if (input.getMouseButton(GLFW_MOUSE_BUTTON_RIGHT)) {
+        if (!cursorLocked) {
+            input.setCursorMode(true);
+            cursorLocked = true;
+        }
         m_tabs[activeTab].camera.yaw += input.getDeltaX() * dndConstants::SENSITIVITY;
         m_tabs[activeTab].camera.pitch += input.getDeltaY() * dndConstants::SENSITIVITY;
-        input.setCursorMode(true); // It might be because we're setting this to true every frame...
     } else {
-        input.setCursorMode(false);
+        if (cursorLocked) {
+            input.setCursorMode(false);
+            cursorLocked = false;
+        }
     }
 
     // Clamp pitch so m_tabs[activeTab].camera doesn't flip upside down
@@ -91,8 +97,6 @@ void MapEditorState::render(IRenderer* renderer) {
     }
 
     ImGui::End();
-
-    ImGui::ShowDemoWindow();
 }
 
 void MapEditorState::cleanup() const {

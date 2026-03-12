@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
 project(DnDCreator)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # GLFW
 add_subdirectory(external/glfw)
@@ -85,6 +86,7 @@ add_executable(DnDCreator
         src/Engine/UI/EngineUI/MapEditorUI.h
         src/Engine/UI/EngineUI/ProjectManagerUI.cpp
         src/Engine/UI/EngineUI/ProjectManagerUI.h
+        src/Engine/Core/Project/ProjectDefaults.h
 )
 
 target_include_directories(DnDCreator PRIVATE

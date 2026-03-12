@@ -39,6 +39,7 @@ void EngineSettings::load(const std::string &path) {
     nearPlane = data.value("nearPlane", 1.0f);
     farPlane = data.value("farPlane", 1.0f);
     projectPath = data.value("projectPaths", "C:/Users/NICO/Documents/D&D Creator/Projects"); // TODO: Change this
+    version = data.value("version", std::string("1.0"));
 }
 
 void EngineSettings::save(const std::string &path) {
@@ -50,6 +51,7 @@ void EngineSettings::save(const std::string &path) {
     data["nearPlane"] = nearPlane;
     data["farPlane"] = farPlane;
     data["projectPath"] = projectPath;
+    data["version"] = version;
 
     std::ofstream file(path);
     file << data.dump(4);

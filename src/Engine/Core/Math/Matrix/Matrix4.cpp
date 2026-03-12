@@ -35,6 +35,7 @@ namespace dndMath {
     Matrix4 Matrix4::rotate(float angle, const Vector3& vec) {
         Matrix4 result = identity();
 
+        float M_PI = 3.1415926535f;
         const auto R = static_cast<float>(angle * (M_PI / 180.0f)); // convert degrees to radians
         const float C = std::cos(R);
         const float S = std::sin(R);
