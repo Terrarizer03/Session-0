@@ -17,6 +17,7 @@ bool MapEditorState::initialize() {
     m_projectInfo = dndProjectLoader::loadProject(m_projectPath);
 
     // SET UP THE TABS
+    // TODO: ADD LAZY LOADING
     int tabIndex = 0;
     for (const auto& pair : m_projectInfo.mapPaths) {
         std::cout << "Name: " << pair.first << " Path: " << pair.second << "\n";
