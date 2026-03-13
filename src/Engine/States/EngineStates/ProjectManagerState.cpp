@@ -13,7 +13,6 @@
 bool ProjectManagerState::initialize() {
     try {
         for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(EngineSettings::getInstance().projectPath)) {
-            std::cout << entry.path().string() << std::endl;
             if (!dndProjectLoader::isValidProject(entry.path().string())) continue; // Example: entry.path().string() = "C:/Users/NICO/Documents/D&D Creator/Projects/default_campaign.dnd"
 
             ProjectData projectData;

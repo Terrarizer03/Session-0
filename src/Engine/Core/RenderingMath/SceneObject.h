@@ -15,6 +15,7 @@ struct SceneObject {
     Transform transform;
     Material material;
     std::string name;
+    std::string UUID;
 };
 
 #endif //DNDCREATOR_SCENEOBJECT_H

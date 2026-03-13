@@ -33,8 +33,8 @@ target_include_directories(imgui PUBLIC
 find_package(OpenGL REQUIRED)
 
 add_executable(DnDCreator)
-
-add_subdirectory(src)
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+target_sources(DnDCreator PRIVATE ${SOURCES})
 
 target_include_directories(DnDCreator PRIVATE
         external/glad/include

@@ -1,3 +1,0 @@
-add_subdirectory(Loaders)
-add_subdirectory(Math)
-add_subdirectory(RenderingMath)

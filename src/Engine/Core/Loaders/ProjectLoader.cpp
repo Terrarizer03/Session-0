@@ -5,6 +5,8 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <random>
+#include <iomanip>
 #include "../Utilities/parseMaterial.h"
 #include "../Utilities/parseTransform.h"
 #include "ProjectLoader.h"
@@ -113,6 +115,14 @@ namespace dndProjectLoader {
                 SceneObject sceneObj;
                 sceneObj.name = obj.value("name", "Unnamed");
 
+                if (obj.contains("UUID")) {
+                    sceneObj.UUID = obj["UUID"];
+                }
+                else {
+                    sceneObj.UUID = generateUUID();
+                    mapData.isDirty = true;
+                }
+
                 // mesh field is a path string
                 if (!obj.contains("mesh")) continue;
                 std::string meshPath = obj["mesh"].get<std::string>();
@@ -149,7 +159,7 @@ namespace dndProjectLoader {
     }
 
     bool createProject(const std::string& name, const std::string& author) {
-        /**
+        /*
          * Quick outline in Project Creation:
          *
          * Take the name and pass it. Check if it exists first, if not then create the folder.
@@ -157,7 +167,6 @@ namespace dndProjectLoader {
          * folders (maps/, models/, characters/, campaign_rules/, and audio/) that have their own .json files.
          */
 
-        // TODO: Sanitize the name more (get rid of symbols and add a limit)
         // 1. Sanitize the string so it's more predictable.
         std::string sanitizedFolderName = name;
         std::ranges::transform(sanitizedFolderName, sanitizedFolderName.begin(),
@@ -243,5 +252,34 @@ namespace dndProjectLoader {
         if (!data["metadata"].contains("author"))  return false;
 
         return true;
+    }
+
+    std::string generateUUID() {
+        /*
+         * Basic outline in generating a UUID
+         *
+         * Create a random string of numbers, randomize those to string,
+         * have it be an exactly 32~ character string, and preface it with "dnd".
+         * Example output: "dnd-a3f2b1c4-9e7d4f2a-b8c1d4e5-f6a7b8c9"
+         */
+
+        // Preface value
+        std::string preface = "dnd-";
+
+        // 1. Create random integers
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+
+        // 2. Turn it to hexadecimal
+        std::stringstream UUID;
+        for (int i = 0; i < 4; i++) {
+            UUID << std::setfill('0') << std::setw(8) << std::hex << gen();
+            if (i < 3) {
+                UUID << "-";
+            }
+        }
+
+        // return the UUID
+        return preface + UUID.str();
     }
 }

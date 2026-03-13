@@ -1,3 +1,0 @@
-target_sources(DnDCreator PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/GLRenderer.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/GLShader.cpp)

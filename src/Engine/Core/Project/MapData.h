@@ -11,6 +11,7 @@
 struct MapData {
     std::string name;
     std::vector<SceneObject> objects;
+    bool isDirty = false;
 };
 
 #endif //DNDCREATOR_MAPDATA_H

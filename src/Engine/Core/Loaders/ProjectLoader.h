@@ -21,6 +21,7 @@ namespace dndProjectLoader {
     // Project Creation
     bool createProject(const std::string& name, const std::string& author);
     bool isValidProject(const std::string& dndPath);
+    std::string generateUUID();
 }
 
 
