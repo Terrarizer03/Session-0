@@ -6,6 +6,7 @@
 #include "../../Core/Loaders/ProjectLoader.h"
 #include "../../Core/Loaders/EngineSettings.h"
 #include "imgui.h"
+#include "../../Core/Project/ProjectDefaults.h"
 
 void MapEditorUI::drawUI(MapEditorUIContext& ctx) {
     // ==================== Hierarchy ====================
@@ -20,6 +21,33 @@ void MapEditorUI::drawUI(MapEditorUIContext& ctx) {
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+    if (ImGui::Button("Create Map")) {
+        ImGui::OpenPopup("New Map");
+    }
+
+    if (ImGui::BeginPopupModal("New Map")) {
+        static char mapName[128] = "";
+
+        ImGui::Text("Enter Map Name:");
+        ImGui::SameLine();
+        ImGui::InputText("##MapName", mapName, IM_ARRAYSIZE(mapName));
+
+        if (ImGui::Button("Create Map") && mapName[0] != '\0') {
+            ProjectInfo updated = zeroProjectDefaults::createDefaultMap(mapName, ctx.projectPath);
+            if (!updated.name.empty()) {
+                ctx.projectInfo = updated;
+                mapName[0] = '\0';
+                ImGui::CloseCurrentPopup();
+            }
+        }
+        if (ImGui::Button("Close")) {
+            mapName[0] = '\0';
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
 
     if (ImGui::TreeNode("Maps")) {
         for (const auto& [name, path] : ctx.projectInfo.mapPaths) {

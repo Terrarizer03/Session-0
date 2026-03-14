@@ -2,8 +2,8 @@
 // Created by Terrarizer on 06/03/2026.
 //
 
-#ifndef DNDCREATOR_STATEMANAGER_H
-#define DNDCREATOR_STATEMANAGER_H
+#ifndef SESSIONZERO_STATEMANAGER_H
+#define SESSIONZERO_STATEMANAGER_H
 #include <memory>
 #include <stack>
 #include "IState.h"
@@ -30,4 +30,4 @@ public:
 };
 
 
-#endif //DNDCREATOR_STATEMANAGER_H
+#endif //SESSIONZERO_STATEMANAGER_H

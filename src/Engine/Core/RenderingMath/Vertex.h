@@ -2,8 +2,8 @@
 // Created by Terrarizer on 01/02/2026.
 //
 
-#ifndef DNDCREATOR_VERTEX_H
-#define DNDCREATOR_VERTEX_H
+#ifndef SESSIONZERO_VERTEX_H
+#define SESSIONZERO_VERTEX_H
 #include "../Math/Vector/Vector3/Vector3.h"
 #include "../Math/Vector/Vector2.h"
 #include "../Math/Vector/Vector4.h"
@@ -37,4 +37,4 @@ struct Vertex {
     }
 };
 
-#endif //DNDCREATOR_VERTEX_H
+#endif //SESSIONZERO_VERTEX_H

@@ -2,15 +2,15 @@
 // Created by Terrarizer on 08/03/2026.
 //
 
-#ifndef DNDCREATOR_PROJECTLOADER_H
-#define DNDCREATOR_PROJECTLOADER_H
+#ifndef SESSIONZERO_PROJECTLOADER_H
+#define SESSIONZERO_PROJECTLOADER_H
 #include "../Project/ProjectInfo.h"
 #include "../Project/MapData.h"
 
 namespace zeroProjectLoader {
     // Project - reads project.json and returns metadata
-    ProjectInfo loadProject(const std::string& dndPath);
-    void saveProject(const ProjectInfo& info, const std::string& dndPath);
+    ProjectInfo loadProject(const std::string& zeroPath);
+    void saveProject(const ProjectInfo& info, const std::string& zeroPath);
 
     // Map - reads specific map.json and returns scene data
     MapData loadMapData(const ProjectInfo& projectInfo, const std::string& mapName);
@@ -20,9 +20,9 @@ namespace zeroProjectLoader {
 
     // Project Creation
     std::string createProject(const std::string& name, const std::string& author);
-    bool isValidProject(const std::string& dndPath);
+    bool isValidProject(const std::string& zeroPath);
     std::string generateUUID();
 }
 
 
-#endif //DNDCREATOR_PROJECTLOADER_H
+#endif //SESSIONZERO_PROJECTLOADER_H

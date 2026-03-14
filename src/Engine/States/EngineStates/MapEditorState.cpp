@@ -32,8 +32,8 @@ void MapEditorState::handleInput(IInput& input) {
                 input.setCursorMode(true);
                 cursorLocked = true;
             }
-            m_tabs[activeTab].camera.yaw += input.getDeltaX() * dndConstants::SENSITIVITY;
-            m_tabs[activeTab].camera.pitch += input.getDeltaY() * dndConstants::SENSITIVITY;
+            m_tabs[activeTab].camera.yaw += input.getDeltaX() * zeroConstants::SENSITIVITY;
+            m_tabs[activeTab].camera.pitch += input.getDeltaY() * zeroConstants::SENSITIVITY;
         } else {
             if (cursorLocked) {
                 input.setCursorMode(false);
@@ -49,17 +49,17 @@ void MapEditorState::handleInput(IInput& input) {
         const zeroMath::Vector3 side = m_tabs[activeTab].camera.front.cross(m_tabs[activeTab].camera.up).normalized();
 
         if (input.getKey(GLFW_KEY_W))
-            m_tabs[activeTab].camera.position += m_tabs[activeTab].camera.front * dndConstants::CAMERA_SPEED;
+            m_tabs[activeTab].camera.position += m_tabs[activeTab].camera.front * zeroConstants::CAMERA_SPEED;
         if (input.getKey(GLFW_KEY_S))
-            m_tabs[activeTab].camera.position -= m_tabs[activeTab].camera.front * dndConstants::CAMERA_SPEED;
+            m_tabs[activeTab].camera.position -= m_tabs[activeTab].camera.front * zeroConstants::CAMERA_SPEED;
         if (input.getKey(GLFW_KEY_A))
-            m_tabs[activeTab].camera.position -= side * dndConstants::CAMERA_SPEED;
+            m_tabs[activeTab].camera.position -= side * zeroConstants::CAMERA_SPEED;
         if (input.getKey(GLFW_KEY_D))
-            m_tabs[activeTab].camera.position += side * dndConstants::CAMERA_SPEED;
+            m_tabs[activeTab].camera.position += side * zeroConstants::CAMERA_SPEED;
         if (input.getKey(GLFW_KEY_Q))
-            m_tabs[activeTab].camera.position -= m_tabs[activeTab].camera.up * dndConstants::CAMERA_SPEED;
+            m_tabs[activeTab].camera.position -= m_tabs[activeTab].camera.up * zeroConstants::CAMERA_SPEED;
         if (input.getKey(GLFW_KEY_E))
-            m_tabs[activeTab].camera.position += m_tabs[activeTab].camera.up * dndConstants::CAMERA_SPEED;
+            m_tabs[activeTab].camera.position += m_tabs[activeTab].camera.up * zeroConstants::CAMERA_SPEED;
     }
 
 }
@@ -77,7 +77,7 @@ void MapEditorState::render(IRenderer* renderer) {
             renderer->draw(*object.mesh, object.transform, object.material, m_renderContext);
         }
     }
-    MapEditorUIContext ctx(m_projectInfo, m_tabs, m_renderContext, activeTab, m_requestedTab);
+    MapEditorUIContext ctx(m_projectInfo, m_tabs, m_renderContext, activeTab, m_requestedTab, m_projectPath);
     m_mapEditorUI.drawUI(ctx);
 }
 

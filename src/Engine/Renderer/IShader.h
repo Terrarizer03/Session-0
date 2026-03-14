@@ -2,8 +2,8 @@
 // Created by Terrarizer on 04/03/2026.
 //
 
-#ifndef DNDCREATOR_ISHADER_H
-#define DNDCREATOR_ISHADER_H
+#ifndef SESSIONZERO_ISHADER_H
+#define SESSIONZERO_ISHADER_H
 #include <string>
 #include "../Core/Math/Matrix/Matrix4.h"
 #include "../Core/Math/Vector/Vector4.h"
@@ -18,4 +18,4 @@ struct IShader {
     virtual void setUniformVec4(const std::string& name, const zeroMath::Vector4& vector) const = 0;
 };
 
-#endif //DNDCREATOR_ISHADER_H
+#endif //SESSIONZERO_ISHADER_H

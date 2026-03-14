@@ -2,12 +2,12 @@
 // Created by Terrarizer on 09/03/2026.
 //
 
-#ifndef DNDCREATOR_PARSETRANSFORM_H
-#define DNDCREATOR_PARSETRANSFORM_H
+#ifndef SESSIONZERO_PARSETRANSFORM_H
+#define SESSIONZERO_PARSETRANSFORM_H
 #include "nlohmann/json.hpp"
 #include "../RenderingMath/Transform.h"
 
-namespace dndHelper {
+namespace zeroHelper {
     inline Transform parseTransform(const nlohmann::json& trans) {
         Transform transform;
 
@@ -30,4 +30,4 @@ namespace dndHelper {
     }
 }
 
-#endif //DNDCREATOR_PARSETRANSFORM_H
+#endif //SESSIONZERO_PARSETRANSFORM_H

@@ -2,8 +2,8 @@
 // Created by Terrarizer on 21/01/2026.
 //
 
-#ifndef DNDCREATOR_IWINDOW_H
-#define DNDCREATOR_IWINDOW_H
+#ifndef SESSIONZERO_IWINDOW_H
+#define SESSIONZERO_IWINDOW_H
 
 class IWindow {
 public:
@@ -46,4 +46,4 @@ public:
     virtual bool shutdown() = 0;
 };
 
-#endif //DNDCREATOR_IWINDOW_H
+#endif //SESSIONZERO_IWINDOW_H

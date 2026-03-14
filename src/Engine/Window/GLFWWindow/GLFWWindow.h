@@ -2,8 +2,8 @@
 // Created by Terrarizer on 21/01/2026.
 //
 
-#ifndef DNDCREATOR_GLFWWINDOW_H
-#define DNDCREATOR_GLFWWINDOW_H
+#ifndef SESSIONZERO_GLFWWINDOW_H
+#define SESSIONZERO_GLFWWINDOW_H
 
 #include <optional>
 #include "../IWindow.h"
@@ -24,4 +24,4 @@ public:
 };
 
 
-#endif //DNDCREATOR_GLFWWINDOW_H
+#endif //SESSIONZERO_GLFWWINDOW_H

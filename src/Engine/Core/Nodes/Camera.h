@@ -2,8 +2,8 @@
 // Created by Terrarizer on 01/02/2026.
 //
 
-#ifndef DNDCREATOR_CAMERA_H
-#define DNDCREATOR_CAMERA_H
+#ifndef SESSIONZERO_CAMERA_H
+#define SESSIONZERO_CAMERA_H
 
 #include <cmath>
 
@@ -43,4 +43,4 @@ struct Camera {
     }
 };
 
-#endif //DNDCREATOR_CAMERA_H
+#endif //SESSIONZERO_CAMERA_H

@@ -2,8 +2,8 @@
 // Created by Terrarizer on 06/03/2026.
 //
 
-#ifndef DNDCREATOR_TRANSFORM_H
-#define DNDCREATOR_TRANSFORM_H
+#ifndef SESSIONZERO_TRANSFORM_H
+#define SESSIONZERO_TRANSFORM_H
 #include "../Math/Matrix/Matrix4.h"
 #include "../Math/Vector/Vector3/Vector3.h"
 
@@ -23,4 +23,4 @@ struct Transform {
     }
 };
 
-#endif //DNDCREATOR_TRANSFORM_H
+#endif //SESSIONZERO_TRANSFORM_H

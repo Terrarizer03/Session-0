@@ -2,13 +2,13 @@
 // Created by Terrarizer on 09/03/2026.
 //
 
-#ifndef DNDCREATOR_PARSEMATERIAL_H
-#define DNDCREATOR_PARSEMATERIAL_H
+#ifndef SESSIONZERO_PARSEMATERIAL_H
+#define SESSIONZERO_PARSEMATERIAL_H
 #include "nlohmann/json.hpp"
 #include "../RenderingMath/Material.h"
 #include "../../Renderer/OpenGLRenderer/GLShader.h"
 
-namespace dndHelper {
+namespace zeroHelper {
     inline Material parseMaterial(const nlohmann::json& mat, const std::string& basePath) {
         Material material;
 
@@ -29,4 +29,4 @@ namespace dndHelper {
     }
 }
 
-#endif //DNDCREATOR_PARSEMATERIAL_H
+#endif //SESSIONZERO_PARSEMATERIAL_H

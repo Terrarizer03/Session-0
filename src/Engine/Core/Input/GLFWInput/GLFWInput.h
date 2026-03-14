@@ -2,8 +2,8 @@
 // Created by Terrarizer on 05/03/2026.
 //
 
-#ifndef DNDCREATOR_GLFWINPUT_H
-#define DNDCREATOR_GLFWINPUT_H
+#ifndef SESSIONZERO_GLFWINPUT_H
+#define SESSIONZERO_GLFWINPUT_H
 
 #include "../IInput.h"
 #include "GLFW/glfw3.h"
@@ -51,4 +51,4 @@ public:
 };
 
 
-#endif //DNDCREATOR_GLFWINPUT_H
+#endif //SESSIONZERO_GLFWINPUT_H

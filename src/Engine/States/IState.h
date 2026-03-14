@@ -2,8 +2,8 @@
 // Created by Terrarizer on 06/03/2026.
 //
 
-#ifndef DNDCREATOR_ISTATE_H
-#define DNDCREATOR_ISTATE_H
+#ifndef SESSIONZERO_ISTATE_H
+#define SESSIONZERO_ISTATE_H
 #include "../Core/Input/IInput.h"
 #include "../Renderer/IRenderer.h"
 
@@ -23,4 +23,4 @@ public:
     void setStateManager(StateManager* _stateManager) { this->stateManager = _stateManager; }
 };
 
-#endif //DNDCREATOR_ISTATE_H
+#endif //SESSIONZERO_ISTATE_H

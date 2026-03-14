@@ -2,8 +2,8 @@
 // Created by Terrarizer on 06/03/2026.
 //
 
-#ifndef DNDCREATOR_SCENEOBJECT_H
-#define DNDCREATOR_SCENEOBJECT_H
+#ifndef SESSIONZERO_SCENEOBJECT_H
+#define SESSIONZERO_SCENEOBJECT_H
 #include <string>
 
 #include "Material.h"
@@ -18,4 +18,4 @@ struct SceneObject {
     std::string UUID;
 };
 
-#endif //DNDCREATOR_SCENEOBJECT_H
+#endif //SESSIONZERO_SCENEOBJECT_H

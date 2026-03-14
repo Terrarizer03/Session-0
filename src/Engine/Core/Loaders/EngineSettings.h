@@ -2,8 +2,8 @@
 // Created by Terrarizer on 08/03/2026.
 //
 
-#ifndef DNDCREATOR_ENGINESETTINGS_H
-#define DNDCREATOR_ENGINESETTINGS_H
+#ifndef SESSIONZERO_ENGINESETTINGS_H
+#define SESSIONZERO_ENGINESETTINGS_H
 #include <string>
 
 class EngineSettings {
@@ -23,17 +23,17 @@ public:
     }
 
     // Default Settings
-    int windowWidth = 1200;
-    int windowHeight = 600;
+    int windowWidth = 1920;
+    int windowHeight = 1080;
     bool vsyncEnabled = true;
     float fov = 45.0f;
     float nearPlane = 0.1f;
     float farPlane = 100.0f;
-    std::string projectPath = "C:/Users/NICO/Documents/D&D Creator/Projects"; // TODO: Don't hardcode this
-    std::string version = "1.0";
+    std::string projectPath = "C:/Users/NICO/Documents/SessionZero/Projects"; // TODO: Don't hardcode this
+    std::string version = "0.0.1";
 
     void load(const std::string& path);
     void save(const std::string& path);
 };
 
-#endif //DNDCREATOR_ENGINESETTINGS_H
+#endif //SESSIONZERO_ENGINESETTINGS_H

@@ -2,8 +2,8 @@
 // Created by Terrarizer on 03/03/2026.
 //
 
-#ifndef DNDCREATOR_VECTOR4_H
-#define DNDCREATOR_VECTOR4_H
+#ifndef SESSIONZERO_VECTOR4_H
+#define SESSIONZERO_VECTOR4_H
 
 namespace zeroMath {
     struct Vector4 {
@@ -32,4 +32,4 @@ namespace zeroMath {
     }
 }
 
-#endif //DNDCREATOR_VECTOR4_H
+#endif //SESSIONZERO_VECTOR4_H

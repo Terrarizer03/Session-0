@@ -2,8 +2,8 @@
 // Created by Terrarizer on 01/02/2026.
 //
 
-#ifndef DNDCREATOR_MESH_H
-#define DNDCREATOR_MESH_H
+#ifndef SESSIONZERO_MESH_H
+#define SESSIONZERO_MESH_H
 #include <vector>
 #include "../Face.h"
 #include "../Vertex.h"
@@ -34,4 +34,4 @@ public:
     Mesh& operator=(Mesh&& other) noexcept;
 };
 
-#endif //DNDCREATOR_MESH_H
+#endif //SESSIONZERO_MESH_H

@@ -2,8 +2,8 @@
 // Created by Terrarizer on 04/03/2026.
 //
 
-#ifndef DNDCREATOR_GLSHADER_H
-#define DNDCREATOR_GLSHADER_H
+#ifndef SESSIONZERO_GLSHADER_H
+#define SESSIONZERO_GLSHADER_H
 #include "../IShader.h"
 #include "glad/glad.h"
 #include "../../Core/Math/Vector/Vector4.h"
@@ -24,4 +24,4 @@ private:
     static GLuint CompileShader(const char* vertexSrc, const char* fragmentSrc);
 };
 
-#endif //DNDCREATOR_GLSHADER_H
+#endif //SESSIONZERO_GLSHADER_H

@@ -15,20 +15,20 @@
 #include "nlohmann/json.hpp"
 
 namespace zeroProjectLoader {
-    ProjectInfo loadProject(const std::string& dndPath) {
+    ProjectInfo loadProject(const std::string& zeroPath) {
         /*
          * This check will probably never be used since this function will only be
          * called when loading a valid project. Still good to have it tho just in case
          */
-        if (!std::filesystem::exists(dndPath))
+        if (!std::filesystem::exists(zeroPath))
             return {}; // TODO: Change this to an error that visually shows in-engine
 
         ProjectInfo projectInfo;
 
-        std::ifstream file(dndPath + "/project.json");
+        std::ifstream file(zeroPath + "/project.json");
 
         if (!file.is_open()) {
-            std::cout << "Failed to open file: " << dndPath + "/project.json" << std::endl;
+            std::cout << "Failed to open file: " << zeroPath + "/project.json" << std::endl;
             return {};
         }
 
@@ -40,7 +40,7 @@ namespace zeroProjectLoader {
         try {
             data = nlohmann::json::parse(file);
         } catch (const nlohmann::json::exception& e) {
-            std::cout << "Failed to parse" << dndPath << ": " << e.what() << std::endl;
+            std::cout << "Failed to parse" << zeroPath << ": " << e.what() << std::endl;
             return {}; // TODO: Change this to an error that says "Could not parse file."
         }
 
@@ -55,18 +55,18 @@ namespace zeroProjectLoader {
 
         projectInfo.mapPaths = data.value("mapPaths", std::unordered_map<std::string, std::string>{});
         for (auto &path: projectInfo.mapPaths | std::views::values)
-            path = dndPath + "/" + path;
+            path = zeroPath + "/" + path;
 
         projectInfo.characterPaths = data.value("characterPaths", std::unordered_map<std::string, std::string>{});
         for (auto &path: projectInfo.characterPaths | std::views::values)
-            path = dndPath + "/" + path;
+            path = zeroPath + "/" + path;
 
-        projectInfo.rules = data.value("rules", std::unordered_map<std::string, std::string>{}); // Maybe add the dndPath to these too.
+        projectInfo.rules = data.value("rules", std::unordered_map<std::string, std::string>{}); // Maybe add the zeroPath to these too.
 
         return projectInfo;
     }
 
-    void saveProject(const ProjectInfo& info, const std::string& dndPath) {
+    void saveProject(const ProjectInfo& info, const std::string& zeroPath) {
 
     }
 
@@ -137,11 +137,11 @@ namespace zeroProjectLoader {
                      * Not sure if mapFolder being passed is a hack, but the helper does need
                      * the base path... So I guess not, it's 10pm I have to sleep tho
                      */
-                    sceneObj.material = dndHelper::parseMaterial(obj["material"], mapFolder);
+                    sceneObj.material = zeroHelper::parseMaterial(obj["material"], mapFolder);
                 }
 
                 if (obj.contains("transform")) {
-                    sceneObj.transform = dndHelper::parseTransform(obj["transform"]);
+                    sceneObj.transform = zeroHelper::parseTransform(obj["transform"]);
                 }
 
                 mapData.objects.push_back(sceneObj);
@@ -178,10 +178,10 @@ namespace zeroProjectLoader {
         sanitizedFolderName.erase(first, last);
 
         // 2. Make the project by adding the .zero extension.
-        const std::filesystem::path dndFolder = std::filesystem::path(EngineSettings::getInstance().projectPath) / (sanitizedFolderName + ".zero");
+        const std::filesystem::path zeroFolder = std::filesystem::path(EngineSettings::getInstance().projectPath) / (sanitizedFolderName + ".zero");
 
         try {
-            if (!std::filesystem::create_directories(dndFolder)) {
+            if (!std::filesystem::create_directories(zeroFolder)) {
                 std::cout << "File already exists!" << std::endl;
                 return "false"; // TODO: Change this to a UI error when making the project
             }
@@ -191,7 +191,7 @@ namespace zeroProjectLoader {
         }
 
         // 3. Write the project.json file for the project
-        std::filesystem::path projectJsonPath = dndFolder / "project.json";
+        std::filesystem::path projectJsonPath = zeroFolder / "project.json";
         nlohmann::json projectJson = zeroProjectDefaults::createDefaultProjectJson(name, author);
 
         std::ofstream file(projectJsonPath);
@@ -206,31 +206,31 @@ namespace zeroProjectLoader {
 
         // 4. Create folders and populate them with .json files.
         for (const std::string& folder : zeroProjectDefaults::defaultFolders) {
-            std::filesystem::create_directories(dndFolder / folder);
+            std::filesystem::create_directories(zeroFolder / folder);
             if (folder == "maps" || folder == "campaign_rules" || folder == "characters")
                 continue;
-            // TODO: Create .json files in each (dndFolder / folder)
+            // TODO: Create .json files in each (zeroFolder / folder)
         }
 
-        return dndFolder.string();
+        return zeroFolder.string();
     }
 
-    bool isValidProject(const std::string& dndPath) {
+    bool isValidProject(const std::string& zeroPath) {
         // Check folder exists
-        if (!std::filesystem::exists(dndPath)) {
+        if (!std::filesystem::exists(zeroPath)) {
             std::cout << "Failed: path doesn't exist\n";
             return false;
         }
 
         // Check .zer extension
-        if (std::filesystem::path(dndPath).extension() != ".zero") {
-            std::cout << "Failed: wrong extension - got " << std::filesystem::path(dndPath).extension() << std::endl;
+        if (std::filesystem::path(zeroPath).extension() != ".zero") {
+            std::cout << "Failed: wrong extension - got " << std::filesystem::path(zeroPath).extension() << std::endl;
             return false;
         }
 
 
         // Check project.json exists
-        std::string projectJsonPath = dndPath + "/project.json";
+        std::string projectJsonPath = zeroPath + "/project.json";
         if (!std::filesystem::exists(projectJsonPath)) {
             std::cout << "Failed: no project.json\n";
             return false;

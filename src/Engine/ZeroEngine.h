@@ -2,8 +2,8 @@
 // Created by Terrarizer on 21/01/2026.
 //
 
-#ifndef DNDCREATOR_DNDENGINE_H
-#define DNDCREATOR_DNDENGINE_H
+#ifndef SESSIONZERO_ZEROENGINE_H
+#define SESSIONZERO_ZEROENGINE_H
 #include <memory>
 
 #include "Core/Input/IInput.h"
@@ -49,4 +49,4 @@ public:
 };
 
 
-#endif //DNDCREATOR_DNDENGINE_H
+#endif //SESSIONZERO_ZEROENGINE_H

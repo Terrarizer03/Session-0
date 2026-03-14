@@ -2,8 +2,8 @@
 // Created by Terrarizer on 21/01/2026.
 //
 
-#ifndef DNDCREATOR_GLRENDERER_H
-#define DNDCREATOR_GLRENDERER_H
+#ifndef SESSIONZERO_GLRENDERER_H
+#define SESSIONZERO_GLRENDERER_H
 
 #include "../IRenderer.h"
 
@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //DNDCREATOR_GLRENDERER_H
+#endif //SESSIONZERO_GLRENDERER_H

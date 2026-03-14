@@ -2,8 +2,8 @@
 // Created by Terrarizer on 09/03/2026.
 //
 
-#ifndef DNDCREATOR_MAPDATA_H
-#define DNDCREATOR_MAPDATA_H
+#ifndef SESSIONZERO_MAPDATA_H
+#define SESSIONZERO_MAPDATA_H
 #include <string>
 #include <vector>
 #include "../RenderingMath/SceneObject.h"
@@ -14,4 +14,4 @@ struct MapData {
     bool isDirty = false;
 };
 
-#endif //DNDCREATOR_MAPDATA_H
+#endif //SESSIONZERO_MAPDATA_H

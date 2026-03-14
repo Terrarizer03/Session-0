@@ -2,8 +2,8 @@
 // Created by Terrarizer on 21/01/2026.
 //
 
-#ifndef DNDCREATOR_IRENDERER_H
-#define DNDCREATOR_IRENDERER_H
+#ifndef SESSIONZERO_IRENDERER_H
+#define SESSIONZERO_IRENDERER_H
 #include "../Core/RenderingMath/Transform.h"
 #include "../Core/RenderingMath/Mesh/Mesh.h"
 #include "../Core/RenderingMath/Material.h"
@@ -22,4 +22,4 @@ public:
     virtual void draw(const Mesh& mesh, const Transform& transform, const Material& material, const RenderContext& context) = 0;
 };
 
-#endif //DNDCREATOR_IRENDERER_H
+#endif //SESSIONZERO_IRENDERER_H

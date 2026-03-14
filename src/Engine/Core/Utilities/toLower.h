@@ -2,12 +2,12 @@
 // Created by Terrarizer on 09/03/2026.
 //
 
-#ifndef DNDCREATOR_TOLOWER_H
-#define DNDCREATOR_TOLOWER_H
+#ifndef SESSIONZERO_TOLOWER_H
+#define SESSIONZERO_TOLOWER_H
 #include <algorithm>
 #include <string>
 
-namespace dndHelper {
+namespace zeroHelper {
     inline std::string toLower(const std::string& str) {
         std::string result = str;
         std::transform(result.begin(), result.end(), result.begin(), ::tolower);
@@ -15,4 +15,4 @@ namespace dndHelper {
     }
 }
 
-#endif //DNDCREATOR_TOLOWER_H
+#endif //SESSIONZERO_TOLOWER_H

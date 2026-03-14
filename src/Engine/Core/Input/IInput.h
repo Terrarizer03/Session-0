@@ -2,8 +2,8 @@
 // Created by Terrarizer on 01/02/2026.
 //
 
-#ifndef DNDCREATOR_IINPUT_H
-#define DNDCREATOR_IINPUT_H
+#ifndef SESSIONZERO_IINPUT_H
+#define SESSIONZERO_IINPUT_H
 
 class IInput {
 public:
@@ -17,4 +17,4 @@ public:
     [[nodiscard]] virtual float getDeltaY() const = 0;
 };
 
-#endif //DNDCREATOR_IINPUT_H
+#endif //SESSIONZERO_IINPUT_H

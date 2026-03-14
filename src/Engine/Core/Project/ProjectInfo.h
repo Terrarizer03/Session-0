@@ -2,8 +2,8 @@
 // Created by Terrarizer on 09/03/2026.
 //
 
-#ifndef DNDCREATOR_PROJECTINFO_H
-#define DNDCREATOR_PROJECTINFO_H
+#ifndef SESSIONZERO_PROJECTINFO_H
+#define SESSIONZERO_PROJECTINFO_H
 #include <string>
 #include <unordered_map>
 
@@ -18,4 +18,4 @@ struct ProjectInfo {
     std::unordered_map<std::string, std::string> rules;
 };
 
-#endif //DNDCREATOR_PROJECTINFO_H
+#endif //SESSIONZERO_PROJECTINFO_H

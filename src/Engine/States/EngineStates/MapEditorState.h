@@ -2,8 +2,8 @@
 // Created by Terrarizer on 06/03/2026.
 //
 
-#ifndef DNDCREATOR_MAPEDITORSTATE_H
-#define DNDCREATOR_MAPEDITORSTATE_H
+#ifndef SESSIONZERO_MAPEDITORSTATE_H
+#define SESSIONZERO_MAPEDITORSTATE_H
 #include <string>
 #include <utility>
 #include "../IState.h"
@@ -40,4 +40,4 @@ public:
 };
 
 
-#endif //DNDCREATOR_MAPEDITORSTATE_H
+#endif //SESSIONZERO_MAPEDITORSTATE_H

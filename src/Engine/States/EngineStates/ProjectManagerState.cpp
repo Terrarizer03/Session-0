@@ -16,7 +16,7 @@
 bool ProjectManagerState::initialize() {
     try {
         for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(EngineSettings::getInstance().projectPath)) {
-            if (!zeroProjectLoader::isValidProject(entry.path().string())) continue; // Example: entry.path().string() = "C:/Users/NICO/Documents/D&D Creator/Projects/default_campaign.dnd"
+            if (!zeroProjectLoader::isValidProject(entry.path().string())) continue; // Example: entry.path().string() = "C:/Users/NICO/Documents/D&D Creator/Projects/default_campaign.zero"
 
             ProjectData projectData;
             projectData.path = entry.path().string();
@@ -58,7 +58,7 @@ void ProjectManagerState::render(IRenderer* renderer) {
 
         ImGui::Text("Project Name:");
         ImGui::SameLine();
-        ImGui::InputText("##ProjectName", projectName, 128);
+        ImGui::InputText("##ProjectName", projectName, IM_ARRAYSIZE(projectName));
         ImGui::Text("Author Name:");
         ImGui::SameLine();
         ImGui::InputText("##AuthorName", author, IM_ARRAYSIZE(author));

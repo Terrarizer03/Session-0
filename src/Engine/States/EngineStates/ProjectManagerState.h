@@ -2,8 +2,8 @@
 // Created by Terrarizer on 06/03/2026.
 //
 
-#ifndef DNDCREATOR_PROJECTMANAGERSTATE_H
-#define DNDCREATOR_PROJECTMANAGERSTATE_H
+#ifndef SESSIONZERO_PROJECTMANAGERSTATE_H
+#define SESSIONZERO_PROJECTMANAGERSTATE_H
 #include "../IState.h"
 #include "../../Core/Loaders/EngineSettings.h"
 #include "../../Core/Loaders/ProjectLoader.h"
@@ -26,4 +26,4 @@ public:
 };
 
 
-#endif //DNDCREATOR_PROJECTMANAGERSTATE_H
+#endif //SESSIONZERO_PROJECTMANAGERSTATE_H
