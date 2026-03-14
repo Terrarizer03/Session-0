@@ -5,7 +5,7 @@
 #include "Vector3.h"
 #include <cmath>
 
-using dndMath::Vector3;
+using zeroMath::Vector3;
 
 [[nodiscard]] Vector3 Vector3::normalized() const {
     float magnitude = std::sqrt(x * x + y * y + z * z);

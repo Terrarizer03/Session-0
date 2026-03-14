@@ -40,8 +40,8 @@ void GLRenderer::draw(const Mesh& mesh, const Transform& transform, const Materi
     material.shader->setUniformVec4("uColor", material.color);
     material.shader->setUniformVec3("uLightDir", context.lightDir );
 
-    dndMath::Matrix4 model = transform.getModelMatrix();
-    dndMath::Matrix4 mvp = context.camera->getProjectionMatrix() * context.camera->getViewMatrix() * model;
+    zeroMath::Matrix4 model = transform.getModelMatrix();
+    zeroMath::Matrix4 mvp = context.camera->getProjectionMatrix() * context.camera->getViewMatrix() * model;
 
     material.shader->setUniformMatrix4fv("uMVP", mvp);
     material.shader->setUniformMatrix4fv("uModel", model);

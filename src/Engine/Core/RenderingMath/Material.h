@@ -10,7 +10,7 @@
 
 struct Material {
     std::shared_ptr<IShader> shader;
-    dndMath::Vector4 color;
+    zeroMath::Vector4 color;
 };
 
 #endif //DNDCREATOR_MATERIAL_H

@@ -7,14 +7,9 @@
 #include <string>
 #include <utility>
 #include "../IState.h"
-#include "../../Core/Project/MapData.h"
 #include "../../Core/Project/ProjectInfo.h"
-
-struct MapEditorTab {
-    std::string name;
-    MapData mapData = {};
-    Camera camera = { {0.0f, 0.0f, 3.0f} };
-};
+#include "../../UI/EngineUI/MapEditorUI.h"
+#include "MapEditorTab.h"
 
 class MapEditorState : public IState {
     // Project
@@ -25,8 +20,11 @@ class MapEditorState : public IState {
     bool cursorLocked = false;
     std::vector<MapEditorTab> m_tabs = {};
     int activeTab = 0;
+    std::string m_requestedTab;
 
-    dndMath::Vector2 mousePos = {};
+    MapEditorUI m_mapEditorUI;
+
+    zeroMath::Vector2 mousePos = {};
 
     RenderContext m_renderContext = {};
 public:

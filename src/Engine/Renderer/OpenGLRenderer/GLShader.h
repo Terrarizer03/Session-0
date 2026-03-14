@@ -14,9 +14,9 @@ public:
     GLShader(const char* vertexPath, const char* fragmentPath);
     void bind() const override;
     void unbind() const override;
-    void setUniformMatrix4fv(const std::string& name, const dndMath::Matrix4& matrix) const override;
-    void setUniformVec3(const std::string& name, const dndMath::Vector3& vector) const override;
-    void setUniformVec4(const std::string& name, const dndMath::Vector4& vector) const override;
+    void setUniformMatrix4fv(const std::string& name, const zeroMath::Matrix4& matrix) const override;
+    void setUniformVec3(const std::string& name, const zeroMath::Vector3& vector) const override;
+    void setUniformVec4(const std::string& name, const zeroMath::Vector4& vector) const override;
 
     ~GLShader() override;
 private:

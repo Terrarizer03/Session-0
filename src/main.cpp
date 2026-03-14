@@ -1,13 +1,8 @@
-#include <iostream>
-
-#include "Engine/DnDEngine.h"
+#include "Engine/ZeroEngine.h"
 #include "Engine/Core/Loaders/EngineSettings.h"
-#include "Engine/Core/Loaders/ProjectLoader.h"
 
 int main() {
-    DnDEngine Engine(EngineSettings::getInstance().windowWidth, EngineSettings::getInstance().windowHeight);
-
-    std::cout << dndProjectLoader::generateUUID() << std::endl;
+    ZeroEngine Engine(EngineSettings::getInstance().windowWidth, EngineSettings::getInstance().windowHeight);
 
     if (!Engine.initialize()) return -1;
     Engine.run();

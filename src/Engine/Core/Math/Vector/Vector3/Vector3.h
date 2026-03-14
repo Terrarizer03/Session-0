@@ -5,7 +5,7 @@
 #ifndef DNDCREATOR_VECTOR3_H
 #define DNDCREATOR_VECTOR3_H
 
-namespace dndMath {
+namespace zeroMath {
     struct Vector3 {
         float x, y, z;
 

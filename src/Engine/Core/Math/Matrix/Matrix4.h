@@ -6,7 +6,7 @@
 #define DNDCREATOR_MATRIX4_H
 #include "../Vector/Vector3/Vector3.h"
 
-namespace dndMath {
+namespace zeroMath {
     struct Matrix4 {
         float m[4][4];
 

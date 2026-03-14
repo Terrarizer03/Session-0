@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "glad/glad.h"
-#include "DnDEngine.h"
+#include "ZeroEngine.h"
 #include "Core/Input/GLFWInput/GLFWInput.h"
 #include "Core/Loaders/AssetLoader.h"
 #include "Renderer/OpenGLRenderer/GLRenderer.h"
@@ -12,10 +12,10 @@
 #include "States/EngineStates/MapEditorState.h"
 #include "States/EngineStates/ProjectManagerState.h"
 
-bool DnDEngine::initialize() {
+bool ZeroEngine::initialize() {
 
     window = std::make_unique<GLFWWindow>();
-    if (!window || !window->initialize() || !window->createWindow(window_width, window_height, "D&D Creator")) {
+    if (!window || !window->initialize() || !window->createWindow(window_width, window_height, "Session-0")) {
         std::cout << "Failed to initialize window \n";
         return false;
     }
@@ -31,15 +31,7 @@ bool DnDEngine::initialize() {
     GLFWwindow* handle = static_cast<GLFWWindow*>(window.get())->getHandle();
     input = std::make_unique<GLFWInput>(handle);
 
-    // TODO: Find some way to get rid of this, this is so fucking ugly.
-    // ============= IMGUI RELATED =============
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-
-    ImGui_ImplGlfw_InitForOpenGL(handle, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
-    // ============= IMGUI RELATED =============
+    uiManager.initialize(handle);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -50,7 +42,7 @@ bool DnDEngine::initialize() {
     return true;
 }
 
-void DnDEngine::run() {
+void ZeroEngine::run() {
     while (!window->shouldClose()) {
         IState* state = stateManager.getCurrentState();
         if (!state) return;
@@ -58,11 +50,7 @@ void DnDEngine::run() {
 
         input->update();
 
-        // ============= IMGUI RELATED =============
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        // ============= IMGUI RELATED =============
+        uiManager.beginFrame();
 
         state->handleInput(*input);
         state->update(16.66f);
@@ -70,10 +58,7 @@ void DnDEngine::run() {
 
         stateManager.applyPendingState();
 
-        // ============= IMGUI RELATED =============
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        // ============= IMGUI RELATED =============
+        uiManager.endFrame();
 
         window->pollEvents();
         window->swapBuffers();

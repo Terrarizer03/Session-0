@@ -15,8 +15,8 @@
  * @param fragmentPath The file path of the fragment shader
  */
 GLShader::GLShader(const char* vertexPath, const char* fragmentPath) {
-    const std::string vertexCode = dndAssetLoader::readFile(vertexPath);
-    const std::string fragmentCode = dndAssetLoader::readFile(fragmentPath);
+    const std::string vertexCode = zeroAssetLoader::readFile(vertexPath);
+    const std::string fragmentCode = zeroAssetLoader::readFile(fragmentPath);
 
     if (vertexCode.empty() || fragmentCode.empty()) {
         std::cout << "Failed to load shader files\n";
@@ -35,7 +35,7 @@ void GLShader::unbind() const {
     glUseProgram(0);
 }
 
-void GLShader::setUniformMatrix4fv(const std::string& name, const dndMath::Matrix4& matrix) const {
+void GLShader::setUniformMatrix4fv(const std::string& name, const zeroMath::Matrix4& matrix) const {
     GLint location = glGetUniformLocation(m_RendererID, name.c_str());
     if (location == -1) {
         std::cout << "Warning: uniform '" << name << "' not found in shader\n";
@@ -44,7 +44,7 @@ void GLShader::setUniformMatrix4fv(const std::string& name, const dndMath::Matri
     glUniformMatrix4fv(location, 1, GL_TRUE, matrix.data());
 }
 
-void GLShader::setUniformVec3(const std::string& name, const dndMath::Vector3& vector) const {
+void GLShader::setUniformVec3(const std::string& name, const zeroMath::Vector3& vector) const {
     GLint location = glGetUniformLocation(m_RendererID, name.c_str());
     if (location == -1) {
         std::cout << "Warning: uniform '" << name << "' not found\n";
@@ -53,7 +53,7 @@ void GLShader::setUniformVec3(const std::string& name, const dndMath::Vector3& v
     glUniform3f(location, vector.x, vector.y, vector.z);
 }
 
-void GLShader::setUniformVec4(const std::string& name, const dndMath::Vector4& vector) const {
+void GLShader::setUniformVec4(const std::string& name, const zeroMath::Vector4& vector) const {
     GLint location = glGetUniformLocation(m_RendererID, name.c_str());
     if (location == -1) {
         std::cout << "Warning: uniform '" << name << "' not found\n";

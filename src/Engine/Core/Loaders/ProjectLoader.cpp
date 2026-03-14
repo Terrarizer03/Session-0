@@ -14,7 +14,7 @@
 #include "../Project/ProjectDefaults.h"
 #include "nlohmann/json.hpp"
 
-namespace dndProjectLoader {
+namespace zeroProjectLoader {
     ProjectInfo loadProject(const std::string& dndPath) {
         /*
          * This check will probably never be used since this function will only be
@@ -83,7 +83,7 @@ namespace dndProjectLoader {
 
         std::string mapFolder = it->second;
         std::string mapPath = mapFolder + "/map.json";
-        // Example: "my_campaign.dnd/maps/Tavern/map.json"
+        // Example: "my_campaign.zero/maps/Tavern/map.json"
 
         MapData mapData;
 
@@ -128,9 +128,9 @@ namespace dndProjectLoader {
                 std::string meshPath = obj["mesh"].get<std::string>();
 
                 std::string fullMeshPath = mapFolder + "/" + meshPath;
-                // Example: "my_campaign.dnd/maps/Tavern/models/table.obj"
+                // Example: "my_campaign.zero/maps/Tavern/models/table.obj"
 
-                sceneObj.mesh = std::make_shared<Mesh>(std::move(dndAssetLoader::loadOBJ(fullMeshPath)));
+                sceneObj.mesh = std::make_shared<Mesh>(std::move(zeroAssetLoader::loadOBJ(fullMeshPath)));
 
                 if (obj.contains("material")) {
                     /*
@@ -158,7 +158,7 @@ namespace dndProjectLoader {
          */
     }
 
-    bool createProject(const std::string& name, const std::string& author) {
+    std::string createProject(const std::string& name, const std::string& author) {
         /*
          * Quick outline in Project Creation:
          *
@@ -177,22 +177,22 @@ namespace dndProjectLoader {
         });
         sanitizedFolderName.erase(first, last);
 
-        // 2. Make the project by adding the .dnd extension.
-        const std::filesystem::path dndFolder = std::filesystem::path(EngineSettings::getInstance().projectPath) / (sanitizedFolderName + ".dnd");
+        // 2. Make the project by adding the .zero extension.
+        const std::filesystem::path dndFolder = std::filesystem::path(EngineSettings::getInstance().projectPath) / (sanitizedFolderName + ".zero");
 
         try {
             if (!std::filesystem::create_directories(dndFolder)) {
                 std::cout << "File already exists!" << std::endl;
-                return false; // TODO: Change this to a UI error when making the project
+                return "false"; // TODO: Change this to a UI error when making the project
             }
         } catch (const std::filesystem::filesystem_error& e) {
             std::cout << "Failed in creating project: " << e.what() << std::endl;
-            return false;
+            return "false";
         }
 
         // 3. Write the project.json file for the project
         std::filesystem::path projectJsonPath = dndFolder / "project.json";
-        nlohmann::json projectJson = dndProjectDefaults::createDefaultProjectJson(name, author);
+        nlohmann::json projectJson = zeroProjectDefaults::createDefaultProjectJson(name, author);
 
         std::ofstream file(projectJsonPath);
         if (file.is_open()) {
@@ -201,18 +201,18 @@ namespace dndProjectLoader {
             std::cout << "JSON file created successfully" << std::endl;
         } else {
             std::cerr << "Error: Could not open file for writing: " << projectJsonPath << std::endl;
-            return false;
+            return "false";
         }
 
         // 4. Create folders and populate them with .json files.
-        for (const std::string& folder : dndProjectDefaults::defaultFolders) {
+        for (const std::string& folder : zeroProjectDefaults::defaultFolders) {
             std::filesystem::create_directories(dndFolder / folder);
             if (folder == "maps" || folder == "campaign_rules" || folder == "characters")
                 continue;
             // TODO: Create .json files in each (dndFolder / folder)
         }
 
-        return true;
+        return dndFolder.string();
     }
 
     bool isValidProject(const std::string& dndPath) {
@@ -222,8 +222,8 @@ namespace dndProjectLoader {
             return false;
         }
 
-        // Check .dnd extension
-        if (std::filesystem::path(dndPath).extension() != ".dnd") {
+        // Check .zer extension
+        if (std::filesystem::path(dndPath).extension() != ".zero") {
             std::cout << "Failed: wrong extension - got " << std::filesystem::path(dndPath).extension() << std::endl;
             return false;
         }
@@ -259,12 +259,12 @@ namespace dndProjectLoader {
          * Basic outline in generating a UUID
          *
          * Create a random string of numbers, randomize those to string,
-         * have it be an exactly 32~ character string, and preface it with "dnd".
-         * Example output: "dnd-a3f2b1c4-9e7d4f2a-b8c1d4e5-f6a7b8c9"
+         * have it be an exactly 32~ character string, and preface it with "zro".
+         * Example output: "zro-a3f2b1c4-9e7d4f2a-b8c1d4e5-f6a7b8c9"
          */
 
         // Preface value
-        std::string preface = "dnd-";
+        std::string preface = "zro-";
 
         // 1. Create random integers
         static std::random_device rd;

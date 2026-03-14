@@ -6,7 +6,7 @@
 
 #include <cmath>
 
-namespace dndMath {
+namespace zeroMath {
     Matrix4 Matrix4::identity() {
         Matrix4 result = {};
         result.m[0][0] = 1.0f;

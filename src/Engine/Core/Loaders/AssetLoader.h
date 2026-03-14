@@ -8,7 +8,7 @@
 #include <string>
 #include "../RenderingMath/Mesh/Mesh.h"
 
-namespace dndAssetLoader {
+namespace zeroAssetLoader {
     std::string readFile(const std::string& path);
     Mesh loadOBJ(const std::string& path);
 

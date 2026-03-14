@@ -7,7 +7,7 @@
 #include "../Project/ProjectInfo.h"
 #include "../Project/MapData.h"
 
-namespace dndProjectLoader {
+namespace zeroProjectLoader {
     // Project - reads project.json and returns metadata
     ProjectInfo loadProject(const std::string& dndPath);
     void saveProject(const ProjectInfo& info, const std::string& dndPath);
@@ -19,7 +19,7 @@ namespace dndProjectLoader {
     // TODO: Make loaders for the rules and the characters (but that's in the future for the model and campaign editors)
 
     // Project Creation
-    bool createProject(const std::string& name, const std::string& author);
+    std::string createProject(const std::string& name, const std::string& author);
     bool isValidProject(const std::string& dndPath);
     std::string generateUUID();
 }

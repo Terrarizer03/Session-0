@@ -6,7 +6,6 @@
 #define DNDCREATOR_PROJECTINFO_H
 #include <string>
 #include <unordered_map>
-#include <vector>
 
 struct ProjectInfo {
     std::string name;

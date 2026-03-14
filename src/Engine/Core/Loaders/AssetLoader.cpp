@@ -14,7 +14,7 @@
 #include "tinyobjloader/tiny_obj_loader.h"
 
 
-namespace dndAssetLoader {
+namespace zeroAssetLoader {
 
     Mesh loadOBJ(const std::string& path) {
         tinyobj::attrib_t attrib;

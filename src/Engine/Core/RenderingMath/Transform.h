@@ -8,16 +8,16 @@
 #include "../Math/Vector/Vector3/Vector3.h"
 
 struct Transform {
-    dndMath::Vector3 position = { 0.0f, 0.0f, 0.0f };
-    dndMath::Vector3 rotation = { 0.0f, 0.0f, 0.0f };
-    dndMath::Vector3 scale = { 1.0f, 1.0f, 1.0f };
+    zeroMath::Vector3 position = { 0.0f, 0.0f, 0.0f };
+    zeroMath::Vector3 rotation = { 0.0f, 0.0f, 0.0f };
+    zeroMath::Vector3 scale = { 1.0f, 1.0f, 1.0f };
 
-    [[nodiscard]] dndMath::Matrix4 getModelMatrix() const {
-        const dndMath::Matrix4 t = dndMath::Matrix4::translate(position);
-        const dndMath::Matrix4 rx = dndMath::Matrix4::rotate(rotation.x, { 1, 0, 0 });
-        const dndMath::Matrix4 ry = dndMath::Matrix4::rotate(rotation.y, { 0, 1, 0 });
-        const dndMath::Matrix4 rz = dndMath::Matrix4::rotate(rotation.z, { 0, 0, 1 });
-        const dndMath::Matrix4 s = dndMath::Matrix4::scale(scale);
+    [[nodiscard]] zeroMath::Matrix4 getModelMatrix() const {
+        const zeroMath::Matrix4 t = zeroMath::Matrix4::translate(position);
+        const zeroMath::Matrix4 rx = zeroMath::Matrix4::rotate(rotation.x, { 1, 0, 0 });
+        const zeroMath::Matrix4 ry = zeroMath::Matrix4::rotate(rotation.y, { 0, 1, 0 });
+        const zeroMath::Matrix4 rz = zeroMath::Matrix4::rotate(rotation.z, { 0, 0, 1 });
+        const zeroMath::Matrix4 s = zeroMath::Matrix4::scale(scale);
 
         return t * ry * rx * rz * s;
     }

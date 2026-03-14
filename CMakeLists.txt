@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(DnDCreator)
+project(SessionZero)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -32,11 +32,11 @@ target_include_directories(imgui PUBLIC
 # OpenGL
 find_package(OpenGL REQUIRED)
 
-add_executable(DnDCreator)
+add_executable(SessionZero)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-target_sources(DnDCreator PRIVATE ${SOURCES})
+target_sources(SessionZero PRIVATE ${SOURCES})
 
-target_include_directories(DnDCreator PRIVATE
+target_include_directories(SessionZero PRIVATE
         external/glad/include
         external/glfw/include
         external/imgui/
@@ -45,7 +45,7 @@ target_include_directories(DnDCreator PRIVATE
         external/nlohmann/include
 )
 
-target_link_libraries(DnDCreator
+target_link_libraries(SessionZero
         glfw
         glad
         imgui

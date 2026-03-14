@@ -7,6 +7,7 @@
 
 
 class ProjectManagerUI {
+    void drawUI();
 };
 
 

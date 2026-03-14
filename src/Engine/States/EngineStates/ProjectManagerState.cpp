@@ -5,6 +5,9 @@
 #include <filesystem>
 #include <iostream>
 #include "ProjectManagerState.h"
+
+#include <chrono>
+
 #include "imgui.h"
 #include "MapEditorState.h"
 #include "../StateManager.h"
@@ -13,11 +16,11 @@
 bool ProjectManagerState::initialize() {
     try {
         for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(EngineSettings::getInstance().projectPath)) {
-            if (!dndProjectLoader::isValidProject(entry.path().string())) continue; // Example: entry.path().string() = "C:/Users/NICO/Documents/D&D Creator/Projects/default_campaign.dnd"
+            if (!zeroProjectLoader::isValidProject(entry.path().string())) continue; // Example: entry.path().string() = "C:/Users/NICO/Documents/D&D Creator/Projects/default_campaign.dnd"
 
             ProjectData projectData;
             projectData.path = entry.path().string();
-            projectData.projectInfo = dndProjectLoader::loadProject(entry.path().string());
+            projectData.projectInfo = zeroProjectLoader::loadProject(entry.path().string());
 
             m_project_paths.push_back(projectData);
         }
@@ -46,28 +49,32 @@ void ProjectManagerState::render(IRenderer* renderer) {
     ImGui::Text("Projects found: %d", static_cast<int>(m_project_paths.size()));
     ImGui::SameLine();
     if (ImGui::Button("New Project")) {
-        ImGui::OpenPopup("MyPopupModalID"); // 1. Call OpenPopup when the condition is met
+        ImGui::OpenPopup("New Project");
     }
 
-    // 2. Define the popup's existence, always on the same ID stack level
-    if (ImGui::BeginPopupModal("MyPopupModalID")) {
+    if (ImGui::BeginPopupModal("New Project")) {
         static char projectName[128] = "";
         static char author[128] = "";
 
-        ImGui::InputText("Enter Project Name: ", projectName, IM_ARRAYSIZE(projectName));
-        ImGui::InputText("Enter Author Name: ", author, IM_ARRAYSIZE(author));
+        ImGui::Text("Project Name:");
+        ImGui::SameLine();
+        ImGui::InputText("##ProjectName", projectName, 128);
+        ImGui::Text("Author Name:");
+        ImGui::SameLine();
+        ImGui::InputText("##AuthorName", author, IM_ARRAYSIZE(author));
 
         if (ImGui::Button("Create New Project")) {
-            dndProjectLoader::createProject(projectName, author);
+            std::string path = zeroProjectLoader::createProject(projectName, author);
             projectName[0] = '\0';
             author[0] = '\0';
+            stateManager->requestStateChange(std::make_unique<MapEditorState>(path));
         }
 
         if (ImGui::Button("Close")) {
-            ImGui::CloseCurrentPopup(); // 3. Use CloseCurrentPopup to close it
+            ImGui::CloseCurrentPopup();
         }
 
-        ImGui::EndPopup(); // 4. End the popup block
+        ImGui::EndPopup();
     }
 
     for (const ProjectData& project : m_project_paths) {
@@ -82,7 +89,16 @@ void ProjectManagerState::render(IRenderer* renderer) {
         ImGui::Separator();
 
         if (ImGui::Button("Open")) {
-            // TODO: before the change, set the timeModified to current time.
+            // TODO: Not sure why this won't work, but that doesn't concern me tonight. Fuck this
+            // auto now = std::chrono::system_clock::now();
+            // auto today = std::chrono::year_month_day{std::chrono::floor<std::chrono::days>(now)};
+            //
+            // std::string dateStr = std::format("{}-{:02}-{:02}",
+            //                           static_cast<int>(today.year()),
+            //                           static_cast<unsigned>(today.month()),
+            //                           static_cast<unsigned>(today.day())
+            //                       );
+            // project.projectInfo.timeModified = dateStr;
             stateManager->requestStateChange(std::make_unique<MapEditorState>(project.path));
         }
 

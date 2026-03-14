@@ -8,7 +8,7 @@
 
 struct RenderContext {
     const Camera* camera = nullptr;
-    dndMath::Vector3 lightDir = { 0.0f, 0.0f, 0.0f };
+    zeroMath::Vector3 lightDir = { 0.0f, 0.0f, 0.0f };
 };
 
 #endif //DNDCREATOR_RENDERCONTEXT_H

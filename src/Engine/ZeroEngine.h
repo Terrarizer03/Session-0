@@ -14,25 +14,25 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
+#include "UI/UIManager.h"
 
-class DnDEngine {
+class ZeroEngine {
     std::unique_ptr<IWindow> window;
     std::unique_ptr<IRenderer> renderer;
     std::unique_ptr<IInput> input;
     StateManager stateManager;
+    UIManager uiManager;
 public:
     // Default width and height
     int window_width;
     int window_height;
 
     // Constructor
-    DnDEngine(int w_width, int w_height) : window_width(w_width), window_height(w_height) {};
+    ZeroEngine(int w_width, int w_height) : window_width(w_width), window_height(w_height) {};
 
     // Destructor
-    ~DnDEngine() {
-        ImGui_ImplOpenGL3_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
-        ImGui::DestroyContext();
+    ~ZeroEngine() {
+        uiManager.shutdown();
 
         if (window) window->shutdown();
     }
@@ -42,10 +42,10 @@ public:
     void run();
 
     // Non-copyable, non-movable
-    DnDEngine(const DnDEngine&) = delete;
-    DnDEngine& operator=(const DnDEngine&) = delete;
-    DnDEngine(DnDEngine&&) = delete;
-    DnDEngine& operator=(DnDEngine&&) = delete;
+    ZeroEngine(const ZeroEngine&) = delete;
+    ZeroEngine& operator=(const ZeroEngine&) = delete;
+    ZeroEngine(ZeroEngine&&) = delete;
+    ZeroEngine& operator=(ZeroEngine&&) = delete;
 };
 
 

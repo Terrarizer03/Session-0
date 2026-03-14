@@ -10,7 +10,7 @@
 #include <format>
 #include "../Loaders/EngineSettings.h"
 
-namespace dndProjectDefaults {
+namespace zeroProjectDefaults {
     inline std::pmr::vector<std::string> defaultFolders = { "maps", "characters", "campaign_rules", "audio" };
     inline nlohmann::json createDefaultProjectJson(const std::string& name, const std::string& author) {
         nlohmann::json data;
