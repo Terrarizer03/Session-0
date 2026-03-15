@@ -25,7 +25,7 @@ namespace zeroProjectLoader {
 
         ProjectInfo projectInfo;
 
-        std::ifstream file(zeroPath + "/project.json");
+        std::ifstream file(std::filesystem::path(zeroPath) / "project.json");
 
         if (!file.is_open()) {
             std::cout << "Failed to open file: " << zeroPath + "/project.json" << std::endl;
@@ -82,7 +82,7 @@ namespace zeroProjectLoader {
         }
 
         std::string mapFolder = it->second;
-        std::string mapPath = mapFolder + "/map.json";
+        std::filesystem::path mapPath = std::filesystem::path(mapFolder) / "map.json";
         // Example: "my_campaign.zero/maps/Tavern/map.json"
 
         MapData mapData;

@@ -6,28 +6,20 @@
 #define SESSIONZERO_PROJECTDEFAULTS_H
 #include <string>
 #include <vector>
-#include <chrono>
 #include <iomanip>
 #include <fstream>
 #include <iostream>
 #include <filesystem>
-#include <format>
 #include "nlohmann/json.hpp"
 #include "../Loaders/EngineSettings.h"
+#include "../Utilities/getCurrentTime.h"
 
 namespace zeroProjectDefaults {
     inline std::pmr::vector<std::string> defaultFolders = { "maps", "characters", "campaign_rules", "audio" };
     inline nlohmann::json createDefaultProjectJson(const std::string& name, const std::string& author) {
         nlohmann::json data;
 
-        auto now = std::chrono::system_clock::now();
-        auto today = std::chrono::year_month_day{std::chrono::floor<std::chrono::days>(now)};
-
-        std::string dateStr = std::format("{}-{:02}-{:02}",
-                                  static_cast<int>(today.year()),
-                                  static_cast<unsigned>(today.month()),
-                                  static_cast<unsigned>(today.day())
-                              );
+        std::string dateStr = zeroHelper::getCurrentTime();
 
         data["name"] = name;
         data["metadata"]["version"] = EngineSettings::getInstance().version;

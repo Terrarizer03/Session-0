@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include "../../States/EngineStates/MapEditorTab.h"
-#include "../../Core/RenderingMath/RenderContext.h"
+#include "../../Core/Scene/RenderContext.h"
 #include "../../Core/Project/ProjectInfo.h"
 
 struct MapEditorUIContext {
@@ -15,16 +15,17 @@ struct MapEditorUIContext {
     std::vector<MapEditorTab>& tabs;
     RenderContext& renderContext;
     int& activeTab;
+    int& selectedObjectIndex;
     std::string& requestedTab;
     std::string& projectPath;
 
-    MapEditorUIContext(ProjectInfo& _projectInfo, std::vector<MapEditorTab>& _tabs, RenderContext& _renderContext, int& _activeTab, std::string& _requestedTab, std::string& _projectPath)
-        : projectInfo(_projectInfo), tabs(_tabs), renderContext(_renderContext), activeTab(_activeTab), requestedTab(_requestedTab), projectPath(_projectPath) {
-    }
+    MapEditorUIContext(ProjectInfo& _projectInfo, std::vector<MapEditorTab>& _tabs, RenderContext& _renderContext, int& _activeTab, int& _selectedObjectIndex, std::string& _requestedTab, std::string& _projectPath)
+        : projectInfo(_projectInfo), tabs(_tabs), renderContext(_renderContext), activeTab(_activeTab),
+    selectedObjectIndex(_selectedObjectIndex), requestedTab(_requestedTab), projectPath(_projectPath) {}
 };
 
 struct MapEditorUI {
-    void drawUI(MapEditorUIContext& ctx);
+    void drawUI(const MapEditorUIContext& ctx);
 };
 
 

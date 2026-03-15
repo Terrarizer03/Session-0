@@ -6,9 +6,9 @@
 #define SESSIONZERO_SCENEOBJECT_H
 #include <string>
 
-#include "Material.h"
-#include "Transform.h"
-#include "Mesh/Mesh.h"
+#include "../RenderingMath/Material.h"
+#include "../RenderingMath/Transform.h"
+#include "../RenderingMath/Mesh/Mesh.h"
 
 struct SceneObject {
     std::shared_ptr<Mesh> mesh;

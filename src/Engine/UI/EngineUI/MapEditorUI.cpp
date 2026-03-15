@@ -8,13 +8,13 @@
 #include "imgui.h"
 #include "../../Core/Project/ProjectDefaults.h"
 
-void MapEditorUI::drawUI(MapEditorUIContext& ctx) {
+void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
     // ==================== Hierarchy ====================
     ImGuiViewport* viewport = ImGui::GetMainViewport();
 
     // Set position and size before Begin()
     ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y));
-    ImGui::SetNextWindowSize(ImVec2(200, viewport->Size.y));
+    ImGui::SetNextWindowSize(ImVec2(250, viewport->Size.y));
 
     ImGui::Begin("Hierarchy", nullptr,
         ImGuiWindowFlags_NoMove |
@@ -50,29 +50,45 @@ void MapEditorUI::drawUI(MapEditorUIContext& ctx) {
     }
 
     if (ImGui::TreeNode("Maps")) {
-        for (const auto& [name, path] : ctx.projectInfo.mapPaths) {
-            if (ImGui::Selectable(name.c_str())) {
-                // Check if tab already exists
-                bool tabExists = false;
-                for (auto & m_tab : ctx.tabs) {
-                    if (m_tab.name == name) {
-                        tabExists = true;
+        for (const auto &name: ctx.projectInfo.mapPaths | std::views::keys) {
+            if (ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow)) {
+                if (ImGui::IsItemClicked()) {
+                    // Check if tab already exists
+                    bool tabExists = false;
+                    for (auto & m_tab : ctx.tabs) {
+                        if (m_tab.name == name) {
+                            tabExists = true;
+                            break;
+                        }
+                    }
+
+                    // Only create if it doesn't exist
+                    if (!tabExists) {
+                        ctx.tabs.emplace_back();
+                        int newTab = static_cast<int>(ctx.tabs.size() - 1);
+                        ctx.tabs[newTab].name = name;
+                        ctx.tabs[newTab].mapData = zeroProjectLoader::loadMapData(ctx.projectInfo, name);
+                        float aspect = static_cast<float>(EngineSettings::getInstance().windowWidth - 200) / static_cast<float>(EngineSettings::getInstance().windowHeight);
+                        ctx.tabs[newTab].camera.setPerspective(EngineSettings::getInstance().fov, aspect, EngineSettings::getInstance().nearPlane, EngineSettings::getInstance().farPlane);
+                    }
+
+                    // Always request the tab switch
+                    ctx.requestedTab = name;
+                }
+
+                for (auto& tab : ctx.tabs) {
+                    if (tab.name == name) {
+                        for (size_t i = 0; i < tab.mapData.objects.size(); i++) {
+                            if (ImGui::Selectable(tab.mapData.objects[i].name.c_str())) {
+                                ctx.selectedObjectIndex = static_cast<int>(i);
+                            }
+                        }
                         break;
                     }
                 }
 
-                // Only create if it doesn't exist
-                if (!tabExists) {
-                    ctx.tabs.emplace_back();
-                    int newTab = static_cast<int>(ctx.tabs.size() - 1);
-                    ctx.tabs[newTab].name = name;
-                    ctx.tabs[newTab].mapData = zeroProjectLoader::loadMapData(ctx.projectInfo, name);
-                    float aspect = static_cast<float>(EngineSettings::getInstance().windowWidth - 200) / static_cast<float>(EngineSettings::getInstance().windowHeight);
-                    ctx.tabs[newTab].camera.setPerspective(EngineSettings::getInstance().fov, aspect, EngineSettings::getInstance().nearPlane, EngineSettings::getInstance().farPlane);
-                }
 
-                // Always request the tab switch
-                ctx.requestedTab = name;
+                ImGui::TreePop();
             }
         }
         ImGui::TreePop();
@@ -82,8 +98,8 @@ void MapEditorUI::drawUI(MapEditorUIContext& ctx) {
 
     // ==================== Tabs ====================
     // Set position and size before Begin()
-    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x + 200, viewport->Pos.y));
-    ImGui::SetNextWindowSize(ImVec2(viewport->Size.x - 200, 50));
+    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x + 250, viewport->Pos.y));
+    ImGui::SetNextWindowSize(ImVec2(viewport->Size.x - 500, 50));
 
     ImGui::Begin("Tabs", nullptr,
         ImGuiWindowFlags_NoMove |
@@ -99,7 +115,10 @@ void MapEditorUI::drawUI(MapEditorUIContext& ctx) {
                     flags = ImGuiTabItemFlags_SetSelected;
                     ctx.requestedTab = "";
                 }
-                if (ImGui::BeginTabItem(ctx.tabs[i].name.c_str(), &ctx.tabs[i].isOpen, flags)) {
+
+                std::string tabLabel = ctx.tabs[i].name + (ctx.tabs[i].mapData.isDirty ? "*" : "");
+
+                if (ImGui::BeginTabItem(tabLabel.c_str(), &ctx.tabs[i].isOpen, flags)) {
                     ctx.activeTab = static_cast<int>(i);
                     ImGui::EndTabItem();
                 }
@@ -108,9 +127,11 @@ void MapEditorUI::drawUI(MapEditorUIContext& ctx) {
                     i--;
                     if (ctx.tabs.empty()) {
                         ctx.activeTab = 0;
+                        ctx.selectedObjectIndex = -1;
                     }
                     else if (ctx.activeTab >= static_cast<int>(ctx.tabs.size())) {
                         ctx.activeTab = static_cast<int>(ctx.tabs.size()) - 1;
+                        ctx.selectedObjectIndex = -1;
                     }
                 }
             }
@@ -118,6 +139,45 @@ void MapEditorUI::drawUI(MapEditorUIContext& ctx) {
         }
     } else {
         ImGui::Text("No Maps Found. Create a new map to get started.");
+    }
+
+    ImGui::End();
+
+    // ==================== Properties Panel ====================
+    ImGui::SetNextWindowPos(ImVec2(viewport->Size.x - 200, viewport->Pos.y));
+    ImGui::SetNextWindowSize(ImVec2(250, viewport->Size.y));
+
+    ImGui::Begin("Properties Panel", nullptr,
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+    if (ctx.selectedObjectIndex != -1) {
+        SceneObject& selected = ctx.tabs[ctx.activeTab].mapData.objects[ctx.selectedObjectIndex];
+        bool changed = false;
+
+        ImGui::Text("Name: %s", selected.name.c_str());
+        ImGui::Separator();
+        ImGui::Text("Position");
+        changed |= ImGui::DragFloat("X##pos", &selected.transform.position.x);
+        changed |= ImGui::DragFloat("Y##pos", &selected.transform.position.y);
+        changed |= ImGui::DragFloat("Z##pos", &selected.transform.position.z);
+        ImGui::Separator();
+        ImGui::Text("Rotation");
+        changed |= ImGui::DragFloat("X##rot", &selected.transform.rotation.x);
+        changed |= ImGui::DragFloat("Y##rot", &selected.transform.rotation.y);
+        changed |= ImGui::DragFloat("Z##rot", &selected.transform.rotation.z);
+        ImGui::Separator();
+        ImGui::Text("Scale");
+        changed |= ImGui::DragFloat("X##sca", &selected.transform.scale.x);
+        changed |= ImGui::DragFloat("Y##sca", &selected.transform.scale.y);
+        changed |= ImGui::DragFloat("Z##sca", &selected.transform.scale.z);
+
+
+        if (changed) {
+            ctx.tabs[ctx.activeTab].mapData.isDirty = true;
+        }
     }
 
     ImGui::End();

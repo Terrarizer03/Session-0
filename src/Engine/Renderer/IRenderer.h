@@ -7,7 +7,7 @@
 #include "../Core/RenderingMath/Transform.h"
 #include "../Core/RenderingMath/Mesh/Mesh.h"
 #include "../Core/RenderingMath/Material.h"
-#include "../Core/RenderingMath/RenderContext.h"
+#include "../Core/Scene/RenderContext.h"
 
 class IRenderer {
 public:

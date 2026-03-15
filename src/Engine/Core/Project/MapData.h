@@ -6,7 +6,7 @@
 #define SESSIONZERO_MAPDATA_H
 #include <string>
 #include <vector>
-#include "../RenderingMath/SceneObject.h"
+#include "../Scene/SceneObject.h"
 
 struct MapData {
     std::string name;

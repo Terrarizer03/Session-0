@@ -5,16 +5,12 @@
 #ifndef SESSIONZERO_PROJECTMANAGERSTATE_H
 #define SESSIONZERO_PROJECTMANAGERSTATE_H
 #include "../IState.h"
-#include "../../Core/Loaders/EngineSettings.h"
-#include "../../Core/Loaders/ProjectLoader.h"
-
-struct ProjectData {
-    std::string path;
-    ProjectInfo projectInfo;
-};
+#include "../../Core/Project/ProjectData.h"
+#include "../../UI/EngineUI/ProjectManagerUI.h"
 
 class ProjectManagerState : public IState {
     std::vector<ProjectData> m_project_paths;
+    ProjectManagerUI m_projectManagerUI;
 public:
     bool initialize() override;
     void handleInput(IInput& input) override;

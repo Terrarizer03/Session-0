@@ -5,15 +5,12 @@
 #include <glad/glad.h>
 #include "GLRenderer.h"
 
-#include <iostream>
-#include <ostream>
-
-#include "GLFW/glfw3.h"
-
 bool GLRenderer::initialize() {
     if (!gladLoadGL()) {
         return false;
     }
+
+    glEnable(GL_DEPTH_TEST);
 
     return true;
 }

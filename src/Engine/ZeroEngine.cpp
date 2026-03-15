@@ -3,10 +3,9 @@
 //
 
 #include <iostream>
-#include "glad/glad.h"
 #include "ZeroEngine.h"
 #include "Core/Input/GLFWInput/GLFWInput.h"
-#include "Core/Loaders/AssetLoader.h"
+#include "Core/Loaders/EngineSettings.h"
 #include "Renderer/OpenGLRenderer/GLRenderer.h"
 #include "Window/GLFWWindow/GLFWWindow.h"
 #include "States/EngineStates/MapEditorState.h"
@@ -32,8 +31,6 @@ bool ZeroEngine::initialize() {
     input = std::make_unique<GLFWInput>(handle);
 
     uiManager.initialize(handle);
-
-    glEnable(GL_DEPTH_TEST);
 
     renderer->setViewport(0, 0, window_width, window_height);
 

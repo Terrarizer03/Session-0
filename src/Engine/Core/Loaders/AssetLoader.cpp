@@ -13,7 +13,6 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tinyobjloader/tiny_obj_loader.h"
 
-
 namespace zeroAssetLoader {
 
     Mesh loadOBJ(const std::string& path) {

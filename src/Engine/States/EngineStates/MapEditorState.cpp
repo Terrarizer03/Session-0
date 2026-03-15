@@ -77,7 +77,7 @@ void MapEditorState::render(IRenderer* renderer) {
             renderer->draw(*object.mesh, object.transform, object.material, m_renderContext);
         }
     }
-    MapEditorUIContext ctx(m_projectInfo, m_tabs, m_renderContext, activeTab, m_requestedTab, m_projectPath);
+    MapEditorUIContext ctx(m_projectInfo, m_tabs, m_renderContext, activeTab, m_selectedObjectIndex, m_requestedTab, m_projectPath);
     m_mapEditorUI.drawUI(ctx);
 }
 
