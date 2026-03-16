@@ -7,10 +7,12 @@
 
 #include <string>
 #include "../RenderingMath/Mesh/Mesh.h"
+#include "../RenderingMath/AssetCache.h"
 
 namespace zeroAssetLoader {
     std::string readFile(const std::string& path);
     Mesh loadOBJ(const std::string& path);
+    std::shared_ptr<Mesh> getOrLoadMesh(const std::string& path, AssetCache& meshCache);
 
     // TODO: Make actual loaders that add objects to the scene
 }

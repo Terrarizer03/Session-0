@@ -3,10 +3,11 @@
 //
 
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "GLRenderer.h"
 
 bool GLRenderer::initialize() {
-    if (!gladLoadGL()) {
+    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
         return false;
     }
 

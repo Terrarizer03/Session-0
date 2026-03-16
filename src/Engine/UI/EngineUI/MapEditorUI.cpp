@@ -68,7 +68,7 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
                         int newTab = static_cast<int>(ctx.tabs.size() - 1);
                         ctx.tabs[newTab].name = name;
                         ctx.tabs[newTab].mapData = zeroProjectLoader::loadMapData(ctx.projectInfo, name);
-                        float aspect = static_cast<float>(EngineSettings::getInstance().windowWidth - 200) / static_cast<float>(EngineSettings::getInstance().windowHeight);
+                        float aspect = static_cast<float>(EngineSettings::getInstance().windowWidth - 250) / static_cast<float>(EngineSettings::getInstance().windowHeight);
                         ctx.tabs[newTab].camera.setPerspective(EngineSettings::getInstance().fov, aspect, EngineSettings::getInstance().nearPlane, EngineSettings::getInstance().farPlane);
                     }
 

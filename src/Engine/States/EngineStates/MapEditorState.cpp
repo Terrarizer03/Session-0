@@ -22,10 +22,10 @@ bool MapEditorState::initialize() {
 
 void MapEditorState::handleInput(IInput& input) {
     if (!m_tabs.empty()) {
-        // TODO: Not sure if the fix worked or anything but it's still pretty jumpy
         if (input.getMouseButton(GLFW_MOUSE_BUTTON_RIGHT)) {
             if (!cursorLocked) {
                 input.setCursorMode(true);
+                input.resetMouseDelta(); // Finally fixed that jumpy ass shit, just had to reset the mouse delta
                 cursorLocked = true;
             }
             m_tabs[activeTab].camera.yaw += input.getDeltaX() * zeroConstants::SENSITIVITY;
@@ -45,9 +45,7 @@ void MapEditorState::handleInput(IInput& input) {
         const zeroMath::Vector3 side = m_tabs[activeTab].camera.front.cross(m_tabs[activeTab].camera.up).normalized();
 
         if (input.getKey(GLFW_KEY_LEFT_CONTROL) && input.getKeyPressed(GLFW_KEY_S)) {
-            std::cout << "saving map" << std::endl;
             zeroProjectLoader::saveMapData(m_tabs[activeTab].mapData, m_projectPath, m_tabs[activeTab].name);
-            std::cout << "map saved" << std::endl;
         }
 
         if (input.getKey(GLFW_KEY_W))
@@ -70,7 +68,7 @@ void MapEditorState::update(float deltaTime) {
 }
 
 void MapEditorState::render(IRenderer* renderer) {
-    renderer->setViewport(200, 50 , EngineSettings::getInstance().windowWidth - 200, EngineSettings::getInstance().windowHeight);
+    renderer->setViewport(250, 0 , EngineSettings::getInstance().windowWidth - 500, EngineSettings::getInstance().windowHeight - 75);
 
     if (!m_tabs.empty()) {
         m_renderContext.camera = &m_tabs[activeTab].camera;

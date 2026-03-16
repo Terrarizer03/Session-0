@@ -3,7 +3,9 @@
 //
 
 #include <iostream>
+#include "glad/glad.h"
 #include "GLFWWindow.h"
+#include "../../Core/Loaders/EngineSettings.h"
 
 bool GLFWWindow::initialize() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -28,6 +30,12 @@ bool GLFWWindow::createWindow(int width, int height, const char* window_name) {
     }
 
     glfwMakeContextCurrent(glfwWindow);
+
+    glfwSetFramebufferSizeCallback(glfwWindow, [](GLFWwindow* window, int width, int height) {
+        glViewport(0, 0, width, height);
+        EngineSettings::getInstance().windowWidth = width;
+        EngineSettings::getInstance().windowHeight = height;
+    });
 
     return true;
 }

@@ -24,9 +24,6 @@ class MapEditorState : public IState {
     std::string m_requestedTab;
 
     MapEditorUI m_mapEditorUI;
-
-    zeroMath::Vector2 mousePos = {};
-
     RenderContext m_renderContext = {};
 public:
     MapEditorState(std::string project_file) : m_projectPath(std::move(project_file)) {}

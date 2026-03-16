@@ -7,10 +7,10 @@
 #include <iostream>
 #include <random>
 #include <iomanip>
-#include "../Utilities/parseMaterial.h"
-#include "../Utilities/parseTransform.h"
+#include "../Utilities/helpers.h"
 #include "ProjectLoader.h"
 #include "AssetLoader.h"
+#include "EngineSettings.h"
 #include "../Project/ProjectDefaults.h"
 #include "nlohmann/json.hpp"
 
@@ -129,15 +129,15 @@ namespace zeroProjectLoader {
                 if (obj.contains("mesh")) {
                     std::string meshPath = obj["mesh"].get<std::string>();
                     std::string fullMeshPath = mapFolder + "/" + meshPath; // Example: "my_campaign.zero/maps/Tavern/models/table.obj"
-                    sceneObj.mesh = std::make_shared<Mesh>(std::move(zeroAssetLoader::loadOBJ(fullMeshPath)));
+                    sceneObj.mesh = zeroAssetLoader::getOrLoadMesh(fullMeshPath, mapData.assetCache);
                 };
 
                 if (obj.contains("material")) {
-                    sceneObj.material = zeroHelper::parseMaterial(obj["material"], mapFolder);
+                    sceneObj.material = zeroHelpers::parseMaterial(obj["material"], mapFolder);
                 }
 
                 if (obj.contains("transform")) {
-                    sceneObj.transform = zeroHelper::parseTransform(obj["transform"]);
+                    sceneObj.transform = zeroHelpers::parseTransform(obj["transform"]);
                 }
             }
         }

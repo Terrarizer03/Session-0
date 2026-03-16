@@ -27,6 +27,9 @@ public:
     [[nodiscard]] bool getMouseButton(int button) const override {
         return glfwGetMouseButton(m_handle, button) == GLFW_PRESS;
     }
+    void resetMouseDelta() override {
+        m_FirstMouse = true;
+    }
     void getMousePosition(double &x, double &y) const override {
         glfwGetCursorPos(m_handle, &x, &y);
     }

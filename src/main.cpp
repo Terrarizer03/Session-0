@@ -1,7 +1,9 @@
+#include <iostream>
 #include "Engine/ZeroEngine.h"
 #include "Engine/Core/Loaders/EngineSettings.h"
 
 int main() {
+    std::cout << "Starting" << std::endl;
     ZeroEngine Engine(EngineSettings::getInstance().windowWidth, EngineSettings::getInstance().windowHeight);
 
     if (!Engine.initialize()) return -1;

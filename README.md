@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > These screenshots of Session-0's rendering system is extremely early into the project.
-> These image are subjected to change in the near future once systems are actually applied and
+> These images are subjected to change in the near future once systems are actually applied and
 > visuals get an upgrade.
 
 <img src="github/images/coob.png" width="1057">

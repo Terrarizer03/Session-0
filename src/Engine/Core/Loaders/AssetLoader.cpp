@@ -91,4 +91,16 @@ namespace zeroAssetLoader {
         return ss.str();
     }
 
+    std::shared_ptr<Mesh> getOrLoadMesh(const std::string& path, AssetCache& meshCache) {
+        // Find mesh in asset cache
+        auto it = meshCache.loaded_meshes.find(path);
+        if (it != meshCache.loaded_meshes.end()) {
+            return it->second;
+        }
+
+        // if the mesh doesn't exist in the cache, load, cache, and return it.
+        auto mesh = std::make_shared<Mesh>(loadOBJ(path));
+        meshCache.loaded_meshes[path] = mesh;
+        return mesh;
+    }
 }
