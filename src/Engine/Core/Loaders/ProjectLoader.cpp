@@ -111,8 +111,11 @@ namespace zeroProjectLoader {
             std::cout << "Object count: " << data["objects"].size() << std::endl;
 
         if (data.contains("objects")) {
+            mapData.objects.reserve(data["objects"].size());
             for (auto& obj : data["objects"]) {
-                SceneObject sceneObj;
+                mapData.objects.emplace_back();
+                SceneObject& sceneObj = mapData.objects.back();
+
                 sceneObj.name = obj.value("name", "Unnamed");
 
                 if (obj.contains("UUID")) {
@@ -123,39 +126,65 @@ namespace zeroProjectLoader {
                     mapData.isDirty = true;
                 }
 
-                // mesh field is a path string
-                if (!obj.contains("mesh")) continue;
-                std::string meshPath = obj["mesh"].get<std::string>();
-
-                std::string fullMeshPath = mapFolder + "/" + meshPath;
-                // Example: "my_campaign.zero/maps/Tavern/models/table.obj"
-
-                sceneObj.mesh = std::make_shared<Mesh>(std::move(zeroAssetLoader::loadOBJ(fullMeshPath)));
+                if (obj.contains("mesh")) {
+                    std::string meshPath = obj["mesh"].get<std::string>();
+                    std::string fullMeshPath = mapFolder + "/" + meshPath; // Example: "my_campaign.zero/maps/Tavern/models/table.obj"
+                    sceneObj.mesh = std::make_shared<Mesh>(std::move(zeroAssetLoader::loadOBJ(fullMeshPath)));
+                };
 
                 if (obj.contains("material")) {
-                    /*
-                     * Not sure if mapFolder being passed is a hack, but the helper does need
-                     * the base path... So I guess not, it's 10pm I have to sleep tho
-                     */
                     sceneObj.material = zeroHelper::parseMaterial(obj["material"], mapFolder);
                 }
 
                 if (obj.contains("transform")) {
                     sceneObj.transform = zeroHelper::parseTransform(obj["transform"]);
                 }
-
-                mapData.objects.push_back(sceneObj);
             }
         }
-
         return mapData;
     }
 
+    void saveMapData(MapData& mapData, const std::string& projectPath, const std::string& mapName) {
+        // Set necessary path
+        std::filesystem::path mapJson = std::filesystem::path(projectPath) / "maps" / mapName / "map.json"; // Example: "C:/Users/NICO/Documents/D&D Creator/Projects/default_campaign.zero/maps/Tavern/map.json"
 
-    void saveMapData(const MapData& mapData, const std::string& mapPath) {
-        /*
-         * Take in map data and save it to its map.json file.
-         */
+        // 1. Copy everything in the map.json file to mapConfig
+        nlohmann::json mapConfig;
+        std::ifstream inFile(mapJson);
+        if (inFile.is_open()) {
+            inFile >> mapConfig;
+            inFile.close();
+        } else {
+            std::cerr << "Could not read project.json to update it!" << std::endl;
+        }
+
+        // 2. Alter object values
+        mapConfig["name"] = mapData.name; // TODO: alter the name in project.json as well if this changes
+
+        if (mapConfig.contains("objects")) {
+            for (auto& obj : mapData.objects) {
+                for (auto& jsonObj : mapConfig["objects"]) {
+                    if (jsonObj["UUID"] == obj.getUUID()) {
+                        // TODO: Also alter mesh and material
+                        jsonObj["name"] = obj.name;
+                        jsonObj["transform"]["position"] = obj.transform.position.getVectorValues();
+                        jsonObj["transform"]["rotation"] = obj.transform.rotation.getVectorValues();
+                        jsonObj["transform"]["scale"] = obj.transform.scale.getVectorValues();
+                    }
+                }
+            }
+        }
+
+        // 3. Send back the altered mapJson back to the old file.
+        std::ofstream outFile(mapJson);
+        if (outFile.is_open()) {
+            outFile << std::setw(4) << mapConfig << std::endl;
+            outFile.close();
+            std::cout << "map.json updated successfully." << std::endl;
+        }
+
+        // 4. Set mapData to no changes.
+        mapData.isDirty = false;
     }
 
     std::string createProject(const std::string& name, const std::string& author) {

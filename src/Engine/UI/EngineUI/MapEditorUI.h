@@ -15,13 +15,13 @@ struct MapEditorUIContext {
     std::vector<MapEditorTab>& tabs;
     RenderContext& renderContext;
     int& activeTab;
-    int& selectedObjectIndex;
     std::string& requestedTab;
     std::string& projectPath;
+    std::string& selectedObjectUUID;
 
-    MapEditorUIContext(ProjectInfo& _projectInfo, std::vector<MapEditorTab>& _tabs, RenderContext& _renderContext, int& _activeTab, int& _selectedObjectIndex, std::string& _requestedTab, std::string& _projectPath)
+    MapEditorUIContext(ProjectInfo& _projectInfo, std::vector<MapEditorTab>& _tabs, RenderContext& _renderContext, int& _activeTab, std::string& _selectedObjectUUID, std::string& _requestedTab, std::string& _projectPath)
         : projectInfo(_projectInfo), tabs(_tabs), renderContext(_renderContext), activeTab(_activeTab),
-    selectedObjectIndex(_selectedObjectIndex), requestedTab(_requestedTab), projectPath(_projectPath) {}
+    selectedObjectUUID(_selectedObjectUUID), requestedTab(_requestedTab), projectPath(_projectPath) {}
 };
 
 struct MapEditorUI {

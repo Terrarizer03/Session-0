@@ -4,6 +4,7 @@
 
 #ifndef SESSIONZERO_VECTOR3_H
 #define SESSIONZERO_VECTOR3_H
+#include <vector>
 
 namespace zeroMath {
     struct Vector3 {
@@ -12,6 +13,8 @@ namespace zeroMath {
         constexpr Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 
         constexpr Vector3(const float _x, const float _y, const float _z) : x(_x), y(_y), z(_z) {}
+
+        std::pmr::vector<float> getVectorValues() { return { x, y, z }; }
 
         // Operator Overloading
         Vector3 operator+(const Vector3 &other) const {

@@ -14,7 +14,7 @@ namespace zeroProjectLoader {
 
     // Map - reads specific map.json and returns scene data
     MapData loadMapData(const ProjectInfo& projectInfo, const std::string& mapName);
-    void saveMapData(const std::string& mapPath);
+    void saveMapData(MapData& mapData, const std::string& projectPath, const std::string& mapName);
 
     // TODO: Make loaders for the rules and the characters (but that's in the future for the model and campaign editors)
 

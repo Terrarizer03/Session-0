@@ -13,11 +13,16 @@ class GLFWInput : public IInput {
     double m_LastX = 400, m_LastY = 400;
     bool m_FirstMouse = true;
     float m_DeltaX = 0, m_DeltaY = 0;
+    bool m_prevKeys[GLFW_KEY_LAST] = {};
+    bool m_currKeys[GLFW_KEY_LAST] = {};
 public:
     explicit GLFWInput(GLFWwindow* handle) : m_handle(handle) {}
 
     [[nodiscard]] bool getKey(int key) const override {
-        return glfwGetKey(m_handle, key) == GLFW_PRESS;
+        return m_currKeys[key];
+    }
+    [[nodiscard]] bool getKeyPressed(int key) const override {
+        return m_currKeys[key] && !m_prevKeys[key];
     }
     [[nodiscard]] bool getMouseButton(int button) const override {
         return glfwGetMouseButton(m_handle, button) == GLFW_PRESS;
@@ -31,6 +36,12 @@ public:
     }
 
     void update() override {
+        std::copy(std::begin(m_currKeys), std::end(m_currKeys), std::begin(m_prevKeys));
+
+        for (int i = 0; i < GLFW_KEY_LAST; i++) {
+            m_currKeys[i] = glfwGetKey(m_handle, i) == GLFW_PRESS;
+        }
+
         double x, y;
         glfwGetCursorPos(m_handle, &x, &y);
 

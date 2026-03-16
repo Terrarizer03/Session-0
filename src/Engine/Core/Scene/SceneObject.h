@@ -5,7 +5,6 @@
 #ifndef SESSIONZERO_SCENEOBJECT_H
 #define SESSIONZERO_SCENEOBJECT_H
 #include <string>
-
 #include "../RenderingMath/Material.h"
 #include "../RenderingMath/Transform.h"
 #include "../RenderingMath/Mesh/Mesh.h"
@@ -16,6 +15,8 @@ struct SceneObject {
     Material material;
     std::string name;
     std::string UUID;
+
+    [[nodiscard]] const std::string& getUUID() const { return UUID; }
 };
 
 #endif //SESSIONZERO_SCENEOBJECT_H

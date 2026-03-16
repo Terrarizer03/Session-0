@@ -11,6 +11,7 @@
 #include "../../Core/Loaders/EngineSettings.h"
 
 bool ProjectManagerState::initialize() {
+    std::cout << "ProjectManagerState initialized" << std::endl;
     try {
         for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(EngineSettings::getInstance().projectPath)) {
             if (!zeroProjectLoader::isValidProject(entry.path().string())) continue; // Example: entry.path().string() = "C:/Users/NICO/Documents/D&D Creator/Projects/default_campaign.zero"
@@ -44,7 +45,6 @@ void ProjectManagerState::render(IRenderer* renderer) {
         m_projectManagerUI.request.requestChange = false;
         m_projectManagerUI.request.path.clear();
     }
-
 }
 
 void ProjectManagerState::cleanup() const {

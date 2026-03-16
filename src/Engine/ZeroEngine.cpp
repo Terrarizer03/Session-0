@@ -12,12 +12,15 @@
 #include "States/EngineStates/ProjectManagerState.h"
 
 bool ZeroEngine::initialize() {
+    std::cout << "Initializing ZeroEngine" << std::endl;
 
     window = std::make_unique<GLFWWindow>();
     if (!window || !window->initialize() || !window->createWindow(window_width, window_height, "Session-0")) {
         std::cout << "Failed to initialize window \n";
         return false;
     }
+
+    std::cout << "Window Created" << std::endl;
 
     window->setVSync(EngineSettings::getInstance().vsyncEnabled);
 
@@ -27,14 +30,20 @@ bool ZeroEngine::initialize() {
         return false;
     }
 
+    std::cout << "Renderer Created" << std::endl;
+
     GLFWwindow* handle = static_cast<GLFWWindow*>(window.get())->getHandle();
     input = std::make_unique<GLFWInput>(handle);
 
     uiManager.initialize(handle);
 
+    std::cout << "ImGui Intialized" << std::endl;
+
     renderer->setViewport(0, 0, window_width, window_height);
 
     stateManager.pushState(std::make_unique<ProjectManagerState>());
+
+    std::cout << "State Pushed" << std::endl;
 
     return true;
 }
@@ -50,7 +59,7 @@ void ZeroEngine::run() {
         uiManager.beginFrame();
 
         state->handleInput(*input);
-        state->update(16.66f);
+        state->update(16.66f); // Don't mind this magic number, it's not really needed yet, I just needed to pass in a value
         state->render(renderer.get());
 
         stateManager.applyPendingState();

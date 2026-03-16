@@ -4,15 +4,11 @@
 
 #include <iostream>
 #include "MapEditorState.h"
-
-#include <ranges>
-
 #include "../../Renderer/OpenGLRenderer/GLShader.h"
 #include "../../Core/Utilities/constants.h"
 #include "../../Core/Loaders/EngineSettings.h"
 #include "../../Core/Loaders/ProjectLoader.h"
 #include "GLFW/glfw3.h"
-#include "imgui.h"
 
 bool MapEditorState::initialize() {
     std::cout << "MapEditorState initialized in project " << m_projectPath << std::endl;
@@ -48,6 +44,12 @@ void MapEditorState::handleInput(IInput& input) {
         m_tabs[activeTab].camera.updateFront();
         const zeroMath::Vector3 side = m_tabs[activeTab].camera.front.cross(m_tabs[activeTab].camera.up).normalized();
 
+        if (input.getKey(GLFW_KEY_LEFT_CONTROL) && input.getKeyPressed(GLFW_KEY_S)) {
+            std::cout << "saving map" << std::endl;
+            zeroProjectLoader::saveMapData(m_tabs[activeTab].mapData, m_projectPath, m_tabs[activeTab].name);
+            std::cout << "map saved" << std::endl;
+        }
+
         if (input.getKey(GLFW_KEY_W))
             m_tabs[activeTab].camera.position += m_tabs[activeTab].camera.front * zeroConstants::CAMERA_SPEED;
         if (input.getKey(GLFW_KEY_S))
@@ -61,7 +63,6 @@ void MapEditorState::handleInput(IInput& input) {
         if (input.getKey(GLFW_KEY_E))
             m_tabs[activeTab].camera.position += m_tabs[activeTab].camera.up * zeroConstants::CAMERA_SPEED;
     }
-
 }
 
 void MapEditorState::update(float deltaTime) {
@@ -77,7 +78,7 @@ void MapEditorState::render(IRenderer* renderer) {
             renderer->draw(*object.mesh, object.transform, object.material, m_renderContext);
         }
     }
-    MapEditorUIContext ctx(m_projectInfo, m_tabs, m_renderContext, activeTab, m_selectedObjectIndex, m_requestedTab, m_projectPath);
+    MapEditorUIContext ctx(m_projectInfo, m_tabs, m_renderContext, activeTab, m_selectedObjectUUID,m_requestedTab, m_projectPath);
     m_mapEditorUI.drawUI(ctx);
 }
 

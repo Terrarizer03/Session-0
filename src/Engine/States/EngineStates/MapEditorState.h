@@ -20,7 +20,7 @@ class MapEditorState : public IState {
     bool cursorLocked = false;
     std::vector<MapEditorTab> m_tabs = {};
     int activeTab = 0;
-    int m_selectedObjectIndex = -1;
+    std::string m_selectedObjectUUID;
     std::string m_requestedTab;
 
     MapEditorUI m_mapEditorUI;
