@@ -83,7 +83,7 @@ namespace zeroAssetLoader {
     std::string readFile(const std::string& path) {
         std::ifstream file(path);
         if (!file.is_open()) {
-            std::cout << "Failed to open shader file: " << path << "\n";
+            std::cout << "Failed to open file at: " << std::filesystem::absolute(path) << "\n";
             return "";
         }
         std::stringstream ss;

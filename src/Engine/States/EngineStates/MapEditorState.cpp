@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include "MapEditorState.h"
+
+#include "ProjectManagerState.h"
+#include "../StateManager.h"
 #include "../../Renderer/OpenGLRenderer/GLShader.h"
 #include "../../Core/Utilities/constants.h"
 #include "../../Core/Loaders/EngineSettings.h"
@@ -78,6 +81,9 @@ void MapEditorState::render(IRenderer* renderer) {
     }
     MapEditorUIContext ctx(m_projectInfo, m_tabs, m_renderContext, activeTab, m_selectedObjectUUID,m_requestedTab, m_projectPath);
     m_mapEditorUI.drawUI(ctx);
+    if (m_mapEditorUI.request.requestChange) {
+        stateManager->requestStateChange(std::make_unique<ProjectManagerState>());
+    }
 }
 
 void MapEditorState::cleanup() const {

@@ -28,7 +28,7 @@ public:
     bool vsyncEnabled = true;
     float fov = 45.0f;
     float nearPlane = 0.1f;
-    float farPlane = 100.0f;
+    float farPlane = 1000.0f;
     std::string projectPath = "C:/Users/NICO/Documents/SessionZero/Projects"; // TODO: Don't hardcode this
     std::string version = "0.0.1";
 

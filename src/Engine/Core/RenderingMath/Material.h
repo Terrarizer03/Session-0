@@ -11,6 +11,8 @@
 struct Material {
     std::shared_ptr<IShader> shader;
     zeroMath::Vector4 color;
+    std::string vertexPath;
+    std::string fragmentPath;
 };
 
 #endif //SESSIONZERO_MATERIAL_H

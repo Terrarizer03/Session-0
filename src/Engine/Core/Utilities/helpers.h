@@ -7,12 +7,15 @@
 #include "nlohmann/json.hpp"
 #include "../RenderingMath/Material.h"
 #include "../RenderingMath/Transform.h"
+#include "../Project/MapData.h"
 
 namespace zeroHelpers {
     Material parseMaterial(const nlohmann::json& mat, const std::string& basePath);
     Transform parseTransform(const nlohmann::json& trans);
     std::string toLower(const std::string& str);
     std::string getCurrentTime();
+    std::string resolvePath(const std::string& meshPath, const std::string& mapFolder);
+    std::string generateUniqueName(const std::string& baseName, const MapData& mapData);
 }
 
 

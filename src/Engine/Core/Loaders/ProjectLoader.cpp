@@ -128,8 +128,8 @@ namespace zeroProjectLoader {
 
                 if (obj.contains("mesh")) {
                     std::string meshPath = obj["mesh"].get<std::string>();
-                    std::string fullMeshPath = mapFolder + "/" + meshPath; // Example: "my_campaign.zero/maps/Tavern/models/table.obj"
-                    sceneObj.mesh = zeroAssetLoader::getOrLoadMesh(fullMeshPath, mapData.assetCache);
+                    sceneObj.meshPath = meshPath;
+                    sceneObj.mesh = zeroAssetLoader::getOrLoadMesh(zeroHelpers::resolvePath(meshPath, mapFolder), mapData.assetCache);
                 };
 
                 if (obj.contains("material")) {
@@ -146,7 +146,7 @@ namespace zeroProjectLoader {
 
     void saveMapData(MapData& mapData, const std::string& projectPath, const std::string& mapName) {
         // Set necessary path
-        std::filesystem::path mapJson = std::filesystem::path(projectPath) / "maps" / mapName / "map.json"; // Example: "C:/Users/NICO/Documents/D&D Creator/Projects/default_campaign.zero/maps/Tavern/map.json"
+        const std::filesystem::path mapJson = std::filesystem::path(projectPath) / "maps" / mapName / "map.json"; // Example: "C:/Users/NICO/Documents/D&D Creator/Projects/default_campaign.zero/maps/Tavern/map.json"
 
         // 1. Copy everything in the map.json file to mapConfig
         nlohmann::json mapConfig;
@@ -160,18 +160,25 @@ namespace zeroProjectLoader {
 
         // 2. Alter object values
         mapConfig["name"] = mapData.name; // TODO: alter the name in project.json as well if this changes
+        mapConfig["objects"] = nlohmann::json::array();
 
         if (mapConfig.contains("objects")) {
             for (auto& obj : mapData.objects) {
-                for (auto& jsonObj : mapConfig["objects"]) {
-                    if (jsonObj["UUID"] == obj.getUUID()) {
-                        // TODO: Also alter mesh and material
-                        jsonObj["name"] = obj.name;
-                        jsonObj["transform"]["position"] = obj.transform.position.getVectorValues();
-                        jsonObj["transform"]["rotation"] = obj.transform.rotation.getVectorValues();
-                        jsonObj["transform"]["scale"] = obj.transform.scale.getVectorValues();
-                    }
-                }
+                nlohmann::json jsonObj;
+
+                jsonObj["UUID"] = obj.UUID;
+                jsonObj["name"] = obj.name;
+                jsonObj["mesh"] = obj.meshPath;
+
+                jsonObj["material"]["color"] = obj.material.color.getVectorValues();
+                jsonObj["material"]["shader"]["vertex"] = obj.material.vertexPath;
+                jsonObj["material"]["shader"]["fragment"] = obj.material.fragmentPath;
+
+                jsonObj["transform"]["position"] = obj.transform.position.getVectorValues();
+                jsonObj["transform"]["rotation"] = obj.transform.rotation.getVectorValues();
+                jsonObj["transform"]["scale"] = obj.transform.scale.getVectorValues();
+
+                mapConfig["objects"].push_back(jsonObj);
             }
         }
 

@@ -9,6 +9,7 @@
 #include "../../States/EngineStates/MapEditorTab.h"
 #include "../../Core/Scene/RenderContext.h"
 #include "../../Core/Project/ProjectInfo.h"
+#include "../../Core/Project/RequestChange.h"
 
 struct MapEditorUIContext {
     ProjectInfo& projectInfo;
@@ -25,6 +26,8 @@ struct MapEditorUIContext {
 };
 
 struct MapEditorUI {
+    RequestChange request;
+
     void drawUI(const MapEditorUIContext& ctx);
 };
 

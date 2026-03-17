@@ -10,9 +10,17 @@
 #include "../RenderingMath/Mesh/Mesh.h"
 
 struct SceneObject {
+    // Mesh-related
     std::shared_ptr<Mesh> mesh;
+    std::string meshPath;
+
+    // Transform-related
     Transform transform;
+
+    // Material-related
     Material material;
+
+    // Object-related
     std::string name;
     std::string UUID;
 

@@ -36,8 +36,8 @@ void EngineSettings::load(const std::string &path) {
     windowHeight = data.value("windowHeight", 1080);
     vsyncEnabled = data.value("vsyncEnabled", true);
     fov = data.value("fov", 45.0f);
-    nearPlane = data.value("nearPlane", 1.0f);
-    farPlane = data.value("farPlane", 1.0f);
+    nearPlane = data.value("nearPlane", 0.1f);
+    farPlane = data.value("farPlane", 1000.0f);
     projectPath = data.value("projectPaths", "C:/Users/NICO/Documents/SessionZero/Projects"); // TODO: Change this
     version = data.value("version", std::string("1.0"));
 }

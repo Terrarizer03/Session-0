@@ -6,6 +6,9 @@
 #include <string>
 #include <format>
 #include "helpers.h"
+
+#include <iostream>
+
 #include "../../Renderer/OpenGLRenderer/GLShader.h"
 
 Material zeroHelpers::parseMaterial(const nlohmann::json &mat, const std::string &basePath) {
@@ -17,10 +20,12 @@ Material zeroHelpers::parseMaterial(const nlohmann::json &mat, const std::string
     }
 
     if (mat.contains("shader")) {
-        std::string vert = basePath + "/" + mat["shader"]["vertex"].get<std::string>();
-        std::string frag = basePath + "/" + mat["shader"]["fragment"].get<std::string>();
+        material.fragmentPath = mat["shader"]["fragment"].get<std::string>();
+        material.vertexPath = mat["shader"]["vertex"].get<std::string>();
 
-        // TODO: Add a "default" check that uses default shaders provided by the engine
+        std::string vert = resolvePath(material.vertexPath, basePath);
+        std::string frag = resolvePath(material.fragmentPath, basePath);
+
         material.shader = std::make_shared<GLShader>(vert.c_str(), frag.c_str());
     }
 
@@ -64,4 +69,32 @@ std::string zeroHelpers::getCurrentTime() {
                               static_cast<unsigned>(today.day())
                           );
     return dateStr;
+}
+
+std::string zeroHelpers::resolvePath(const std::string& meshPath, const std::string& mapFolder) {
+    if (meshPath.starts_with("assets/")) {
+        return meshPath;
+    }
+
+    return mapFolder + "/" + meshPath;
+}
+
+std::string zeroHelpers::generateUniqueName(const std::string& baseName, const MapData& mapData) {
+    std::string candidate = baseName;
+    int count = 1;
+    bool exists = true;
+
+    while (exists) {
+        exists = false;
+        for (const auto& obj : mapData.objects) {
+            if (obj.name == candidate) {
+                candidate = baseName + " (" + std::to_string(count) + ")";
+                count++;
+                exists = true;
+                break;
+            }
+        }
+    }
+
+    return candidate;
 }

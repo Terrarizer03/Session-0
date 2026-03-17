@@ -7,13 +7,79 @@
 #include "../../Core/Loaders/EngineSettings.h"
 #include "imgui.h"
 #include "../../Core/Project/ProjectDefaults.h"
+#include "../../Core/Project/Tools.h"
 
 void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
-    // ==================== Hierarchy ====================
     ImGuiViewport* viewport = ImGui::GetMainViewport();
-
-    // Set position and size before Begin()
+    // ==================== Menu Buttons ====================
     ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y));
+    ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, 50));
+
+    ImGui::Begin("Menu Buttons", nullptr,
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+    if (ImGui::Button("Settings")) {
+        ImGui::OpenPopup("Settings");
+    }
+
+    if (ImGui::BeginPopupModal("Settings")) {
+        ImGui::DragFloat("Far Plane", &EngineSettings::getInstance().farPlane);
+        ImGui::DragFloat("Near Plane", &EngineSettings::getInstance().nearPlane);
+        if (ImGui::Button("Save Changes")) {
+            EngineSettings::getInstance().save("engineSettings.json");
+        }
+
+        ImGui::Separator();
+
+        if (ImGui::Button("Back To Project Manager")) {
+            request.requestChange = true;
+        }
+
+        if (ImGui::Button("Cancel")) {
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+
+
+    ImGui::End();
+
+    // ==================== Tools ====================
+    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y + 50));
+    ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, 100));
+
+    ImGui::Begin("Tools", nullptr,
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+    if (ImGui::Button("Add Sphere")) {
+        if (!ctx.tabs.empty()) {
+            zeroTools::addPrimitive(ctx.tabs[ctx.activeTab].mapData, Primitive::SPHERE);
+        }
+    }
+
+    if (ImGui::Button("Add Cube")) {
+        if (!ctx.tabs.empty()) {
+            zeroTools::addPrimitive(ctx.tabs[ctx.activeTab].mapData, Primitive::CUBE);
+        }
+    }
+
+    if (ImGui::Button("Add Plane")) {
+        if (!ctx.tabs.empty()) {
+            zeroTools::addPrimitive(ctx.tabs[ctx.activeTab].mapData, Primitive::PLANE);
+        }
+    }
+
+    ImGui::End();
+    // ==================== Hierarchy ====================
+    // Set position and size before Begin()
+    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y + 150));
     ImGui::SetNextWindowSize(ImVec2(250, viewport->Size.y));
 
     ImGui::Begin("Hierarchy", nullptr,
@@ -98,7 +164,7 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
 
     // ==================== Tabs ====================
     // Set position and size before Begin()
-    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x + 250, viewport->Pos.y));
+    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x + 250, viewport->Pos.y + 150));
     ImGui::SetNextWindowSize(ImVec2(viewport->Size.x - 500, 75));
 
     ImGui::Begin("Tabs", nullptr,
@@ -142,7 +208,7 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
     ImGui::End();
 
     // ==================== Properties Panel ====================
-    ImGui::SetNextWindowPos(ImVec2(viewport->Size.x - 250, viewport->Pos.y));
+    ImGui::SetNextWindowPos(ImVec2(viewport->Size.x - 250, viewport->Pos.y + 150));
     ImGui::SetNextWindowSize(ImVec2(250, viewport->Size.y));
 
     ImGui::Begin("Properties Panel", nullptr,
