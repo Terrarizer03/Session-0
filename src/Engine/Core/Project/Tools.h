@@ -14,8 +14,7 @@ enum struct Primitive {
 
 namespace zeroTools {
     void addPrimitive(MapData& mapData, Primitive primitive);
-    void addSphereObject(MapData& mapData, const std::string& projectPath, const std::string& mapName);
-    void addCubeObject(MapData& mapData, const std::string& projectPath, const std::string& mapName);
+    void deleteObject(MapData& mapData, const std::string& objUUID);
 }
 
 #endif //SESSIONZERO_TOOLS_H

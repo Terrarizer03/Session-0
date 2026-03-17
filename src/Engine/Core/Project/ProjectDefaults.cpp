@@ -46,6 +46,8 @@ ProjectInfo zeroProjectDefaults::createDefaultMap(const std::string& mapName, co
         // 2. Create the map
         try {
             std::filesystem::create_directories(mapPath);
+            std::filesystem::create_directories(mapPath / "models");
+            std::filesystem::create_directories(mapPath / "shaders");
         } catch (const std::filesystem::filesystem_error& e) {
             std::cout << "Failed in creating map: " << e.what() << std::endl;
             return {};

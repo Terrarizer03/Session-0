@@ -21,30 +21,49 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-    if (ImGui::Button("Settings")) {
-        ImGui::OpenPopup("Settings");
+    if (ImGui::BeginMainMenuBar())
+    {
+        // ───── File Menu ─────
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Exit Editor"))
+            {
+                request.requestChange = true;
+            }
+
+            ImGui::EndMenu();
+        }
+
+        // ───── Settings Menu Item ─────
+        if (ImGui::MenuItem("Settings"))
+        {
+            ImGui::OpenPopup("Settings");
+        }
+
+        if (ImGui::BeginPopupModal("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            ImGui::DragFloat("Far Plane",  &EngineSettings::getInstance().farPlane, 0.1f, 0.0f, 10000.0f);
+            ImGui::DragFloat("Near Plane", &EngineSettings::getInstance().nearPlane, 0.1f, 0.0f, 100.0f);
+
+            if (ImGui::Button("Save Changes", ImVec2(150, 0)))
+            {
+                EngineSettings::getInstance().save("engineSettings.json");
+            }
+
+            ImGui::Separator();
+
+
+            if (ImGui::Button("Cancel", ImVec2(150, 0)))
+            {
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
+        }
+
+
+        ImGui::EndMainMenuBar();
     }
-
-    if (ImGui::BeginPopupModal("Settings")) {
-        ImGui::DragFloat("Far Plane", &EngineSettings::getInstance().farPlane);
-        ImGui::DragFloat("Near Plane", &EngineSettings::getInstance().nearPlane);
-        if (ImGui::Button("Save Changes")) {
-            EngineSettings::getInstance().save("engineSettings.json");
-        }
-
-        ImGui::Separator();
-
-        if (ImGui::Button("Back To Project Manager")) {
-            request.requestChange = true;
-        }
-
-        if (ImGui::Button("Cancel")) {
-            ImGui::CloseCurrentPopup();
-        }
-
-        ImGui::EndPopup();
-    }
-
 
     ImGui::End();
 
@@ -58,25 +77,26 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-    if (ImGui::Button("Add Sphere")) {
+    if (ImGui::Button("Add Sphere##S")) {
         if (!ctx.tabs.empty()) {
             zeroTools::addPrimitive(ctx.tabs[ctx.activeTab].mapData, Primitive::SPHERE);
         }
     }
 
-    if (ImGui::Button("Add Cube")) {
+    if (ImGui::Button("Add Cube##C")) {
         if (!ctx.tabs.empty()) {
             zeroTools::addPrimitive(ctx.tabs[ctx.activeTab].mapData, Primitive::CUBE);
         }
     }
 
-    if (ImGui::Button("Add Plane")) {
+    if (ImGui::Button("Add Plane##P")) {
         if (!ctx.tabs.empty()) {
             zeroTools::addPrimitive(ctx.tabs[ctx.activeTab].mapData, Primitive::PLANE);
         }
     }
 
     ImGui::End();
+
     // ==================== Hierarchy ====================
     // Set position and size before Begin()
     ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y + 150));
@@ -144,11 +164,27 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
 
                 for (auto& tab : ctx.tabs) {
                     if (tab.name == name) {
-                        for (auto& obj : tab.mapData.objects) {
+                        for (size_t i = 0; i < tab.mapData.objects.size(); ++i) { // Not sure if this is a good rework, but I'll figure it out :p
+                            auto& obj = tab.mapData.objects[i];
+
                             bool isSelected = (ctx.selectedObjectUUID == obj.UUID);
 
-                            if (ImGui::Selectable(obj.name.c_str(), isSelected)) {
+                            std::string itemLabel = obj.name + "##" + obj.UUID;
+
+                            if (ImGui::Selectable(itemLabel.c_str(), isSelected)) {
                                 ctx.selectedObjectUUID = obj.getUUID();
+                            }
+
+                            if (ImGui::BeginPopupContextItem()) {
+                                if (ImGui::MenuItem("Delete Object")) {
+                                    zeroTools::deleteObject(tab.mapData, obj.getUUID());
+
+                                    if (ctx.selectedObjectUUID == obj.getUUID()) {
+                                        ctx.selectedObjectUUID.clear();
+                                    }
+                                }
+                                // Add more items later: Rename, Duplicate, etc.
+                                ImGui::EndPopup();
                             }
                         }
                         break;

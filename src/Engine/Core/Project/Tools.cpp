@@ -4,9 +4,14 @@
 
 #include <filesystem>
 #include "Tools.h"
+
+#include <fstream>
+#include <iostream>
+
 #include "ProjectDefaults.h"
 #include "../../Renderer/OpenGLRenderer/GLShader.h"
 #include "../Loaders/AssetLoader.h"
+#include "../Loaders/EngineSettings.h"
 #include "../Loaders/ProjectLoader.h"
 #include "../Utilities/helpers.h"
 
@@ -16,17 +21,23 @@ void zeroTools::addPrimitive(MapData &mapData, Primitive primitive) {
 
     switch (primitive) {
         case Primitive::CUBE:
+            std::cout << "spawning cube \n";
             obj.mesh = zeroAssetLoader::getOrLoadMesh("assets/Models/cube_default.obj", mapData.assetCache);
             obj.name = zeroHelpers::generateUniqueName("Cube", mapData);
             obj.meshPath = "assets/Models/cube_default.obj";
+            break;
         case Primitive::SPHERE:
+            std::cout << "spawning sphere \n";
             obj.mesh = zeroAssetLoader::getOrLoadMesh("assets/Models/sphere_default.obj", mapData.assetCache);
             obj.name = zeroHelpers::generateUniqueName("Sphere", mapData);
             obj.meshPath = "assets/Models/sphere_default.obj";
+            break;
         case Primitive::PLANE:
+            std::cout << "spawning plane \n";
             obj.mesh = zeroAssetLoader::getOrLoadMesh("assets/Models/plane_default.obj", mapData.assetCache);
             obj.name = zeroHelpers::generateUniqueName("Plane", mapData);
             obj.meshPath = "assets/Models/plane_default.obj";
+            break;
     }
 
     obj.UUID = zeroProjectLoader::generateUUID();
@@ -43,4 +54,23 @@ void zeroTools::addPrimitive(MapData &mapData, Primitive primitive) {
     mapData.objects.push_back(obj);
     if (!mapData.isDirty)
         mapData.isDirty = true;
+}
+
+void zeroTools::deleteObject(MapData &mapData, const std::string& objUUID) {
+    // This is actually fucking hilarious, my first iteration of this function made it so this deletes the
+    // object in the JSON rewriting the JSON file and everything, I am such a fucking idiot.
+
+    // 1. Get rid of the object with the given UUID from mapData
+    auto it = std::find_if(mapData.objects.begin(), mapData.objects.end(),
+        [&](const SceneObject& obj) {
+            return obj.getUUID() == objUUID;
+        });
+
+    // 2. Erase the found object and set mapData's isDirty to true
+    if (it != mapData.objects.end()) {
+        mapData.objects.erase(it);
+        mapData.isDirty = true;
+
+        std::cout << "Deleted object UUID " << objUUID << " from memory\n";
+    }
 }
