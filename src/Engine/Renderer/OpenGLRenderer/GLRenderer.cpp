@@ -27,9 +27,12 @@ bool GLRenderer::setViewport(int _x, int _y, int _width, int _height) {
 
 bool GLRenderer::clearColor(float _r, float _g, float _b, float _a) {
     glClearColor(_r, _g, _b, _a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     return true;
+}
+
+void GLRenderer::beginFrame() const {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void GLRenderer::draw(const Mesh& mesh, const Transform& transform, const Material& material, const RenderContext& context) {
@@ -45,4 +48,22 @@ void GLRenderer::draw(const Mesh& mesh, const Transform& transform, const Materi
     material.shader->setUniformMatrix4fv("uModel", model);
 
     mesh.draw();
+}
+
+void GLRenderer::setRenderMode(const RenderMode mode) {
+    m_currentMode = mode;
+
+    switch (mode) {
+        case RenderMode::SOLID:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            break;
+        case RenderMode::WIREFRAME:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glLineWidth(1.0f); // Standard thickness
+            break;
+        case RenderMode::POINTS:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+            glPointSize(5.0f); // Make them visible!
+            break;
+    }
 }

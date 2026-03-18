@@ -32,14 +32,17 @@ bool ZeroEngine::initialize() {
 
     std::cout << "Renderer Created" << std::endl;
 
-    GLFWwindow* handle = static_cast<GLFWWindow*>(window.get())->getHandle();
-    input = std::make_unique<GLFWInput>(handle);
+    renderer->clearColor(0.07f, 0.13f, 0.17f, 1.0f);
+    renderer->setViewport(0, 0, window_width, window_height);
 
-    uiManager.initialize(handle);
+    GLFWwindow* handle = reinterpret_cast<GLFWWindow*>(window.get())->getHandle();
+
+    if (handle) {
+        input = std::make_unique<GLFWInput>(handle);
+        uiManager.initialize(handle);
+    }
 
     std::cout << "ImGui Intialized" << std::endl;
-
-    renderer->setViewport(0, 0, window_width, window_height);
 
     stateManager.pushState(std::make_unique<ProjectManagerState>());
 
@@ -52,7 +55,7 @@ void ZeroEngine::run() {
     while (!window->shouldClose()) {
         IState* state = stateManager.getCurrentState();
         if (!state) return;
-        renderer->clearColor(0.07f, 0.13f, 0.17f, 1.0f);
+        renderer->beginFrame();
 
         input->update();
 

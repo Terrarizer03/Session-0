@@ -5,15 +5,20 @@
 #include "MapEditorUI.h"
 #include "../../Core/Loaders/ProjectLoader.h"
 #include "../../Core/Loaders/EngineSettings.h"
-#include "imgui.h"
 #include "../../Core/Project/ProjectDefaults.h"
 #include "../../Core/Project/Tools.h"
 
 void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
     ImGuiViewport* viewport = ImGui::GetMainViewport();
-    // ==================== Menu Buttons ====================
+    drawMenuUI(ctx, viewport);
+    drawHierarchyUI(ctx, viewport);
+    drawPropertiesPanel(ctx, viewport);
+    drawTabsUI(ctx, viewport);
+}
+
+void MapEditorUI::drawMenuUI(const MapEditorUIContext& ctx, const ImGuiViewport* viewport) {
     ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y));
-    ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, 50));
+    ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, 100.0f));
 
     ImGui::Begin("Menu Buttons", nullptr,
         ImGuiWindowFlags_NoMove |
@@ -42,8 +47,10 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
 
         if (ImGui::BeginPopupModal("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
         {
+            // This kinda does the changes instantly, so maybe make it apparent that changes won't be saved unless you click "Save Changes"
             ImGui::DragFloat("Far Plane",  &EngineSettings::getInstance().farPlane, 0.1f, 0.0f, 10000.0f);
             ImGui::DragFloat("Near Plane", &EngineSettings::getInstance().nearPlane, 0.1f, 0.0f, 100.0f);
+            ImGui::Checkbox("Debug Mode", &EngineSettings::getInstance().debugMode);
 
             if (ImGui::Button("Save Changes", ImVec2(150, 0)))
             {
@@ -65,18 +72,6 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
         ImGui::EndMainMenuBar();
     }
 
-    ImGui::End();
-
-    // ==================== Tools ====================
-    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y + 50));
-    ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, 100));
-
-    ImGui::Begin("Tools", nullptr,
-        ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoBringToFrontOnFocus);
-
     if (ImGui::Button("Add Sphere##S")) {
         if (!ctx.tabs.empty()) {
             zeroTools::addPrimitive(ctx.tabs[ctx.activeTab].mapData, Primitive::SPHERE);
@@ -96,11 +91,11 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
     }
 
     ImGui::End();
+}
 
-    // ==================== Hierarchy ====================
-    // Set position and size before Begin()
-    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y + 150));
-    ImGui::SetNextWindowSize(ImVec2(250, viewport->Size.y));
+void MapEditorUI::drawHierarchyUI(const MapEditorUIContext &ctx, const ImGuiViewport* viewport) {
+    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y + 100.0f));
+    ImGui::SetNextWindowSize(ImVec2(250.0f, viewport->Size.y));
 
     ImGui::Begin("Hierarchy", nullptr,
         ImGuiWindowFlags_NoMove |
@@ -183,7 +178,7 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
                                         ctx.selectedObjectUUID.clear();
                                     }
                                 }
-                                // Add more items later: Rename, Duplicate, etc.
+                                // Add more items later: Duplicate, etc.
                                 ImGui::EndPopup();
                             }
                         }
@@ -197,11 +192,11 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
     }
 
     ImGui::End();
+}
 
-    // ==================== Tabs ====================
-    // Set position and size before Begin()
-    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x + 250, viewport->Pos.y + 150));
-    ImGui::SetNextWindowSize(ImVec2(viewport->Size.x - 500, 75));
+void MapEditorUI::drawTabsUI(const MapEditorUIContext &ctx, const ImGuiViewport *viewport) {
+    ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x + 250.0f, viewport->Pos.y + 100.0f));
+    ImGui::SetNextWindowSize(ImVec2(viewport->Size.x - 500.0f, 75.0f));
 
     ImGui::Begin("Tabs", nullptr,
         ImGuiWindowFlags_NoMove |
@@ -242,10 +237,11 @@ void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
     }
 
     ImGui::End();
+}
 
-    // ==================== Properties Panel ====================
-    ImGui::SetNextWindowPos(ImVec2(viewport->Size.x - 250, viewport->Pos.y + 150));
-    ImGui::SetNextWindowSize(ImVec2(250, viewport->Size.y));
+void MapEditorUI::drawPropertiesPanel(const MapEditorUIContext &ctx, const ImGuiViewport *viewport) {
+    ImGui::SetNextWindowPos(ImVec2(viewport->Size.x - 250.0f, viewport->Pos.y + 100.0f));
+    ImGui::SetNextWindowSize(ImVec2(250.0f, viewport->Size.y));
 
     ImGui::Begin("Properties Panel", nullptr,
         ImGuiWindowFlags_NoMove |

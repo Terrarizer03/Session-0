@@ -21,7 +21,7 @@ public:
     ~GLShader() override;
 private:
     GLuint m_RendererID = 0;
-    static GLuint CompileShader(const char* vertexSrc, const char* fragmentSrc);
+    GLuint CompileShader(const char* vertexSrc, const char* fragmentSrc);
 };
 
 #endif //SESSIONZERO_GLSHADER_H

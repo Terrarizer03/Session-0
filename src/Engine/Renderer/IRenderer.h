@@ -8,6 +8,7 @@
 #include "../Core/RenderingMath/Mesh/Mesh.h"
 #include "../Core/RenderingMath/Material.h"
 #include "../Core/Scene/RenderContext.h"
+#include "../Core/Scene/RenderMode.h"
 
 class IRenderer {
 public:
@@ -19,7 +20,10 @@ public:
     virtual bool initialize() = 0;
     virtual bool setViewport(int _x, int _y, int _width, int _height) = 0;
     virtual bool clearColor(float _r, float _g, float _b, float _a) = 0;
+    virtual void beginFrame() const = 0;
     virtual void draw(const Mesh& mesh, const Transform& transform, const Material& material, const RenderContext& context) = 0;
+
+    virtual void setRenderMode(RenderMode renderMode) = 0;
 };
 
 #endif //SESSIONZERO_IRENDERER_H

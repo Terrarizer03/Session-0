@@ -7,9 +7,8 @@
 #include <string>
 
 class EngineSettings {
-    EngineSettings() {
-        load("engineSettings.json");
-    };
+    EngineSettings() = default;
+    bool isLoaded = false;
 public:
     // Non-copyable, non-movable
     EngineSettings(const EngineSettings&) = delete;
@@ -19,6 +18,9 @@ public:
 
     static EngineSettings& getInstance() {
         static EngineSettings instance;
+        if (!instance.isLoaded) {
+            instance.load("engineSettings.json");
+        }
         return instance;
     }
 
@@ -26,6 +28,7 @@ public:
     int windowWidth = 1920;
     int windowHeight = 1080;
     bool vsyncEnabled = true;
+    bool debugMode = false;
     float fov = 45.0f;
     float nearPlane = 0.1f;
     float farPlane = 1000.0f;

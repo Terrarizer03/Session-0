@@ -4,6 +4,7 @@
 
 #ifndef SESSIONZERO_VECTOR4_H
 #define SESSIONZERO_VECTOR4_H
+#include <vector>
 
 namespace zeroMath {
     struct Vector4 {
@@ -13,7 +14,7 @@ namespace zeroMath {
 
         constexpr Vector4(const float _x, const float _y, const float _z, const float _w) : x(_x), y(_y), z(_z), w(_w) {}
 
-        std::pmr::vector<float> getVectorValues() { return { x, y, z, w }; }
+        std::vector<float> getVectorValues() { return { x, y, z, w }; }
 
         Vector4 operator+(const Vector4 &other) const {
             return { x + other.x, y + other.y, z + other.z, w + other.w };

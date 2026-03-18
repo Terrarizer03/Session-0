@@ -9,6 +9,7 @@
 
 #include "../Math/Matrix/Matrix4.h"
 #include "../Math/Vector/Vector3/Vector3.h"
+#include "../RenderingMath/Ray.h"
 
 struct Camera {
     zeroMath::Vector3 position, front, up;
@@ -19,28 +20,15 @@ struct Camera {
     Camera(zeroMath::Vector3 _position)
         : position(_position), front(zeroMath::Vector3(0.0f, 0.0f, -1.0f)), up(zeroMath::Vector3(0.0f, 1.0f, 0.0f)) {}
 
-    void updateFront() {
-        zeroMath::Vector3 direction;
-        direction.x = std::cos(yaw   * (3.14159f / 180.0f)) * std::cos(pitch * (3.14159f / 180.0f));
-        direction.y = std::sin(pitch * (3.14159f / 180.0f));
-        direction.z = std::sin(yaw   * (3.14159f / 180.0f)) * std::cos(pitch * (3.14159f / 180.0f));
-        front = direction.normalized();
-    }
+    void updateFront();
 
-    [[nodiscard]] zeroMath::Matrix4 getViewMatrix() const {
-        return zeroMath::Matrix4::lookAt(position, position + front, up);
-    }
+    [[nodiscard]] zeroMath::Matrix4 getViewMatrix() const;
 
-    [[nodiscard]] zeroMath::Matrix4 getProjectionMatrix() const {
-        return zeroMath::Matrix4::perspective(fov, aspect, near, far);
-    }
+    [[nodiscard]] zeroMath::Matrix4 getProjectionMatrix() const;
 
-    void setPerspective(const float _fov, const float _aspect, const float _near, const float _far) {
-        this->fov = _fov;
-        this->aspect = _aspect;
-        this->near = _near;
-        this->far = _far;
-    }
+    void setPerspective(float _fov, float _aspect, float _near, float _far);
+
+    [[nodiscard]] Ray screenPointToRay(float mouseX, float mouseY, float windowWidth, float windowHeight) const;
 };
 
 #endif //SESSIONZERO_CAMERA_H

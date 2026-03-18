@@ -6,6 +6,7 @@
 #define SESSIONZERO_MAPEDITORUI_H
 #include <string>
 #include <vector>
+#include "imgui.h"
 #include "../../States/EngineStates/MapEditorTab.h"
 #include "../../Core/Scene/RenderContext.h"
 #include "../../Core/Project/ProjectInfo.h"
@@ -29,6 +30,11 @@ struct MapEditorUI {
     RequestChange request;
 
     void drawUI(const MapEditorUIContext& ctx);
+private:
+    void drawMenuUI(const MapEditorUIContext& ctx, const ImGuiViewport* viewport);
+    void drawHierarchyUI(const MapEditorUIContext& ctx, const ImGuiViewport* viewport);
+    void drawTabsUI(const MapEditorUIContext& ctx, const ImGuiViewport* viewport);
+    void drawPropertiesPanel(const MapEditorUIContext& ctx, const ImGuiViewport* viewport);
 };
 
 

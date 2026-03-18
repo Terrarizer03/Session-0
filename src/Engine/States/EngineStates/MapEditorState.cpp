@@ -72,6 +72,8 @@ void MapEditorState::update(float deltaTime) {
 
 void MapEditorState::render(IRenderer* renderer) {
     renderer->setViewport(250, 0 , EngineSettings::getInstance().windowWidth - 500, EngineSettings::getInstance().windowHeight - 75);
+    renderer->setRenderMode(EngineSettings::getInstance().debugMode ?
+                           RenderMode::WIREFRAME : RenderMode::SOLID);
 
     if (!m_tabs.empty()) {
         m_renderContext.camera = &m_tabs[activeTab].camera;

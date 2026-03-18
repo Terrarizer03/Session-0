@@ -10,6 +10,8 @@
 #include "nlohmann/json.hpp"
 
 void EngineSettings::load(const std::string &path) {
+    isLoaded = true;
+
     if (!std::filesystem::exists(path)) {
         save(path);
         return;
@@ -35,6 +37,7 @@ void EngineSettings::load(const std::string &path) {
     windowWidth = data.value("windowWidth", 1920);
     windowHeight = data.value("windowHeight", 1080);
     vsyncEnabled = data.value("vsyncEnabled", true);
+    debugMode = data.value("debugMode", false);
     fov = data.value("fov", 45.0f);
     nearPlane = data.value("nearPlane", 0.1f);
     farPlane = data.value("farPlane", 1000.0f);
@@ -47,6 +50,7 @@ void EngineSettings::save(const std::string &path) {
     data["windowWidth"] = windowWidth;
     data["windowHeight"] = windowHeight;
     data["vsyncEnabled"] = vsyncEnabled;
+    data["debugMode"] = debugMode;
     data["fov"] = fov;
     data["nearPlane"] = nearPlane;
     data["farPlane"] = farPlane;
