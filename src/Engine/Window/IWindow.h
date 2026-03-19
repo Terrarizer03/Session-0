@@ -4,6 +4,7 @@
 
 #ifndef SESSIONZERO_IWINDOW_H
 #define SESSIONZERO_IWINDOW_H
+#include "GLFW/glfw3.h"
 
 class IWindow {
 public:
@@ -44,6 +45,8 @@ public:
      * @return Returns true if successful and false if not
      */
     virtual bool shutdown() = 0;
+
+    virtual GLFWwindow* getHandle() const = 0; // TEMPORARY, this function keeps causing seg faults.
 };
 
 #endif //SESSIONZERO_IWINDOW_H

@@ -5,24 +5,29 @@
 #ifndef SESSIONZERO_SCENEOBJECT_H
 #define SESSIONZERO_SCENEOBJECT_H
 #include <string>
-#include "../RenderingMath/Material.h"
-#include "../RenderingMath/Transform.h"
-#include "../RenderingMath/Mesh/Mesh.h"
+#include "../../Physics/Collision.h"
+#include "../../RenderingMath/Material.h"
+#include "../../RenderingMath/Transform.h"
+#include "../../RenderingMath/Mesh/Mesh.h"
 
 struct SceneObject {
     // Mesh-related
-    std::shared_ptr<Mesh> mesh;
+    std::shared_ptr<Mesh> mesh = nullptr;
     std::string meshPath;
 
     // Transform-related
-    Transform transform;
+    Transform transform{};
 
     // Material-related
-    Material material;
+    Material material{};
 
     // Object-related
     std::string name;
     std::string UUID;
+    zeroPhysics::AABB aabb{};
+    bool isDirty = true;
+
+    void update();
 
     [[nodiscard]] const std::string& getUUID() const { return UUID; }
 };

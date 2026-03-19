@@ -279,7 +279,10 @@ void MapEditorUI::drawPropertiesPanel(const MapEditorUIContext &ctx, const ImGui
             changed |= ImGui::DragFloat("Z##sca", &selected->transform.scale.z);
 
             if (changed) {
-                ctx.tabs[ctx.activeTab].mapData.isDirty = true;
+                selected->isDirty = true;
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    ctx.tabs[ctx.activeTab].mapData.isDirty = true;
+                }
             }
         }
     }

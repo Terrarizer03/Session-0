@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include "../RenderingMath/AssetCache.h"
-#include "../Scene/SceneObject.h"
+#include "../Scene/SceneObject/SceneObject.h"
 
 struct MapData {
     std::string name;

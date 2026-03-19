@@ -15,6 +15,8 @@ class GLFWInput : public IInput {
     float m_DeltaX = 0, m_DeltaY = 0;
     bool m_prevKeys[GLFW_KEY_LAST] = {};
     bool m_currKeys[GLFW_KEY_LAST] = {};
+    bool m_prevMouse[GLFW_MOUSE_BUTTON_LAST] = {};
+    bool m_currMouse[GLFW_MOUSE_BUTTON_LAST] = {};
 public:
     explicit GLFWInput(GLFWwindow* handle) : m_handle(handle) {}
 
@@ -24,8 +26,11 @@ public:
     [[nodiscard]] bool getKeyPressed(int key) const override {
         return m_currKeys[key] && !m_prevKeys[key];
     }
-    [[nodiscard]] bool getMouseButton(int button) const override {
-        return glfwGetMouseButton(m_handle, button) == GLFW_PRESS;
+    [[nodiscard]] bool getMouseDown(int button) const override {
+        return m_currMouse[button];
+    }
+    [[nodiscard]] bool getMouseClicked(int button) const override {
+        return m_currMouse[button] && !m_prevMouse[button];
     }
     void resetMouseDelta() override {
         m_FirstMouse = true;
@@ -40,9 +45,13 @@ public:
 
     void update() override {
         std::copy(std::begin(m_currKeys), std::end(m_currKeys), std::begin(m_prevKeys));
-
-        for (int i = 0; i < GLFW_KEY_LAST; i++) {
+        for (int i = 32; i < GLFW_KEY_LAST; i++) {
             m_currKeys[i] = glfwGetKey(m_handle, i) == GLFW_PRESS;
+        }
+
+        std::copy(std::begin(m_currMouse), std::end(m_currMouse), std::begin(m_prevMouse));
+        for (int i = 0; i < GLFW_MOUSE_BUTTON_LAST; i++) {
+            m_currMouse[i] = glfwGetMouseButton(m_handle, i) == GLFW_PRESS;
         }
 
         double x, y;
@@ -54,8 +63,8 @@ public:
             m_FirstMouse = false;
         }
 
-        m_DeltaX = (float)(x - m_LastX);
-        m_DeltaY = (float)(m_LastY - y); // reversed - y goes bottom to top
+        m_DeltaX = static_cast<float>(x - m_LastX);
+        m_DeltaY = static_cast<float>(m_LastY - y); // reversed - y goes bottom to top
         m_LastX = x;
         m_LastY = y;
     }

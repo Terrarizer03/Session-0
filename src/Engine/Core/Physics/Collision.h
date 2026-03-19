@@ -13,7 +13,7 @@ namespace zeroPhysics {
         zeroMath::Vector3 max;
     };
 
-    bool rayIntersectsAABB(const Ray& ray, const AABB& aabb, float& outDistance);
+    bool rayIntersectsAABB(const Ray& ray, const AABB& box, float& outDistance);
 }
 
 

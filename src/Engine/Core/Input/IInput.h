@@ -10,7 +10,8 @@ public:
     virtual ~IInput() = default;
     [[nodiscard]] virtual bool getKey(int key) const = 0;
     [[nodiscard]] virtual bool getKeyPressed(int key) const = 0;
-    [[nodiscard]] virtual bool getMouseButton(int button) const = 0;
+    [[nodiscard]] virtual bool getMouseDown(int button) const = 0;
+    [[nodiscard]] virtual bool getMouseClicked(int button) const = 0;
     virtual void resetMouseDelta() = 0;
     virtual void getMousePosition(double &x, double &y) const = 0;
     virtual void setCursorMode(bool enabled) = 0;

@@ -35,12 +35,15 @@ bool ZeroEngine::initialize() {
     renderer->clearColor(0.07f, 0.13f, 0.17f, 1.0f);
     renderer->setViewport(0, 0, window_width, window_height);
 
-    GLFWwindow* handle = reinterpret_cast<GLFWWindow*>(window.get())->getHandle();
+    GLFWwindow* handle = window->getHandle();
 
-    if (handle) {
-        input = std::make_unique<GLFWInput>(handle);
-        uiManager.initialize(handle);
+    if (!handle) {
+        std::cout << "Failed to get window handle" << std::endl;
+        return false;
     }
+
+    input = std::make_unique<GLFWInput>(handle);
+    uiManager.initialize(handle);
 
     std::cout << "ImGui Intialized" << std::endl;
 
@@ -52,7 +55,11 @@ bool ZeroEngine::initialize() {
 }
 
 void ZeroEngine::run() {
+    double lastTime = glfwGetTime();
     while (!window->shouldClose()) {
+        double currentTime = glfwGetTime();
+        auto deltaTime = static_cast<float>(currentTime - lastTime);
+
         IState* state = stateManager.getCurrentState();
         if (!state) return;
         renderer->beginFrame();
@@ -62,7 +69,7 @@ void ZeroEngine::run() {
         uiManager.beginFrame();
 
         state->handleInput(*input);
-        state->update(16.66f); // Don't mind this magic number, it's not really needed yet, I just needed to pass in a value
+        state->update(deltaTime); // Don't mind this magic number, it's not really needed yet, I just needed to pass in a value
         state->render(renderer.get());
 
         stateManager.applyPendingState();

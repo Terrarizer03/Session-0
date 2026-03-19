@@ -11,6 +11,7 @@
 #include "../../Core/Utilities/constants.h"
 #include "../../Core/Loaders/EngineSettings.h"
 #include "../../Core/Loaders/ProjectLoader.h"
+#include "../../Core/Physics/Collision.h"
 #include "GLFW/glfw3.h"
 
 bool MapEditorState::initialize() {
@@ -25,7 +26,7 @@ bool MapEditorState::initialize() {
 
 void MapEditorState::handleInput(IInput& input) {
     if (!m_tabs.empty()) {
-        if (input.getMouseButton(GLFW_MOUSE_BUTTON_RIGHT)) {
+        if (input.getMouseDown(GLFW_MOUSE_BUTTON_RIGHT)) {
             if (!cursorLocked) {
                 input.setCursorMode(true);
                 input.resetMouseDelta(); // Finally fixed that jumpy ass shit, just had to reset the mouse delta
@@ -37,6 +38,47 @@ void MapEditorState::handleInput(IInput& input) {
             if (cursorLocked) {
                 input.setCursorMode(false);
                 cursorLocked = false;
+            }
+        }
+
+        if (input.getMouseClicked(GLFW_MOUSE_BUTTON_LEFT)) {
+            std::cout << "Initiating mouse click" << std::endl;
+            double mouseX, mouseY;
+            input.getMousePosition(mouseX, mouseY);
+
+            float viewportX = static_cast<float>(mouseX) - 250.0f; // subtract left panel width
+            float viewportW = static_cast<float>(EngineSettings::getInstance().windowWidth) - 500.0f;
+            float viewportH = static_cast<float>(EngineSettings::getInstance().windowHeight) - 75.0f;
+
+            auto ray = m_tabs[activeTab].camera.screenPointToRay(
+                viewportX, static_cast<float>(mouseY),
+                viewportW, viewportH
+            );
+
+            std::cout << "Ray origin: " << ray.origin.x << " " << ray.origin.y << " " << ray.origin.z << std::endl;
+            std::cout << "Ray dir: " << ray.direction.x << " " << ray.direction.y << " " << ray.direction.z << std::endl;
+
+            float closestDist = FLT_MAX;
+
+            for (auto& obj : m_tabs[activeTab].mapData.objects) {
+                std::cout << "Finding object" << std::endl;
+                obj.update();
+
+                std::cout << "Scale: " << obj.transform.scale.x << " " << obj.transform.scale.y << " " << obj.transform.scale.z << std::endl;
+                std::cout << "AABB min: " << obj.aabb.min.x << " " << obj.aabb.min.y << " " << obj.aabb.min.z << std::endl;
+                std::cout << "AABB max: " << obj.aabb.max.x << " " << obj.aabb.max.y << " " << obj.aabb.max.z << std::endl;
+
+                float hitDist = 0.0f;
+                if (zeroPhysics::rayIntersectsAABB(ray, obj.aabb, hitDist)) {
+                    if (hitDist < closestDist) {
+                        std::cout << "HIT: " << obj.UUID << " at distance " << hitDist << std::endl;
+                        closestDist = hitDist;
+                        m_selectedObjectUUID = obj.UUID;
+                        break;
+                    }
+                } else {
+                    std::cout << "MISS: " << obj.UUID << std::endl;
+                }
             }
         }
 
@@ -67,7 +109,11 @@ void MapEditorState::handleInput(IInput& input) {
 }
 
 void MapEditorState::update(float deltaTime) {
-
+    if (!m_tabs.empty()) {
+        for (auto& obj : m_tabs[activeTab].mapData.objects) {
+            obj.update();
+        }
+    }
 }
 
 void MapEditorState::render(IRenderer* renderer) {

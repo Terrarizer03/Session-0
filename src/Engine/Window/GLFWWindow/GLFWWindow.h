@@ -19,7 +19,7 @@ public:
     void swapBuffers() override;
     bool shutdown() override;
 
-    [[nodiscard]] GLFWwindow* getHandle() const { return glfwWindow; }
+    [[nodiscard]] GLFWwindow* getHandle() const override { return glfwWindow; }
 };
 
 
