@@ -4,7 +4,7 @@
 
 #ifndef SESSIONZERO_RENDERCONTEXT_H
 #define SESSIONZERO_RENDERCONTEXT_H
-#include "../Nodes/Camera.h"
+#include "Core/Nodes/Camera.h"
 
 struct RenderContext {
     const Camera* camera = nullptr;

@@ -5,8 +5,8 @@
 #ifndef SESSIONZERO_MATERIAL_H
 #define SESSIONZERO_MATERIAL_H
 #include <memory>
-#include "../../Renderer/IShader.h"
-#include "../Math/Vector/Vector4.h"
+#include "Renderer/IShader.h"
+#include "Core/Math/Vector/Vector4.h"
 
 struct Material {
     std::shared_ptr<IShader> shader;

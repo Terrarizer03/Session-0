@@ -6,6 +6,8 @@
 #define SESSIONZERO_ENGINESETTINGS_H
 #include <string>
 
+#include "Core/Utilities/constants.h"
+
 class EngineSettings {
     EngineSettings() = default;
     bool isLoaded = false;
@@ -27,6 +29,7 @@ public:
     // Default Settings
     int windowWidth = 1920;
     int windowHeight = 1080;
+    int renderMode = zeroConstants::SOLID_MODE;
     bool vsyncEnabled = true;
     bool debugMode = false;
     float fov = 45.0f;

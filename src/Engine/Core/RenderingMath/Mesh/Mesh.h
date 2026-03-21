@@ -4,9 +4,10 @@
 
 #ifndef SESSIONZERO_MESH_H
 #define SESSIONZERO_MESH_H
+#include <cfloat>
 #include <vector>
-#include "../Face.h"
-#include "../Vertex.h"
+#include "Core/RenderingMath/Face.h"
+#include "Core/RenderingMath/Vertex.h"
 #include "glad/glad.h"
 
 class Mesh {
@@ -19,6 +20,8 @@ class Mesh {
 public:
     std::vector<Vertex> vertices;
     std::vector<Face> faces;
+    zeroMath::Vector3 localExtentsMin = { FLT_MAX, FLT_MAX, FLT_MAX };
+    zeroMath::Vector3 localExtentsMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
 
     Mesh(const std::vector<Vertex>& vertices, const std::vector<Face>& faces);
     ~Mesh();

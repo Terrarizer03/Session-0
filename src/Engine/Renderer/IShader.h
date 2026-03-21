@@ -5,8 +5,8 @@
 #ifndef SESSIONZERO_ISHADER_H
 #define SESSIONZERO_ISHADER_H
 #include <string>
-#include "../Core/Math/Matrix/Matrix4.h"
-#include "../Core/Math/Vector/Vector4.h"
+#include "Core/Math/Matrix/Matrix4.h"
+#include "Core/Math/Vector/Vector4.h"
 
 struct IShader {
     virtual ~IShader() = default;

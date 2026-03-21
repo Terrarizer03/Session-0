@@ -6,9 +6,9 @@
 #define SESSIONZERO_MAPEDITORSTATE_H
 #include <string>
 #include <utility>
-#include "../IState.h"
-#include "../../Core/Project/ProjectInfo.h"
-#include "../../UI/EngineUI/MapEditorUI.h"
+#include "States/IState.h"
+#include "Core/Project/ProjectInfo.h"
+#include "UI/EngineUI/MapEditorUI.h"
 #include "MapEditorTab.h"
 
 class MapEditorState : public IState {
@@ -22,6 +22,8 @@ class MapEditorState : public IState {
     int activeTab = 0;
     std::string m_selectedObjectUUID;
     std::string m_requestedTab;
+    Ray m_lastRay{};
+    bool m_hasRay = false;
 
     MapEditorUI m_mapEditorUI;
     RenderContext m_renderContext = {};

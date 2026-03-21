@@ -4,8 +4,8 @@
 
 #ifndef SESSIONZERO_ISTATE_H
 #define SESSIONZERO_ISTATE_H
-#include "../Core/Input/IInput.h"
-#include "../Renderer/IRenderer.h"
+#include "Core/Input/IInput.h"
+#include "Renderer/IRenderer.h"
 
 class StateManager;
 

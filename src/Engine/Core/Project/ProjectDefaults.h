@@ -10,7 +10,7 @@
 #include "nlohmann/json.hpp"
 
 namespace zeroProjectDefaults {
-    inline std::pmr::vector<std::string> defaultFolders = { "maps", "characters", "campaign_rules", "audio" };
+    extern std::vector<std::string> defaultFolders;
     nlohmann::json createDefaultProjectJson(const std::string& name, const std::string& author);
     ProjectInfo createDefaultMap(const std::string& mapName, const std::string& projectFile);
 };

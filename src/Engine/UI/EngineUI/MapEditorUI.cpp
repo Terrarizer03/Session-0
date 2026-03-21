@@ -3,10 +3,10 @@
 //
 
 #include "MapEditorUI.h"
-#include "../../Core/Loaders/ProjectLoader.h"
-#include "../../Core/Loaders/EngineSettings.h"
-#include "../../Core/Project/ProjectDefaults.h"
-#include "../../Core/Project/Tools.h"
+#include "Core/Loaders/ProjectLoader.h"
+#include "Core/Loaders/EngineSettings.h"
+#include "Core/Project/ProjectDefaults.h"
+#include "Core/Project/Tools.h"
 
 void MapEditorUI::drawUI(const MapEditorUIContext& ctx) {
     ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -47,10 +47,18 @@ void MapEditorUI::drawMenuUI(const MapEditorUIContext& ctx, const ImGuiViewport*
 
         if (ImGui::BeginPopupModal("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
         {
+            const char* renderModes[] = { "SOLID", "WIREFRAME", "POINT" };
+            int currentMode = EngineSettings::getInstance().renderMode;
+
             // This kinda does the changes instantly, so maybe make it apparent that changes won't be saved unless you click "Save Changes"
+            ImGui::Text("'Far Plane' and 'Near Plane' only updates if you close and open the tab.");
             ImGui::DragFloat("Far Plane",  &EngineSettings::getInstance().farPlane, 0.1f, 0.0f, 10000.0f);
             ImGui::DragFloat("Near Plane", &EngineSettings::getInstance().nearPlane, 0.1f, 0.0f, 100.0f);
+            if (ImGui::Combo("Rendering Mode", &currentMode, renderModes, IM_ARRAYSIZE(renderModes))) {
+                EngineSettings::getInstance().renderMode = currentMode;
+            }
             ImGui::Checkbox("Debug Mode", &EngineSettings::getInstance().debugMode);
+
 
             if (ImGui::Button("Save Changes", ImVec2(150, 0)))
             {
@@ -221,6 +229,7 @@ void MapEditorUI::drawTabsUI(const MapEditorUIContext &ctx, const ImGuiViewport 
                 }
                 if (!ctx.tabs[i].isOpen) {
                     ctx.tabs.erase(ctx.tabs.begin() + static_cast<int>(i));
+                    ctx.selectedObjectUUID.clear();
                     i--;
                     if (ctx.tabs.empty()) {
                         ctx.activeTab = 0;
@@ -250,6 +259,7 @@ void MapEditorUI::drawPropertiesPanel(const MapEditorUIContext &ctx, const ImGui
         ImGuiWindowFlags_NoBringToFrontOnFocus);
 
     if (!ctx.selectedObjectUUID.empty()) {
+        if (ctx.tabs.empty() || ctx.activeTab >= static_cast<int>(ctx.tabs.size())) return;
         SceneObject* selected = nullptr;
 
         for (auto& obj : ctx.tabs[ctx.activeTab].mapData.objects) {
@@ -280,9 +290,7 @@ void MapEditorUI::drawPropertiesPanel(const MapEditorUIContext &ctx, const ImGui
 
             if (changed) {
                 selected->isDirty = true;
-                if (ImGui::IsItemDeactivatedAfterEdit()) {
-                    ctx.tabs[ctx.activeTab].mapData.isDirty = true;
-                }
+                ctx.tabs[ctx.activeTab].mapData.isDirty = true;
             }
         }
     }

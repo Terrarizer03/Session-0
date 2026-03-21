@@ -4,9 +4,9 @@
 
 #ifndef SESSIONZERO_GLSHADER_H
 #define SESSIONZERO_GLSHADER_H
-#include "../IShader.h"
+#include "Renderer/IShader.h"
 #include "glad/glad.h"
-#include "../../Core/Math/Vector/Vector4.h"
+#include "Core/Math/Vector/Vector4.h"
 
 
 class GLShader : public IShader {

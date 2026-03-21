@@ -4,16 +4,11 @@
 
 #include <filesystem>
 #include "Tools.h"
-
-#include <fstream>
 #include <iostream>
-
-#include "ProjectDefaults.h"
-#include "../../Renderer/OpenGLRenderer/GLShader.h"
-#include "../Loaders/AssetLoader.h"
-#include "../Loaders/EngineSettings.h"
-#include "../Loaders/ProjectLoader.h"
-#include "../Utilities/helpers.h"
+#include "Renderer/OpenGLRenderer/GLShader.h"
+#include "Core/Loaders/AssetLoader.h"
+#include "Core/Loaders/ProjectLoader.h"
+#include "Core/Utilities/helpers.h"
 
 void zeroTools::addPrimitive(MapData &mapData, Primitive primitive) {
     // 1. Generate the scene object

@@ -7,7 +7,7 @@
 #include <memory>
 #include <stack>
 #include "IState.h"
-#include "../Core/Input/IInput.h"
+#include "Core/Input/IInput.h"
 
 class StateManager {
     std::stack<std::unique_ptr<IState>> m_states;

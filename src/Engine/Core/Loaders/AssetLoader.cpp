@@ -7,8 +7,8 @@
 #include <sstream>
 #include <filesystem>
 #include "AssetLoader.h"
-#include "../RenderingMath/Vertex.h"
-#include "../RenderingMath/Face.h"
+#include "Core/RenderingMath/Vertex.h"
+#include "Core/RenderingMath/Face.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tinyobjloader/tiny_obj_loader.h"
@@ -100,6 +100,16 @@ namespace zeroAssetLoader {
 
         // if the mesh doesn't exist in the cache, load, cache, and return it.
         auto mesh = std::make_shared<Mesh>(loadOBJ(path));
+
+        for (const auto& v : mesh->vertices) {
+            mesh->localExtentsMin.x = std::min(mesh->localExtentsMin.x, v.position.x);
+            mesh->localExtentsMin.y = std::min(mesh->localExtentsMin.y, v.position.y);
+            mesh->localExtentsMin.z = std::min(mesh->localExtentsMin.z, v.position.z);
+            mesh->localExtentsMax.x = std::max(mesh->localExtentsMax.x, v.position.x);
+            mesh->localExtentsMax.y = std::max(mesh->localExtentsMax.y, v.position.y);
+            mesh->localExtentsMax.z = std::max(mesh->localExtentsMax.z, v.position.z);
+        }
+
         meshCache.loaded_meshes[path] = mesh;
         return mesh;
     }

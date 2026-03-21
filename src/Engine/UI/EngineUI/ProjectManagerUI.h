@@ -5,9 +5,8 @@
 #ifndef SESSIONZERO_PROJECTMANAGERUI_H
 #define SESSIONZERO_PROJECTMANAGERUI_H
 #include <vector>
-#include "../../Core/Project/ProjectData.h"
-#include "../../Core/Project/RequestChange.h"
-#include "../../States/StateManager.h"
+#include "Core/Project/ProjectData.h"
+#include "Core/Project/RequestChange.h"
 
 struct ProjectManagerUIContext {
     std::vector<ProjectData>& projectPaths;

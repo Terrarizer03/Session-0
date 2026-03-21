@@ -4,18 +4,15 @@
 
 #ifndef SESSIONZERO_CAMERA_H
 #define SESSIONZERO_CAMERA_H
-
-#include <cmath>
-
-#include "../Math/Matrix/Matrix4.h"
-#include "../Math/Vector/Vector3/Vector3.h"
-#include "../RenderingMath/Ray.h"
+#include "Core/Math/Matrix/Matrix4.h"
+#include "Core/Math/Vector/Vector3/Vector3.h"
+#include "Core/RenderingMath/Ray.h"
 
 struct Camera {
     zeroMath::Vector3 position, front, up;
-    float fov = 0.0f, aspect = 0.0f, near = 0.0f, far = 0.0f;
-    float yaw = -90.0f;
-    float pitch = 0.0f;
+    float m_fov = 0.0f, m_aspect = 0.0f, m_near = 0.0f, m_far = 0.0f;
+    float m_yaw = -90.0f;
+    float m_pitch = 0.0f;
 
     Camera(zeroMath::Vector3 _position)
         : position(_position), front(zeroMath::Vector3(0.0f, 0.0f, -1.0f)), up(zeroMath::Vector3(0.0f, 1.0f, 0.0f)) {}

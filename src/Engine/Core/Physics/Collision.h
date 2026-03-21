@@ -4,8 +4,8 @@
 
 #ifndef SESSIONZERO_AABB_H
 #define SESSIONZERO_AABB_H
-#include "../Math/Vector/Vector3/Vector3.h"
-#include "../RenderingMath/Ray.h"
+#include "Core/Math/Vector/Vector3/Vector3.h"
+#include "Core/RenderingMath/Ray.h"
 
 namespace zeroPhysics {
     struct AABB {

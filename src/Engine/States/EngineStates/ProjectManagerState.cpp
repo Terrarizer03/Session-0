@@ -6,9 +6,9 @@
 #include <iostream>
 #include "ProjectManagerState.h"
 #include "MapEditorState.h"
-#include "../StateManager.h"
-#include "../../Core/Loaders/ProjectLoader.h"
-#include "../../Core/Loaders/EngineSettings.h"
+#include "States/StateManager.h"
+#include "Core/Loaders/ProjectLoader.h"
+#include "Core/Loaders/EngineSettings.h"
 
 bool ProjectManagerState::initialize() {
     std::cout << "ProjectManagerState initialized" << std::endl;

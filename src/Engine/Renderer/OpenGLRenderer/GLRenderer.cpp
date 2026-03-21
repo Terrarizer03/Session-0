@@ -5,6 +5,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "GLRenderer.h"
+#include "GLShader.h"
 
 bool GLRenderer::initialize() {
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
@@ -12,6 +13,8 @@ bool GLRenderer::initialize() {
     }
 
     glEnable(GL_DEPTH_TEST);
+
+    m_debugShader = std::make_shared<GLShader>("assets/Shaders/debug.vert", "assets/Shaders/debug.frag"); // Kinda ugly, but okay for now
 
     return true;
 }
@@ -50,18 +53,38 @@ void GLRenderer::draw(const Mesh& mesh, const Transform& transform, const Materi
     mesh.draw();
 }
 
-void GLRenderer::setRenderMode(const RenderMode mode) {
+void GLRenderer::drawAABB(const LineMesh& aabbMesh, const RenderContext& context) {
+    m_debugShader->bind();
+    zeroMath::Matrix4 mvp = context.camera->getProjectionMatrix() * context.camera->getViewMatrix();
+    m_debugShader->setUniformMatrix4fv("uMVP", mvp);
+    m_debugShader->setUniformVec4("uColor", {0.0f, 1.0f, 0.0f, 1.0f});
+    aabbMesh.draw();
+}
+
+void GLRenderer::drawRay(const Ray& ray, float length, const RenderContext& context) {
+    zeroMath::Vector3 end = ray.origin + ray.direction * length;
+    std::vector<zeroMath::Vector3> points = { ray.origin, end };
+    LineMesh line(points);
+
+    m_debugShader->bind();
+    zeroMath::Matrix4 mvp = context.camera->getProjectionMatrix() * context.camera->getViewMatrix();
+    m_debugShader->setUniformMatrix4fv("uMVP", mvp);
+    m_debugShader->setUniformVec4("uColor", {1.0f, 0.0f, 0.0f, 1.0f}); // red
+    line.draw();
+}
+
+void GLRenderer::setRenderMode(const int mode) {
     m_currentMode = mode;
 
     switch (mode) {
-        case RenderMode::SOLID:
+        case zeroConstants::SOLID_MODE:
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             break;
-        case RenderMode::WIREFRAME:
+        case zeroConstants::WIREFRAME_MODE:
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             glLineWidth(1.0f); // Standard thickness
             break;
-        case RenderMode::POINTS:
+        case zeroConstants::POINT_MODE:
             glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
             glPointSize(5.0f); // Make them visible!
             break;

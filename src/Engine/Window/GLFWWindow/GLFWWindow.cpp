@@ -5,18 +5,18 @@
 #include <iostream>
 #include "glad/glad.h"
 #include "GLFWWindow.h"
-#include "../../Core/Loaders/EngineSettings.h"
+#include "Core/Loaders/EngineSettings.h"
 
 bool GLFWWindow::initialize() {
+    glfwSetErrorCallback([](int error, const char* desc) {
+        std::cerr << "GLFW Error " << error << ": " << desc << std::endl;
+    });
+
     if (!glfwInit()) return false;
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    glfwSetErrorCallback([](int error, const char* desc) {
-        std::cerr << "GLFW Error " << error << ": " << desc << std::endl;
-    });
 
     return true;
 }

@@ -38,10 +38,11 @@ void EngineSettings::load(const std::string &path) {
     windowHeight = data.value("windowHeight", 1080);
     vsyncEnabled = data.value("vsyncEnabled", true);
     debugMode = data.value("debugMode", false);
+    renderMode = data.value("renderMode", 0);
     fov = data.value("fov", 45.0f);
     nearPlane = data.value("nearPlane", 0.1f);
     farPlane = data.value("farPlane", 1000.0f);
-    projectPath = data.value("projectPaths", "C:/Users/NICO/Documents/SessionZero/Projects"); // TODO: Change this
+    projectPath = data.value("projectPath", "C:/Users/NICO/Documents/SessionZero/Projects"); // TODO: Change this
     version = data.value("version", std::string("1.0"));
 }
 
@@ -50,6 +51,7 @@ void EngineSettings::save(const std::string &path) {
     data["windowWidth"] = windowWidth;
     data["windowHeight"] = windowHeight;
     data["vsyncEnabled"] = vsyncEnabled;
+    data["renderMode"] = renderMode;
     data["debugMode"] = debugMode;
     data["fov"] = fov;
     data["nearPlane"] = nearPlane;

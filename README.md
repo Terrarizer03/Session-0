@@ -5,8 +5,11 @@
 > These images are subjected to change in the near future once systems are actually applied and
 > visuals get an upgrade.
 
-<img src="github/images/coob.png" width="1057">
-<img src="github/images/ufo.png" width="1057">
+|         Early images of the Map Editor          |        Current images of the Map Editor         |
+|:-----------------------------------------------:|:-----------------------------------------------:|
+| <img src="github/images/coob.png" width="1000"> | <img src="github/images/ayyy.png" width="1000"> |
+| <img src="github/images/ufo.png" width="1000">  | <img src="github/images/peak.png" width="1000"> |
+
 
 # Table of Contents
 - [Overview](#overview)
@@ -16,7 +19,7 @@
 
 
 ## Overview
-Session-0 is a 3D engine specifically created to make D&D Campaigns. The main goal of the project is to bridge the tediousness of building a campaign into an all-encompassing engine that not only simplifies the development of campaign creation through it's editors, but also starting and playing campaigns through the software's `Campaign Mode`.
+Session-0 is a 3D engine specifically created to make D&D Campaigns. The main goal of the project is to bridge the tediousness of building a campaign into an all-encompassing engine that not only simplifies the development of campaign creation through its editors, but also starting and playing campaigns through the software's `Campaign Mode`.
 
 ## Tech Stack
 Session-0 is a project built in C++20, it uses GLFW and OpenGL for its graphics pipeline and ***currently*** ImGui for the UI.

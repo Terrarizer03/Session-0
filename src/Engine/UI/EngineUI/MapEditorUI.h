@@ -7,10 +7,10 @@
 #include <string>
 #include <vector>
 #include "imgui.h"
-#include "../../States/EngineStates/MapEditorTab.h"
-#include "../../Core/Scene/RenderContext.h"
-#include "../../Core/Project/ProjectInfo.h"
-#include "../../Core/Project/RequestChange.h"
+#include "States/EngineStates/MapEditorTab.h"
+#include "Core/Scene/RenderContext.h"
+#include "Core/Project/ProjectInfo.h"
+#include "Core/Project/RequestChange.h"
 
 struct MapEditorUIContext {
     ProjectInfo& projectInfo;

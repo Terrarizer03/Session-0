@@ -4,8 +4,8 @@
 
 #ifndef SESSIONZERO_TRANSFORM_H
 #define SESSIONZERO_TRANSFORM_H
-#include "../Math/Matrix/Matrix4.h"
-#include "../Math/Vector/Vector3/Vector3.h"
+#include "Core/Math/Matrix/Matrix4.h"
+#include "Core/Math/Vector/Vector3/Vector3.h"
 
 struct Transform {
     zeroMath::Vector3 position = { 0.0f, 0.0f, 0.0f };

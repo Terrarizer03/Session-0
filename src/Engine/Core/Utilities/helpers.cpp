@@ -5,11 +5,9 @@
 #include <chrono>
 #include <string>
 #include <format>
+#include <algorithm>
 #include "helpers.h"
-
-#include <iostream>
-
-#include "../../Renderer/OpenGLRenderer/GLShader.h"
+#include "Renderer/OpenGLRenderer/GLShader.h"
 
 Material zeroHelpers::parseMaterial(const nlohmann::json &mat, const std::string &basePath) {
     Material material;

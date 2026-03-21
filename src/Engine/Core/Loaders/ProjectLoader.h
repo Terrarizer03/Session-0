@@ -4,8 +4,8 @@
 
 #ifndef SESSIONZERO_PROJECTLOADER_H
 #define SESSIONZERO_PROJECTLOADER_H
-#include "../Project/ProjectInfo.h"
-#include "../Project/MapData.h"
+#include "Core/Project/ProjectInfo.h"
+#include "Core/Project/MapData.h"
 
 namespace zeroProjectLoader {
     // Project - reads project.json and returns metadata

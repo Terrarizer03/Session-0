@@ -7,9 +7,11 @@
 #include <iostream>
 #include <filesystem>
 #include "ProjectDefaults.h"
-#include "../Loaders/EngineSettings.h"
-#include "../Loaders/ProjectLoader.h"
-#include "../Utilities/helpers.h"
+#include "Core/Loaders/EngineSettings.h"
+#include "Core/Loaders/ProjectLoader.h"
+#include "Core/Utilities/helpers.h"
+
+std::vector<std::string> zeroProjectDefaults::defaultFolders = { "maps", "characters", "campaign_rules", "audio" };
 
 nlohmann::json zeroProjectDefaults::createDefaultProjectJson(const std::string& name, const std::string& author) {
     nlohmann::json data;

@@ -4,8 +4,8 @@
 
 #ifndef SESSIONZERO_MATRIX4_H
 #define SESSIONZERO_MATRIX4_H
-#include "../Vector/Vector4.h"
-#include "../Vector/Vector3/Vector3.h"
+#include "Core/Math/Vector/Vector4.h"
+#include "Core/Math/Vector/Vector3/Vector3.h"
 
 namespace zeroMath {
 

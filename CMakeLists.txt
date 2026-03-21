@@ -43,6 +43,7 @@ target_include_directories(SessionZero PRIVATE
         external/imgui/backends
         external/tinyobjloader/include
         external/nlohmann/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Engine
 )
 
 target_link_libraries(SessionZero
@@ -51,5 +52,9 @@ target_link_libraries(SessionZero
         imgui
         OpenGL::GL
 )
+
+if(MSVC)
+    target_compile_options(SessionZero PRIVATE /fsanitize=address)
+endif()
 
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})

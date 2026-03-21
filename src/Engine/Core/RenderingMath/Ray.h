@@ -5,7 +5,7 @@
 #ifndef SESSIONZERO_RAY_H
 #define SESSIONZERO_RAY_H
 
-#include "../Math/Vector/Vector3/Vector3.h"
+#include "Core/Math/Vector/Vector3/Vector3.h"
 
 struct Ray {
     zeroMath::Vector3 origin;

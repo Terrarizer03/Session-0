@@ -7,11 +7,11 @@
 #include <iostream>
 #include <random>
 #include <iomanip>
-#include "../Utilities/helpers.h"
+#include "Core/Utilities/helpers.h"
 #include "ProjectLoader.h"
 #include "AssetLoader.h"
 #include "EngineSettings.h"
-#include "../Project/ProjectDefaults.h"
+#include "Core/Project/ProjectDefaults.h"
 #include "nlohmann/json.hpp"
 
 namespace zeroProjectLoader {
@@ -130,6 +130,7 @@ namespace zeroProjectLoader {
                     std::string meshPath = obj["mesh"].get<std::string>();
                     sceneObj.meshPath = meshPath;
                     sceneObj.mesh = zeroAssetLoader::getOrLoadMesh(zeroHelpers::resolvePath(meshPath, mapFolder), mapData.assetCache);
+
                 };
 
                 if (obj.contains("material")) {

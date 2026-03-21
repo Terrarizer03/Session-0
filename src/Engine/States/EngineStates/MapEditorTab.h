@@ -5,8 +5,8 @@
 #ifndef SESSIONZERO_MAPEDITORTAB_H
 #define SESSIONZERO_MAPEDITORTAB_H
 #include <string>
-#include "../../Core/Project/MapData.h"
-#include "../../Core/Nodes/Camera.h"
+#include "Core/Project/MapData.h"
+#include "Core/Nodes/Camera.h"
 
 struct MapEditorTab {
     std::string name;

@@ -5,9 +5,9 @@
 #ifndef SESSIONZERO_HELPERS_H
 #define SESSIONZERO_HELPERS_H
 #include "nlohmann/json.hpp"
-#include "../RenderingMath/Material.h"
-#include "../RenderingMath/Transform.h"
-#include "../Project/MapData.h"
+#include "Core/RenderingMath/Material.h"
+#include "Core/RenderingMath/Transform.h"
+#include "Core/Project/MapData.h"
 
 namespace zeroHelpers {
     Material parseMaterial(const nlohmann::json& mat, const std::string& basePath);

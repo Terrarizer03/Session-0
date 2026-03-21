@@ -10,10 +10,6 @@
 #include "Renderer/IRenderer.h"
 #include "States/StateManager.h"
 #include "Window/IWindow.h"
-
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui.h"
 #include "UI/UIManager.h"
 
 class ZeroEngine {

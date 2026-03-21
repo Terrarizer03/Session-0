@@ -55,21 +55,36 @@ bool ZeroEngine::initialize() {
 }
 
 void ZeroEngine::run() {
+    // VERY TEMPORARY
     double lastTime = glfwGetTime();
+    float fpsTimer = 0.0f;
+    int fpsDisplay = 0;
+    int frameCount = 0;
+
     while (!window->shouldClose()) {
         double currentTime = glfwGetTime();
         auto deltaTime = static_cast<float>(currentTime - lastTime);
+        lastTime = currentTime;
+
+        fpsTimer += deltaTime;
+        frameCount++;
+        if (fpsTimer >= 0.5f) {
+            fpsDisplay = static_cast<int>(frameCount / fpsTimer);
+            fpsTimer = 0.0f;
+            frameCount = 0;
+            std::string title = "Session-0 | FPS: " + std::to_string(fpsDisplay);
+            glfwSetWindowTitle(window->getHandle(), title.c_str());
+        }
 
         IState* state = stateManager.getCurrentState();
         if (!state) return;
         renderer->beginFrame();
 
         input->update();
-
         uiManager.beginFrame();
 
         state->handleInput(*input);
-        state->update(deltaTime); // Don't mind this magic number, it's not really needed yet, I just needed to pass in a value
+        state->update(deltaTime);
         state->render(renderer.get());
 
         stateManager.applyPendingState();

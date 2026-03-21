@@ -5,7 +5,7 @@
 #ifndef SESSIONZERO_GLFWWINDOW_H
 #define SESSIONZERO_GLFWWINDOW_H
 
-#include "../IWindow.h"
+#include "Window/IWindow.h"
 #include "GLFW/glfw3.h"
 
 class GLFWWindow : public IWindow {

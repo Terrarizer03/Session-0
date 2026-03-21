@@ -2,7 +2,7 @@
 // Created by Terrarizer on 04/03/2026.
 //
 
-#include "../Mesh/Mesh.h"
+#include "Core/RenderingMath/Mesh/Mesh.h"
 
 Mesh::Mesh(const std::vector<Vertex>& _vertices, const std::vector<Face>& _faces) {
     vertices = _vertices;

@@ -5,11 +5,12 @@
 #ifndef SESSIONZERO_GLRENDERER_H
 #define SESSIONZERO_GLRENDERER_H
 
-#include "../IRenderer.h"
-#include "../../Core/Scene/RenderMode.h"
+#include "Core/Utilities/constants.h"
+#include "Renderer/IRenderer.h"
 
 class GLRenderer : public IRenderer {
-    RenderMode m_currentMode = RenderMode::SOLID;
+    std::shared_ptr<IShader> m_debugShader;
+    int m_currentMode = zeroConstants::SOLID_MODE;
 public:
     bool initialize() override;
 
@@ -18,8 +19,10 @@ public:
 
     void beginFrame() const override;
     void draw(const Mesh& mesh, const Transform& transform, const Material& material, const RenderContext& context) override;
+    void drawAABB(const LineMesh &aabbMesh, const RenderContext &context) override;
+    void drawRay(const Ray &ray, float length, const RenderContext &context) override;
 
-    void setRenderMode(RenderMode renderMode) override;
+    void setRenderMode(int mode) override;
 };
 
 

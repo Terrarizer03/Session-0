@@ -4,9 +4,9 @@
 
 #ifndef SESSIONZERO_PROJECTMANAGERSTATE_H
 #define SESSIONZERO_PROJECTMANAGERSTATE_H
-#include "../IState.h"
-#include "../../Core/Project/ProjectData.h"
-#include "../../UI/EngineUI/ProjectManagerUI.h"
+#include "States/IState.h"
+#include "Core/Project/ProjectData.h"
+#include "UI/EngineUI/ProjectManagerUI.h"
 
 class ProjectManagerState : public IState {
     std::vector<ProjectData> m_project_paths;

@@ -4,9 +4,9 @@
 
 #ifndef SESSIONZERO_VERTEX_H
 #define SESSIONZERO_VERTEX_H
-#include "../Math/Vector/Vector3/Vector3.h"
-#include "../Math/Vector/Vector2.h"
-#include "../Math/Vector/Vector4.h"
+#include "Core/Math/Vector/Vector3/Vector3.h"
+#include "Core/Math/Vector/Vector2.h"
+#include "Core/Math/Vector/Vector4.h"
 
 struct Vertex {
     zeroMath::Vector3 position, normal;

@@ -6,12 +6,12 @@
 #include "MapEditorState.h"
 
 #include "ProjectManagerState.h"
-#include "../StateManager.h"
-#include "../../Renderer/OpenGLRenderer/GLShader.h"
-#include "../../Core/Utilities/constants.h"
-#include "../../Core/Loaders/EngineSettings.h"
-#include "../../Core/Loaders/ProjectLoader.h"
-#include "../../Core/Physics/Collision.h"
+#include "States/StateManager.h"
+#include "Renderer/OpenGLRenderer/GLShader.h"
+#include "Core/Utilities/constants.h"
+#include "Core/Loaders/EngineSettings.h"
+#include "Core/Loaders/ProjectLoader.h"
+#include "Core/Physics/Collision.h"
 #include "GLFW/glfw3.h"
 
 bool MapEditorState::initialize() {
@@ -32,8 +32,8 @@ void MapEditorState::handleInput(IInput& input) {
                 input.resetMouseDelta(); // Finally fixed that jumpy ass shit, just had to reset the mouse delta
                 cursorLocked = true;
             }
-            m_tabs[activeTab].camera.yaw += input.getDeltaX() * zeroConstants::SENSITIVITY;
-            m_tabs[activeTab].camera.pitch += input.getDeltaY() * zeroConstants::SENSITIVITY;
+            m_tabs[activeTab].camera.m_yaw += input.getDeltaX() * zeroConstants::SENSITIVITY;
+            m_tabs[activeTab].camera.m_pitch += input.getDeltaY() * zeroConstants::SENSITIVITY;
         } else {
             if (cursorLocked) {
                 input.setCursorMode(false);
@@ -54,6 +54,8 @@ void MapEditorState::handleInput(IInput& input) {
                 viewportX, static_cast<float>(mouseY),
                 viewportW, viewportH
             );
+            m_lastRay = ray;
+            m_hasRay = true;
 
             std::cout << "Ray origin: " << ray.origin.x << " " << ray.origin.y << " " << ray.origin.z << std::endl;
             std::cout << "Ray dir: " << ray.direction.x << " " << ray.direction.y << " " << ray.direction.z << std::endl;
@@ -71,20 +73,16 @@ void MapEditorState::handleInput(IInput& input) {
                 float hitDist = 0.0f;
                 if (zeroPhysics::rayIntersectsAABB(ray, obj.aabb, hitDist)) {
                     if (hitDist < closestDist) {
-                        std::cout << "HIT: " << obj.UUID << " at distance " << hitDist << std::endl;
                         closestDist = hitDist;
                         m_selectedObjectUUID = obj.UUID;
-                        break;
                     }
-                } else {
-                    std::cout << "MISS: " << obj.UUID << std::endl;
                 }
             }
         }
 
         // Clamp pitch so m_tabs[activeTab].camera doesn't flip upside down
-        if (m_tabs[activeTab].camera.pitch > 89.0f) m_tabs[activeTab].camera.pitch = 89.0f;
-        if (m_tabs[activeTab].camera.pitch < -89.0f) m_tabs[activeTab].camera.pitch = -89.0f;
+        if (m_tabs[activeTab].camera.m_pitch > 89.0f) m_tabs[activeTab].camera.m_pitch = 89.0f;
+        if (m_tabs[activeTab].camera.m_pitch < -89.0f) m_tabs[activeTab].camera.m_pitch = -89.0f;
 
         m_tabs[activeTab].camera.updateFront();
         const zeroMath::Vector3 side = m_tabs[activeTab].camera.front.cross(m_tabs[activeTab].camera.up).normalized();
@@ -118,15 +116,19 @@ void MapEditorState::update(float deltaTime) {
 
 void MapEditorState::render(IRenderer* renderer) {
     renderer->setViewport(250, 0 , EngineSettings::getInstance().windowWidth - 500, EngineSettings::getInstance().windowHeight - 75);
-    renderer->setRenderMode(EngineSettings::getInstance().debugMode ?
-                           RenderMode::WIREFRAME : RenderMode::SOLID);
+    renderer->setRenderMode(EngineSettings::getInstance().renderMode);
 
     if (!m_tabs.empty()) {
         m_renderContext.camera = &m_tabs[activeTab].camera;
         for (const SceneObject& object : m_tabs[activeTab].mapData.objects) {
             renderer->draw(*object.mesh, object.transform, object.material, m_renderContext);
+            if (EngineSettings::getInstance().debugMode && m_hasRay) {
+                renderer->drawAABB(*object.aabbMesh, m_renderContext);
+                renderer->drawRay(m_lastRay, 1000.0f, m_renderContext);
+            }
         }
     }
+
     MapEditorUIContext ctx(m_projectInfo, m_tabs, m_renderContext, activeTab, m_selectedObjectUUID,m_requestedTab, m_projectPath);
     m_mapEditorUI.drawUI(ctx);
     if (m_mapEditorUI.request.requestChange) {

@@ -6,8 +6,8 @@
 #define SESSIONZERO_MAPDATA_H
 #include <string>
 #include <vector>
-#include "../RenderingMath/AssetCache.h"
-#include "../Scene/SceneObject/SceneObject.h"
+#include "Core/RenderingMath/AssetCache.h"
+#include "Core/Scene/SceneObject/SceneObject.h"
 
 struct MapData {
     std::string name;

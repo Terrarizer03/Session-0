@@ -5,18 +5,21 @@
 #ifndef SESSIONZERO_SCENEOBJECT_H
 #define SESSIONZERO_SCENEOBJECT_H
 #include <string>
-#include "../../Physics/Collision.h"
-#include "../../RenderingMath/Material.h"
-#include "../../RenderingMath/Transform.h"
-#include "../../RenderingMath/Mesh/Mesh.h"
+#include "Core/Physics/Collision.h"
+#include "Core/RenderingMath/Material.h"
+#include "Core/RenderingMath/Transform.h"
+#include "Core/RenderingMath/Mesh/LineMesh.h"
+#include "Core/RenderingMath/Mesh/Mesh.h"
 
 struct SceneObject {
     // Mesh-related
     std::shared_ptr<Mesh> mesh = nullptr;
+    std::shared_ptr<LineMesh> aabbMesh = nullptr; // Will be applied soon
     std::string meshPath;
 
     // Transform-related
     Transform transform{};
+    zeroMath::Vector3 localExtentsMax{}, localExtentsMin{};
 
     // Material-related
     Material material{};
@@ -24,7 +27,7 @@ struct SceneObject {
     // Object-related
     std::string name;
     std::string UUID;
-    zeroPhysics::AABB aabb{};
+    zeroPhysics::AABB aabb{}; // Temporary
     bool isDirty = true;
 
     void update();

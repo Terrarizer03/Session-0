@@ -4,9 +4,8 @@
 
 #include "imgui.h"
 #include "ProjectManagerUI.h"
-#include "../../States/EngineStates/MapEditorState.h"
-#include "../../Core/Loaders/ProjectLoader.h"
-
+#include "States/EngineStates/MapEditorState.h"
+#include "Core/Loaders/ProjectLoader.h"
 
 void ProjectManagerUI::drawUI(const ProjectManagerUIContext& ctx) {
     const ImGuiViewport* viewport = ImGui::GetMainViewport();

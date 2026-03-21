@@ -6,8 +6,8 @@
 #define SESSIONZERO_OBJLOADER_H
 
 #include <string>
-#include "../RenderingMath/Mesh/Mesh.h"
-#include "../RenderingMath/AssetCache.h"
+#include "Core/RenderingMath/Mesh/Mesh.h"
+#include "Core/RenderingMath/AssetCache.h"
 
 namespace zeroAssetLoader {
     std::string readFile(const std::string& path);
